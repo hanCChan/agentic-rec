@@ -1,0 +1,30 @@
+# 本地日志与 PID
+*.log
+*.pid
+full_train.log
+full_train.pid
+smoke_train.log
+dl_*.log
+
+# 大体积产物（与 Rec-R1/.gitignore 对齐）
+**/checkpoints/
+**/database/
+**/outputs/
+**/wandb/
+**/results/
+**/results_dense/
+data/**/raw/
+# 可选大数据集（需本地下载，见 DATA.md）
+Rec-R1/data/amazon_review/
+Rec-R1/data/amazon_c4/
+Rec-R1/tests/e2e/**/model.safetensors
+
+# Python / IDE
+__pycache__/
+*.py[cod]
+.verl/
+*.egg-info/
+
+# 环境与密钥
+.env
+*.key

@@ -8,6 +8,13 @@ from typing import Any, Dict, Optional
 
 ALLOWED_TOOLS = frozenset({"bm25_search", "final_answer"})
 
+TOOL_ALIASES = {
+    "search": "bm25_search",
+    "bm25": "bm25_search",
+    "finish": "final_answer",
+    "final": "final_answer",
+}
+
 
 class ActionParseError(Exception):
     """Raised when an action string or dict cannot be parsed."""
@@ -61,6 +68,9 @@ def parse_action(action: Any) -> Dict[str, Any]:
         raise ActionParseError("action must be a JSON object", raw=raw)
 
     tool = data.get("tool")
+    if isinstance(tool, str):
+        tool = TOOL_ALIASES.get(tool.strip().lower(), tool.strip())
+        data["tool"] = tool
     if tool not in ALLOWED_TOOLS:
         raise ActionParseError(f"tool not allowed: {tool!r}", raw=raw)
 
@@ -69,6 +79,8 @@ def parse_action(action: Any) -> Dict[str, Any]:
         if not isinstance(query, str) or not query.strip():
             raise ActionParseError("bm25_search requires non-empty query", raw=raw)
         topk = data.get("topk", 20)
+        if isinstance(topk, float):
+            topk = int(topk)
         if not isinstance(topk, int) or topk <= 0:
             raise ActionParseError("topk must be a positive integer", raw=raw)
         return {

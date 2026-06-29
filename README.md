@@ -203,6 +203,16 @@ CUDA_VISIBLE_DEVICES=2 python scripts/smoke_qwen_rollout.py --num-samples 10
 
 结果见 [`experiments/phase15_qwen_rollout_smoke/`](experiments/phase15_qwen_rollout_smoke/README.md)（parse_success_rate=1.0，10 条样本）。
 
+### Phase 1.6 已完成：Finish-Aware Rollout Fix
+
+Prompt 增强 + 最后一步 auto-finalize + `llm/auto/finish_rate` 指标。
+
+```bash
+CUDA_VISIBLE_DEVICES=2 python scripts/smoke_qwen_rollout.py --num-samples 10
+```
+
+结果见 [`experiments/phase16_finish_aware_smoke/`](experiments/phase16_finish_aware_smoke/README.md)（finish_rate=1.0，parse=1.0）。
+
 ---
 
 ## 引用

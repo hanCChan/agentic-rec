@@ -83,4 +83,5 @@ agentic-rec/
 2. ~~回复 `docs/QUESTIONS_BEFORE_UPGRADE.md` 第十一节 5 个优先问题~~ ✅ 已确认
 3. ~~确认 MVP 后开始阶段 1 代码~~ ✅ 见 `experiments/phase1_env_smoke/`
 4. ~~**进行中**：Qwen rollout policy smoke~~ ✅ 见 `experiments/phase15_qwen_rollout_smoke/`
-5. **下一步**：prompt 强化 final_answer → VERL rollout wrapper → GRPO
+5. ~~**下一步**：prompt 强化 final_answer → VERL rollout wrapper~~ ✅ Phase 1.6 finish-aware 完成
+6. **下一步**：VERL rollout wrapper 骨架（仍不训 GRPO）

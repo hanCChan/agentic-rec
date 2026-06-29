@@ -82,12 +82,20 @@ class QwenRolloutPolicy:
         search_history: List[Dict[str, Any]],
         observation: str,
         max_steps: int,
+        current_step: int = 1,
+        remaining_steps: int | None = None,
+        best_query_by_ndcg: str | None = None,
+        best_ndcg_at_10: float | None = None,
     ) -> Dict[str, Any]:
         filled = build_rollout_prompt(
             user_query=user_query,
             search_history=search_history,
             observation=observation,
             max_steps=max_steps,
+            current_step=current_step,
+            remaining_steps=remaining_steps,
+            best_query_by_ndcg=best_query_by_ndcg,
+            best_ndcg_at_10=best_ndcg_at_10,
         )
         prompt = self._format_prompt(filled)
 

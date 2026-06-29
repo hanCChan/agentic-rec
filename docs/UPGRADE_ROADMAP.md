@@ -1,0 +1,85 @@
+# Agentic Commerce-R1 升级路线图
+
+> 从 Rec-R1 复现 → 面向电商搜索的可训练 Agentic RL 检索决策系统
+
+## 定位一句话
+
+训练 LLM Agent 学会 **query 理解、检索策略选择、证据筛选、查询重写、结果反思与排序决策**；推荐只是场景，主线是 **Agentic RL + Search/RAG + 工业检索优化**。
+
+## 当前 vs 目标
+
+| 维度 | 当前（已跑通） | 目标 |
+|------|---------------|------|
+| 交互 | single-shot query rewrite | multi-turn tool-use agent |
+| 检索 | 固定 BM25 | BM25 + dense + hybrid + rerank（检索器固定） |
+| Reward | 最终 NDCG/Recall | outcome + process（ΔNDCG、evidence、cost） |
+| 策略 | 自由生成 query | 可选 strategy action（SAGE） |
+| Memory | 无 | compact JSON state（MemSearcher 轻量版） |
+| 多模态 | 无 | SQID + image caption（Phase 6） |
+| 诊断 | 无 | rollout drift / collapse（RAGEN） |
+
+## 分阶段实施（8 周参考）
+
+| 阶段 | 内容 | 参考论文 | 产出 |
+|------|------|---------|------|
+| **0** | 读论文 + 答疑 | 全部 `papers/` | `QUESTIONS_BEFORE_UPGRADE.md` 确认 |
+| **1** | Multi-turn tool-use env | Search-R1 | `commerce_agent_env.py` + smoke |
+| **2** | Dense + hybrid 检索 | BGE-M3 | `dense_tool.py`, Faiss index |
+| **3** | Process reward | SmartSearch, OThink-SRR1 | `process_reward.py` |
+| **4** | Strategy action | SAGE | `strategy_reward.py` |
+| **5** | Compact memory | MemSearcher | `memory_state.py` |
+| **6** | 多模态 corpus | SQID | caption + visual attrs |
+| **7** | 诊断 + 主实验 | RAGEN | ablation 表格 + 案例分析 |
+| **8** | 文档 + 面试材料 | — | README / 技术报告 |
+
+## 目标目录结构（确认后创建）
+
+```text
+agentic-rec/
+├── papers/                    # 参考论文 PDF
+├── docs/
+│   ├── UPGRADE_ROADMAP.md     # 本文件
+│   └── QUESTIONS_BEFORE_UPGRADE.md
+├── src/                       # 新增（与 Rec-R1 并列）
+│   ├── agents/
+│   ├── tools/
+│   ├── reward/
+│   ├── retriever/
+│   ├── multimodal/
+│   └── diagnostics/
+├── scripts/
+│   ├── train_agentic_grpo_3b.sh
+│   └── eval_agentic_search.sh
+└── Rec-R1/                    # 现有 VERL + Rec-R1
+```
+
+## GPU 规划（6×A100-80G）
+
+| 阶段 | 模型 | GPU 分配 |
+|------|------|---------|
+| MVP | Qwen2.5-3B | 4 train + 2 vLLM/retrieval |
+| 主实验 | Qwen2.5-7B / Qwen3-8B | 同上，rollout batch 减小 |
+| 多模态 | 离线 VL caption | 不占 RL GPU |
+
+## 实验矩阵（最终报告）
+
+1. **主效果**：BM25 original → prompt → Rec-R1 → Search-R1-style → Ours (+ hybrid + process)  
+2. **工具消融**：BM25 / Dense / Hybrid / +Rerank  
+3. **Reward 消融**：outcome only → +ΔNDCG → +evidence → +cost  
+4. **策略消融**：no strategy → fixed → agent-selected  
+5. **多模态**：text only → +caption → +visual attrs  
+
+## 不做的事
+
+- 从零预训练大模型  
+- 端到端训练检索器  
+- 完整在线推荐系统  
+- 一开始 14B+  
+- 复杂 multi-agent 协作  
+
+## 下一步
+
+1. ~~阅读 `papers/README.md` 建议顺序~~
+2. ~~回复 `docs/QUESTIONS_BEFORE_UPGRADE.md` 第十一节 5 个优先问题~~ ✅ 已确认
+3. ~~确认 MVP 后开始阶段 1 代码~~ ✅ 见 `experiments/phase1_env_smoke/`
+4. **进行中**：Qwen rollout policy smoke → VERL GRPO 接入

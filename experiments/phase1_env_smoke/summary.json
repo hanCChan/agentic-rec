@@ -1,0 +1,26 @@
+{
+  "config": {
+    "num_samples": 20,
+    "max_steps": 3,
+    "data": "/data1/hcc/agentic-rec/Rec-R1/data/esci/inst/sparse/subset_smoke/val.parquet"
+  },
+  "baseline_single_shot": {
+    "count": 20,
+    "avg_final_ndcg": 0.12722230481223856,
+    "avg_total_reward": 0.14083345721835783,
+    "avg_search_calls": 1.0,
+    "avg_process_reward_sum": 0.12722230481223856,
+    "avg_total_penalty": 0.05000000000000001,
+    "final_answer_rate": 1.0
+  },
+  "rule_multi_step": {
+    "count": 20,
+    "avg_final_ndcg": 0.12722230481223856,
+    "avg_total_reward": 0.07833345721835779,
+    "avg_search_calls": 1.75,
+    "avg_process_reward_sum": 0.12722230481223856,
+    "avg_total_penalty": 0.11250000000000002,
+    "final_answer_rate": 1.0
+  },
+  "delta_final_ndcg": 0.0
+}

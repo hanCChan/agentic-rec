@@ -28,3 +28,6 @@ __pycache__/
 # 环境与密钥
 .env
 *.key
+
+# 论文 PDF 仅本地阅读，仓库只保留 papers/README.md 链接
+papers/*.pdf

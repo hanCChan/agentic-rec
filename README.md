@@ -174,6 +174,27 @@ bash scripts/eval_search/esci/sparse/eval_search.sh
 
 ---
 
+## 升级方向：Agentic Commerce-R1
+
+当前仓库是 **Rec-R1 复现（已跑通）**。下一步升级为面向电商搜索的多工具 Agentic RL 检索决策系统，详见：
+
+- [升级路线图](docs/UPGRADE_ROADMAP.md)
+- [实施前待澄清问题](docs/QUESTIONS_BEFORE_UPGRADE.md)
+- [参考论文索引](papers/README.md)（PDF 本地 `papers/`，不纳入 Git）
+
+### Phase 1 已完成：CommerceAgentEnv smoke test
+
+独立多步 BM25 环境（JSON action + process reward），**未改 GRPO 主链路**。
+
+```bash
+source env.sh
+python scripts/smoke_agent_env.py --num-samples 20
+```
+
+结果见 [`experiments/phase1_env_smoke/`](experiments/phase1_env_smoke/README.md)。
+
+---
+
 ## 引用
 
 ```bibtex

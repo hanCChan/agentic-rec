@@ -193,6 +193,16 @@ python scripts/smoke_agent_env.py --num-samples 20
 
 结果见 [`experiments/phase1_env_smoke/`](experiments/phase1_env_smoke/README.md)。
 
+### Phase 1.5 已完成：Qwen2.5-3B rollout smoke
+
+LLM JSON policy + vLLM 驱动 CommerceAgentEnv，**不训练 GRPO**。
+
+```bash
+CUDA_VISIBLE_DEVICES=2 python scripts/smoke_qwen_rollout.py --num-samples 10
+```
+
+结果见 [`experiments/phase15_qwen_rollout_smoke/`](experiments/phase15_qwen_rollout_smoke/README.md)（parse_success_rate=1.0，10 条样本）。
+
 ---
 
 ## 引用

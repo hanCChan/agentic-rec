@@ -64,10 +64,11 @@ class GRPOPilotMonitor(GRPOStabilityMonitor):
 
     def check_eval_summary(self, eval_summary: dict, *, step: int) -> dict:
         """Validate fresh rollout eval against pilot acceptance thresholds."""
-        parse_rate = float(eval_summary.get("parse_success_rate", 0.0) or 0.0)
-        invalid_rate = float(eval_summary.get("invalid_action_rate", 1.0) or 1.0)
+        parse_rate = float(eval_summary.get("parse_success_rate", 0.0))
+        invalid_raw = eval_summary.get("invalid_action_rate")
+        invalid_rate = float(invalid_raw) if invalid_raw is not None else 1.0
         json_ok = eval_summary.get("json_format_ok", False) is True
-        mean_reward = float(eval_summary.get("mean_reward_largek_mix_1000", 0.0) or 0.0)
+        mean_reward = float(eval_summary.get("mean_reward_largek_mix_1000", 0.0))
 
         reward_drop_ratio = 0.0
         reward_collapse = False

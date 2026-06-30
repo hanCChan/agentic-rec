@@ -6,8 +6,28 @@ full_train.pid
 smoke_train.log
 dl_*.log
 
-# 大体积产物（与 Rec-R1/.gitignore 对齐）
+# local smoke / pilot checkpoints
 **/checkpoints/
+**/smoke_step_*/
+**/pilot_step_*/
+**/checkpoint-*/
+**/*.safetensors
+**/*.bin
+**/*.pt
+**/*.pth
+
+# runtime/cache
+.cache/
+wandb/
+runs/
+logs/
+
+# model/cache (local only)
+.hf_home/
+hf_cache/
+vllm_cache/
+
+# 大体积产物（与 Rec-R1/.gitignore 对齐）
 **/database/
 **/outputs/
 **/wandb/

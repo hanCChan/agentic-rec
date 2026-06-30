@@ -1,0 +1,22 @@
+{
+  "eval_step": 25,
+  "checkpoint_path": "experiments/phase24_50step_grpo_pilot/lr_5e-7/checkpoints/pilot_step_25",
+  "checkpoint_label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+  "num_groups": 20,
+  "num_rollout_records": 80,
+  "num_failures": 0,
+  "parse_success_rate": 1.0,
+  "finish_rate": 1.0,
+  "invalid_action_rate": 0.0,
+  "zero_std_group_rate": 0.05,
+  "retrieval_quality_spread_group_rate": 0.95,
+  "mean_reward_largek_mix_1000": 0.390454391467619,
+  "mean_ndcg1000": 0.21424071124866523,
+  "mean_recall1000": 0.8097569444444445,
+  "mean_mrr1000": 0.14262291330064866,
+  "strategy_distribution": {
+    "unknown": 1.0
+  },
+  "json_format_ok": true,
+  "eval_passed": true
+}

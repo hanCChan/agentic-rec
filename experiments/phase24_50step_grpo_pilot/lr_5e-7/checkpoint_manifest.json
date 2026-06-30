@@ -1,0 +1,29 @@
+{
+  "checkpoint_promoted": false,
+  "checkpoint_label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+  "save_steps": [
+    10,
+    25,
+    50
+  ],
+  "checkpoints": [
+    {
+      "step": 10,
+      "path": "experiments/phase24_50step_grpo_pilot/lr_5e-7/checkpoints/pilot_step_10",
+      "label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+      "optimizer_step_called": true
+    },
+    {
+      "step": 25,
+      "path": "experiments/phase24_50step_grpo_pilot/lr_5e-7/checkpoints/pilot_step_25",
+      "label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+      "optimizer_step_called": true
+    },
+    {
+      "step": 50,
+      "path": "experiments/phase24_50step_grpo_pilot/lr_5e-7/checkpoints/pilot_step_50",
+      "label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+      "optimizer_step_called": true
+    }
+  ]
+}

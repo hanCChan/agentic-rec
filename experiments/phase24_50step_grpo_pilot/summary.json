@@ -1,0 +1,21 @@
+{
+  "phase": "2.4",
+  "mode": "50step_grpo_pilot",
+  "lr_5e-7_completed": true,
+  "lr_5e-7_passed": true,
+  "learning_rate": 5e-7,
+  "actual_update_steps": 50,
+  "pilot_passed": true,
+  "max_approx_kl_nonnegative": 0.04928835853934288,
+  "max_grad_norm": 0.421875,
+  "checkpoint_promoted": false,
+  "checkpoint_label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+  "fresh_eval_rewards": {
+    "step_0": 0.3726314739638866,
+    "step_10": 0.3847176806050657,
+    "step_25": 0.390454391467619,
+    "step_50": 0.3945596769096167
+  },
+  "parse_success_rate_all_evals": 1.0,
+  "next_recommendation": "Phase 2.5: 200-step pilot or expand clean set to 50-100 groups"
+}

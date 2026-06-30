@@ -1,0 +1,22 @@
+{
+  "actor_log_probs": [
+    2,
+    1402
+  ],
+  "old_log_probs": [
+    2,
+    1402
+  ],
+  "ref_log_probs": [
+    2,
+    1402
+  ],
+  "token_kl": [
+    2,
+    1402
+  ],
+  "ratio": [
+    2,
+    1402
+  ]
+}

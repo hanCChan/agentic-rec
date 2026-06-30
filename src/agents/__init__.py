@@ -24,6 +24,7 @@ from .actor_logprob_mock import (
     tensor_shape_report,
 )
 from .actor_logprob_dryrun import DRYRUN_WARNING, ActorLogProbDryRun
+from .ref_kl_dryrun import KL_DRYRUN_WARNING, ReferenceKLDryRun
 
 __all__ = [
     "ActionParseError",
@@ -54,4 +55,6 @@ __all__ = [
     "tensor_shape_report",
     "ActorLogProbDryRun",
     "DRYRUN_WARNING",
+    "ReferenceKLDryRun",
+    "KL_DRYRUN_WARNING",
 ]

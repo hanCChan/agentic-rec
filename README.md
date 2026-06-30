@@ -301,6 +301,19 @@ CUDA_VISIBLE_DEVICES=2 python scripts/smoke_actor_logprob_dryrun.py \
 
 结果见 [`experiments/phase113_actor_logprob_dryrun/`](experiments/phase113_actor_logprob_dryrun/README.md)。
 
+### Phase 1.14 已完成：Reference LogProb / KL Dry-Run
+
+验证 actor/old/ref logprobs、token KL、ratio 与 mask 对齐。**不训练、不接 GRPO。**
+
+```bash
+CUDA_VISIBLE_DEVICES=2 python scripts/smoke_ref_kl_dryrun.py \
+  --rollout-path experiments/phase17_verl_adapter_smoke_10/rollout_records.jsonl \
+  --output-dir experiments/phase114_ref_kl_dryrun_2 \
+  --num-records 2 --shared-ref
+```
+
+结果见 [`experiments/phase114_ref_kl_dryrun/`](experiments/phase114_ref_kl_dryrun/README.md)（shared-ref 下 KL≈0，ratio≈1）。
+
 ---
 
 ## 引用

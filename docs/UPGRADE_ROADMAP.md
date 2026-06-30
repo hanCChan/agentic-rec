@@ -91,4 +91,5 @@ agentic-rec/
 10. ~~**下一步**：Phase 1.11 — 真实 `verl.DataProto` import 兼容性检查~~ ✅ 见 `experiments/phase111_real_dataproto_compat_10/`
 11. ~~**下一步**：Phase 1.12 — Actor LogProb dry-run 设计（仍不调用 actor.forward）~~ ✅ 见 `experiments/phase112_actor_logprob_mock_10/`
 12. ~~**下一步**：Phase 1.13 — 真实 actor logprob dry-run（单 batch、no grad、仍不接 trainer）~~ ✅ 见 `experiments/phase113_actor_logprob_dryrun_2/`
-13. **下一步**：Phase 1.14 — Reference LogProb / KL Dry-Run 设计
+13. ~~**下一步**：Phase 1.14 — Reference LogProb / KL Dry-Run 设计~~ ✅ 见 `experiments/phase114_ref_kl_dryrun_2/`
+14. **下一步**：Phase 1.15 — GRPO Advantage Mock / Grouped Reward Dry-Run

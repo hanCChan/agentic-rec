@@ -1,0 +1,54 @@
+{
+  "phase": "1.14",
+  "num_records": 4,
+  "used_real_dataproto": true,
+  "actor_model_path": "/data1/hcc/.hf_home/Qwen2.5-3B-Instruct",
+  "ref_model_path": "/data1/hcc/.hf_home/Qwen2.5-3B-Instruct",
+  "shared_ref": true,
+  "kl_coef": 0.01,
+  "dtype": "bfloat16",
+  "device": "cuda",
+  "kl_check_passed": true,
+  "actor_log_probs_shape": [
+    4,
+    1402
+  ],
+  "old_log_probs_shape": [
+    4,
+    1402
+  ],
+  "ref_log_probs_shape": [
+    4,
+    1402
+  ],
+  "token_kl_shape": [
+    4,
+    1402
+  ],
+  "ratio_shape": [
+    4,
+    1402
+  ],
+  "finite_actor_log_probs": true,
+  "finite_ref_log_probs": true,
+  "finite_token_kl": true,
+  "finite_ratio": true,
+  "padding_zero_check": true,
+  "mean_valid_actor_logprob": -1.3236961364746094,
+  "mean_valid_ref_logprob": -1.3236961364746094,
+  "mean_valid_kl": 0.0,
+  "mean_valid_abs_kl": 0.0,
+  "mean_valid_ratio": 1.0,
+  "min_valid_ratio": 1.0,
+  "max_valid_ratio": 1.0,
+  "is_dryrun": true,
+  "dryrun_warning": "KL tensors were computed for validation only; no training or optimizer.step was performed.",
+  "config": {
+    "rollout_path": "experiments/phase17_verl_adapter_smoke_10/rollout_records.jsonl",
+    "tokenizer_path": "/data1/hcc/.hf_home/Qwen2.5-3B-Instruct",
+    "num_records": 4,
+    "max_prompt_length": 1024,
+    "max_response_length": 2048,
+    "max_total_length": 3072
+  }
+}

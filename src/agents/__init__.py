@@ -30,6 +30,7 @@ from .grpo_loss_dryrun import GRPOLossDryRun, LOSS_DRYRUN_WARNING
 from .multisample_episode_runner import MultiSampleEpisodeRunner, trajectory_to_rollout_record
 from .rollout_diagnostics import RolloutDiagnostics, build_case_studies, token_jaccard
 from .reward_sensitivity_diagnostics import RewardSensitivityDiagnostics, build_reward_recommendations
+from .reward_shaping_dryrun import RewardShapingDryRun, build_candidate_comparison_md, build_reward_shaping_recommendations
 
 __all__ = [
     "ActionParseError",
@@ -73,4 +74,7 @@ __all__ = [
     "token_jaccard",
     "RewardSensitivityDiagnostics",
     "build_reward_recommendations",
+    "RewardShapingDryRun",
+    "build_candidate_comparison_md",
+    "build_reward_shaping_recommendations",
 ]

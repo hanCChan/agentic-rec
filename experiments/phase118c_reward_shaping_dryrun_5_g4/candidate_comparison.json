@@ -1,0 +1,141 @@
+{
+  "candidates": [
+    {
+      "candidate_name": "reward_current",
+      "diagnostic_only": false,
+      "description": "Current total_reward from Phase 1.17 rollout (baseline).",
+      "num_groups": 5,
+      "zero_std_group_count": 4,
+      "zero_std_group_rate": 0.8,
+      "mean_group_reward_std": 0.005000000000000002,
+      "mean_reward_spread": 0.010000000000000004,
+      "mean_abs_sequence_advantage": 0.19999200031998718,
+      "retrieval_quality_spread_group_count": 0,
+      "retrieval_quality_spread_rate": 0.0,
+      "penalty_only_spread_group_count": 1,
+      "penalty_only_spread_rate": 0.2,
+      "groups_with_improved_spread": [],
+      "groups_still_collapsed": [
+        "esci_val_0",
+        "esci_val_1",
+        "esci_val_3",
+        "esci_val_4"
+      ]
+    },
+    {
+      "candidate_name": "reward_quality_only",
+      "diagnostic_only": false,
+      "description": "Pure retrieval quality: NDCG@10 + 0.2*Recall@50 + 0.1*MRR@50.",
+      "num_groups": 5,
+      "zero_std_group_count": 5,
+      "zero_std_group_rate": 1.0,
+      "mean_group_reward_std": 0.0,
+      "mean_reward_spread": 0.0,
+      "mean_abs_sequence_advantage": 0.0,
+      "retrieval_quality_spread_group_count": 0,
+      "retrieval_quality_spread_rate": 0.0,
+      "penalty_only_spread_group_count": 0,
+      "penalty_only_spread_rate": 0.0,
+      "groups_with_improved_spread": [],
+      "groups_still_collapsed": [
+        "esci_val_0",
+        "esci_val_1",
+        "esci_val_2",
+        "esci_val_3",
+        "esci_val_4"
+      ]
+    },
+    {
+      "candidate_name": "reward_quality_best_step",
+      "diagnostic_only": false,
+      "description": "Retrieval quality plus 0.5 * best_step_delta_ndcg.",
+      "num_groups": 5,
+      "zero_std_group_count": 3,
+      "zero_std_group_rate": 0.6,
+      "mean_group_reward_std": 0.007282580390035281,
+      "mean_reward_spread": 0.016818398994327837,
+      "mean_abs_sequence_advantage": 0.34637967660155483,
+      "retrieval_quality_spread_group_count": 0,
+      "retrieval_quality_spread_rate": 0.0,
+      "penalty_only_spread_group_count": 0,
+      "penalty_only_spread_rate": 0.0,
+      "groups_with_improved_spread": [],
+      "groups_still_collapsed": [
+        "esci_val_0",
+        "esci_val_1",
+        "esci_val_2"
+      ]
+    },
+    {
+      "candidate_name": "reward_penalty_decoupled",
+      "diagnostic_only": false,
+      "description": "Retrieval quality only; penalties tracked separately for GRPO.",
+      "num_groups": 5,
+      "zero_std_group_count": 5,
+      "zero_std_group_rate": 1.0,
+      "mean_group_reward_std": 0.0,
+      "mean_reward_spread": 0.0,
+      "mean_abs_sequence_advantage": 0.0,
+      "retrieval_quality_spread_group_count": 0,
+      "retrieval_quality_spread_rate": 0.0,
+      "penalty_only_spread_group_count": 0,
+      "penalty_only_spread_rate": 0.0,
+      "groups_with_improved_spread": [],
+      "groups_still_collapsed": [
+        "esci_val_0",
+        "esci_val_1",
+        "esci_val_2",
+        "esci_val_3",
+        "esci_val_4"
+      ]
+    },
+    {
+      "candidate_name": "reward_hit_depth",
+      "diagnostic_only": false,
+      "description": "Soft rank reward: 1/log2(first_relevant_rank+1) on final query topK.",
+      "num_groups": 5,
+      "zero_std_group_count": 5,
+      "zero_std_group_rate": 1.0,
+      "mean_group_reward_std": 0.0,
+      "mean_reward_spread": 0.0,
+      "mean_abs_sequence_advantage": 0.0,
+      "retrieval_quality_spread_group_count": 0,
+      "retrieval_quality_spread_rate": 0.0,
+      "penalty_only_spread_group_count": 0,
+      "penalty_only_spread_rate": 0.0,
+      "groups_with_improved_spread": [],
+      "groups_still_collapsed": [
+        "esci_val_0",
+        "esci_val_1",
+        "esci_val_2",
+        "esci_val_3",
+        "esci_val_4"
+      ]
+    },
+    {
+      "candidate_name": "reward_overlap_diagnostic",
+      "diagnostic_only": true,
+      "description": "Diagnostic only: retrieval quality + diversity term from top50 overlap.",
+      "num_groups": 5,
+      "zero_std_group_count": 2,
+      "zero_std_group_rate": 0.4,
+      "mean_group_reward_std": 0.010131301205420063,
+      "mean_reward_spread": 0.02152620429216174,
+      "mean_abs_sequence_advantage": 0.5910396115472539,
+      "retrieval_quality_spread_group_count": 0,
+      "retrieval_quality_spread_rate": 0.0,
+      "penalty_only_spread_group_count": 1,
+      "penalty_only_spread_rate": 0.2,
+      "groups_with_improved_spread": [],
+      "groups_still_collapsed": [
+        "esci_val_3",
+        "esci_val_4"
+      ]
+    }
+  ],
+  "baseline_zero_std_group_rate": 0.8,
+  "best_candidate_by_reward_variance": "reward_quality_best_step",
+  "best_candidate_zero_std_group_rate": 0.6,
+  "best_candidate_safe_for_training": "none",
+  "main_conclusion": "Pure retrieval-quality candidates still show high zero-std rates on this smoke set. best_step_delta candidate reduces zero_std from 0.80 to 0.60, but still not training-ready. Overlap diagnostic improves variance without retrieval-quality spread — qrels/metrics may be blind; do not use overlap as training reward. Do not train yet. Current smoke set has insufficient retrieval-quality reward variance."
+}

@@ -1,0 +1,17 @@
+{
+  "metrics": {
+    "reward_mean": 0.03630559518933296,
+    "reward_min": -0.15000000596046448,
+    "reward_max": 1.399999976158142,
+    "num_nonzero_token_rewards": 50,
+    "batch_size": 50
+  },
+  "sequence_rewards_shape": [
+    50
+  ],
+  "token_level_rewards_shape": [
+    50,
+    1402
+  ],
+  "check_passed": true
+}

@@ -10,6 +10,12 @@ from .verl_training_field_builder import (
     VerlTrainingFieldBuilder,
     check_training_fields,
 )
+from .dataproto_mock import (
+    DRY_RUN_WARNING,
+    DataProtoMock,
+    build_dataproto_shapes,
+    check_actor_inputs,
+)
 
 __all__ = [
     "ActionParseError",
@@ -29,4 +35,8 @@ __all__ = [
     "VerlTrainingFieldBuilder",
     "check_training_fields",
     "MOCK_FIELDS_WARNING",
+    "DataProtoMock",
+    "DRY_RUN_WARNING",
+    "build_dataproto_shapes",
+    "check_actor_inputs",
 ]

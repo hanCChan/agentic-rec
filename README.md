@@ -252,6 +252,18 @@ python scripts/smoke_verl_training_fields.py \
 
 结果见 [`experiments/phase19_verl_training_fields_mock/`](experiments/phase19_verl_training_fields_mock/README.md)（shape_check_passed=true）。
 
+### Phase 1.10 已完成：DataProto / Reward Function Dry-Run
+
+将 Phase 1.9 training fields 映射为 `DataProtoMock`，运行 `CommerceRewardFn` dry-run 与 actor input field check。**不训练 GRPO，不调用 actor.forward。**
+
+```bash
+python scripts/smoke_dataproto_reward_dryrun.py \
+  --rollout-path experiments/phase17_verl_adapter_smoke_10/rollout_records.jsonl \
+  --output-dir experiments/phase110_dataproto_reward_dryrun_10
+```
+
+结果见 [`experiments/phase110_dataproto_reward_dryrun/`](experiments/phase110_dataproto_reward_dryrun/README.md)（三项 check 均通过）。
+
 ---
 
 ## 引用

@@ -87,4 +87,5 @@ agentic-rec/
 6. ~~**下一步**：VERL rollout wrapper 骨架（仍不训 GRPO）~~ ✅ Phase 1.7 完成，见 `experiments/phase17_verl_adapter_smoke_10/`
 7. ~~**下一步**：Phase 1.8 — VERL batch mock / reward tensor / token mask shape check~~ ✅ 见 `experiments/phase18_verl_batch_mock_10/`
 8. ~~**下一步**：Phase 1.9 — VERL training fields mock / field alignment~~ ✅ 见 `experiments/phase19_verl_training_fields_mock_10/`
-9. **下一步**：Phase 1.10 — Rec-R1/VERL DataProto 最小对齐 dry-run（仍不训 GRPO）
+9. ~~**下一步**：Phase 1.10 — DataProto / reward_fn dry-run~~ ✅ 见 `experiments/phase110_dataproto_reward_dryrun_10/`
+10. **下一步**：Phase 1.11 — 真实 `verl.DataProto` import 兼容性检查（仍不训 GRPO）

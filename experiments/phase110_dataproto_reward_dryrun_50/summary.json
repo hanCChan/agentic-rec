@@ -1,0 +1,36 @@
+{
+  "phase": "1.10",
+  "num_records": 50,
+  "batch_size": 50,
+  "dataproto_validate_passed": true,
+  "actor_input_check_passed": true,
+  "reward_fn_check_passed": true,
+  "input_ids_shape": [
+    50,
+    1457
+  ],
+  "responses_shape": [
+    50,
+    1402
+  ],
+  "token_level_rewards_shape": [
+    50,
+    1402
+  ],
+  "sequence_rewards_shape": [
+    50
+  ],
+  "reward_mean": 0.03630559518933296,
+  "reward_min": -0.15000000596046448,
+  "reward_max": 1.399999976158142,
+  "num_nonzero_token_rewards": 50,
+  "missing_actor_keys": [],
+  "mock_warning": "This is a dry-run DataProtoMock. It must not be used for optimizer.step.",
+  "config": {
+    "rollout_path": "experiments/phase17_verl_adapter_smoke_50/rollout_records.jsonl",
+    "tokenizer_path": "/data1/hcc/.hf_home/Qwen2.5-3B-Instruct",
+    "max_prompt_length": 1024,
+    "max_response_length": 2048,
+    "max_total_length": 3072
+  }
+}

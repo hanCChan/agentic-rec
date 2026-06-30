@@ -35,6 +35,11 @@ from .search_strategy_prompts import DEFAULT_STRATEGY_ORDER, SEARCH_STRATEGIES, 
 from .strategy_episode_runner import StrategyEpisodeRunner
 from .strategy_reward_decomposition import StrategyRewardDecomposition, build_case_studies as build_decomposition_case_studies
 from .qrels_metric_blindness import QrelsMetricBlindness, build_metric_blindness_report
+from .large_k_reward_dryrun import (
+    LargeKRewardDryRun,
+    build_large_k_candidate_comparison_md,
+    build_large_k_reward_recommendations,
+)
 
 __all__ = [
     "ActionParseError",
@@ -89,4 +94,7 @@ __all__ = [
     "build_decomposition_case_studies",
     "QrelsMetricBlindness",
     "build_metric_blindness_report",
+    "LargeKRewardDryRun",
+    "build_large_k_candidate_comparison_md",
+    "build_large_k_reward_recommendations",
 ]

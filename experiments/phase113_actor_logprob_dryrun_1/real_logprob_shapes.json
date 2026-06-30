@@ -1,0 +1,18 @@
+{
+  "input_ids": [
+    1,
+    1197
+  ],
+  "responses": [
+    1,
+    1144
+  ],
+  "real_old_log_probs": [
+    1,
+    1144
+  ],
+  "real_entropys": [
+    1,
+    1144
+  ]
+}

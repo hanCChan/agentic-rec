@@ -23,6 +23,7 @@ from .actor_logprob_mock import (
     VERL_COMPUTE_LOG_PROB_KEYS,
     tensor_shape_report,
 )
+from .actor_logprob_dryrun import DRYRUN_WARNING, ActorLogProbDryRun
 
 __all__ = [
     "ActionParseError",
@@ -51,4 +52,6 @@ __all__ = [
     "MOCK_LOGPROB_WARNING",
     "VERL_COMPUTE_LOG_PROB_KEYS",
     "tensor_shape_report",
+    "ActorLogProbDryRun",
+    "DRYRUN_WARNING",
 ]

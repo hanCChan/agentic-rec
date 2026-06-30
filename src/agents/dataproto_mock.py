@@ -66,6 +66,8 @@ class DataProtoMock:
             "mock_old_log_probs_shape": list(fields["mock_old_log_probs"].shape),
             "mock_advantages_shape": list(fields["mock_advantages"].shape),
             "mock_returns_shape": list(fields["mock_returns"].shape),
+            "prompt_lengths": fields["prompt_lengths"].tolist(),
+            "response_lengths": fields["response_lengths"].tolist(),
             "warning": MOCK_FIELDS_WARNING,
             "dry_run_warning": DRY_RUN_WARNING,
         }

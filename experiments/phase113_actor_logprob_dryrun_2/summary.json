@@ -1,0 +1,36 @@
+{
+  "phase": "1.13",
+  "num_records": 2,
+  "used_real_dataproto": true,
+  "model_path": "/data1/hcc/.hf_home/Qwen2.5-3B-Instruct",
+  "dtype": "bfloat16",
+  "device": "cuda",
+  "real_logprob_check_passed": true,
+  "input_ids_shape": [
+    2,
+    1457
+  ],
+  "responses_shape": [
+    2,
+    1402
+  ],
+  "real_old_log_probs_shape": [
+    2,
+    1402
+  ],
+  "finite_valid_logprobs": true,
+  "padding_logprobs_zero": true,
+  "mean_valid_logprob": -1.3892912864685059,
+  "min_valid_logprob": -23.125011444091797,
+  "max_valid_logprob": 0.0,
+  "is_real": true,
+  "dryrun_warning": "Real model forward was run under torch.no_grad(); no training or optimizer.step was performed.",
+  "config": {
+    "rollout_path": "experiments/phase17_verl_adapter_smoke_10/rollout_records.jsonl",
+    "tokenizer_path": "/data1/hcc/.hf_home/Qwen2.5-3B-Instruct",
+    "num_records": 2,
+    "max_prompt_length": 1024,
+    "max_response_length": 2048,
+    "max_total_length": 3072
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "finite_valid_logprobs": true,
+  "padding_logprobs_zero": true,
+  "mean_valid_logprob": -1.3236961364746094,
+  "min_valid_logprob": -24.125001907348633,
+  "max_valid_logprob": 0.0,
+  "debug_slices": [
+    {
+      "sample_index": 0,
+      "prompt_len": 53,
+      "response_len": 1144,
+      "slice_start": 52,
+      "slice_end": 1196,
+      "first_5_response_token_ids": [
+        27,
+        9520,
+        62,
+        16,
+        397
+      ]
+    },
+    {
+      "sample_index": 1,
+      "prompt_len": 55,
+      "response_len": 1402,
+      "slice_start": 54,
+      "slice_end": 1456,
+      "first_5_response_token_ids": [
+        27,
+        9520,
+        62,
+        16,
+        397
+      ]
+    },
+    {
+      "sample_index": 2,
+      "prompt_len": 52,
+      "response_len": 1204,
+      "slice_start": 51,
+      "slice_end": 1255,
+      "first_5_response_token_ids": [
+        27,
+        9520,
+        62,
+        16,
+        397
+      ]
+    },
+    {
+      "sample_index": 3,
+      "prompt_len": 58,
+      "response_len": 1312,
+      "slice_start": 57,
+      "slice_end": 1369,
+      "first_5_response_token_ids": [
+        27,
+        9520,
+        62,
+        16,
+        397
+      ]
+    }
+  ]
+}

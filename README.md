@@ -288,6 +288,19 @@ python scripts/smoke_actor_logprob_mock.py \
 
 结果见 [`experiments/phase112_actor_logprob_mock/`](experiments/phase112_actor_logprob_mock/README.md)（`is_mock=true`）。
 
+### Phase 1.13 已完成：Real Actor LogProb Dry-Run
+
+HuggingFace `AutoModelForCausalLM` + `torch.no_grad()` 计算真实 response logprob。**不训练、不接 GRPO。**
+
+```bash
+CUDA_VISIBLE_DEVICES=2 python scripts/smoke_actor_logprob_dryrun.py \
+  --rollout-path experiments/phase17_verl_adapter_smoke_10/rollout_records.jsonl \
+  --output-dir experiments/phase113_actor_logprob_dryrun_2 \
+  --num-records 2
+```
+
+结果见 [`experiments/phase113_actor_logprob_dryrun/`](experiments/phase113_actor_logprob_dryrun/README.md)。
+
 ---
 
 ## 引用

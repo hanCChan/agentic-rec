@@ -25,7 +25,25 @@ agentic-rec/
     └── data/              # 训练 parquet（小文件随仓库；大语料需本地下载）
 ```
 
-**不纳入 Git 的本地产物**（见 `.gitignore`）：`checkpoints/`、`database/`（Lucene 索引）、`outputs/`、日志、原始语料 `data/esci/raw/` 等。
+**不纳入 Git 的本地产物**（见 `.gitignore`）：`checkpoints/`、`smoke_step_*/`、`pilot_step_*/`、`database/`（Lucene 索引）、`outputs/`、日志、模型权重（`.safetensors`/`.bin`/`.pt`）、原始语料 `data/esci/raw/` 等。
+
+### Phase 2 主线（Agentic GRPO smoke → pilot）
+
+当前工程验证链（详见 [docs/RESULTS_INDEX.md](./docs/RESULTS_INDEX.md)）：
+
+```text
+clean 20_g4 → V2 strategy rollout → reward_largek_mix_1000
+  → 1-step smoke → 3-step stability → 10-step controlled → 50-step pilot
+```
+
+| 阶段 | 脚本 | 目录 |
+|------|------|------|
+| 2.1 1-step | `scripts/run_tiny_grpo_smoke_training.py` | `experiments/phase21_tiny_grpo_smoke/` |
+| 2.2 3-step | `scripts/run_3step_grpo_stability_smoke.py` | `experiments/phase22_3step_grpo_stability_smoke/` |
+| 2.3 10-step | `scripts/run_10step_grpo_controlled_smoke.py` | `experiments/phase23_10step_grpo_controlled_smoke/` |
+| 2.4 50-step pilot | `scripts/run_50step_grpo_pilot.py` | `experiments/phase24_50step_grpo_pilot/` |
+
+**Smoke/pilot checkpoint 仅本地保存，标记 `SMOKE_ONLY_DO_NOT_PROMOTE`，不提交 Git、不可 promote。**
 
 ---
 

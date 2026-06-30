@@ -1,0 +1,61 @@
+{
+  "phase": "1.19a",
+  "input_rollout_path": "experiments/phase118d_strategy_rollout_5_g4/rollout_records.jsonl",
+  "input_group_summary_path": "experiments/phase118d_strategy_rollout_5_g4/group_summaries.jsonl",
+  "num_groups": 5,
+  "num_rollout_records": 20,
+  "zero_std_group_rate_total_reward": 0.0,
+  "zero_std_group_rate_quality_only": 0.8,
+  "retrieval_quality_spread_group_rate": 0.2,
+  "penalty_only_spread_group_rate": 0.8,
+  "mixed_spread_group_rate": 0.0,
+  "no_spread_group_rate": 0.0,
+  "spread_source_counts": {
+    "retrieval_quality_spread": 1,
+    "penalty_only_spread": 4,
+    "mixed_spread": 0,
+    "no_spread": 0
+  },
+  "strategy_stats": {
+    "attribute_expansion": {
+      "strategy_mean_total_reward": -0.008912599066852217,
+      "strategy_mean_quality_reward": 0.1110874009331478,
+      "strategy_mean_ndcg_at_10": 0.0740582672887652,
+      "strategy_mean_penalty": -0.12000000000000001,
+      "strategy_mean_search_calls": 1.6,
+      "count": 5
+    },
+    "broad_recall": {
+      "strategy_mean_total_reward": 0.19036632700458506,
+      "strategy_mean_quality_reward": 0.30036632700458504,
+      "strategy_mean_ndcg_at_10": 0.2002442180030567,
+      "strategy_mean_penalty": -0.11000000000000001,
+      "strategy_mean_search_calls": 1.8,
+      "count": 5
+    },
+    "constraint_preserving": {
+      "strategy_mean_total_reward": -0.008912599066852217,
+      "strategy_mean_quality_reward": 0.1110874009331478,
+      "strategy_mean_ndcg_at_10": 0.0740582672887652,
+      "strategy_mean_penalty": -0.12000000000000001,
+      "strategy_mean_search_calls": 1.6,
+      "count": 5
+    },
+    "exact_match": {
+      "strategy_mean_total_reward": -0.01891259906685222,
+      "strategy_mean_quality_reward": 0.1110874009331478,
+      "strategy_mean_ndcg_at_10": 0.0740582672887652,
+      "strategy_mean_penalty": -0.13,
+      "strategy_mean_search_calls": 1.4,
+      "count": 5
+    }
+  },
+  "gate_evaluation": {
+    "gate_passed": false,
+    "gate_thresholds": {
+      "min_retrieval_quality_spread_rate": 0.6,
+      "max_penalty_only_spread_rate": 0.2
+    },
+    "recommendation": "Do not proceed to GRPO loss dry-run. Continue reward/prompt fixes or Phase 1.18e."
+  }
+}

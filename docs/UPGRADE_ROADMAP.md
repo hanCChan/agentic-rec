@@ -100,4 +100,6 @@ agentic-rec/
 19. ~~**下一步**：Phase 1.18c — Reward Shaping Proposal + Dry-Run~~ ✅ 见 `experiments/phase118c_reward_shaping_dryrun_5_g4/`
 20. ~~**下一步**：Phase 1.18c — Reward Shaping Proposal + Dry-Run~~ ✅ 见 `experiments/phase118c_reward_shaping_dryrun_5_g4/`
 21. ~~**下一步**：Phase 1.18d — Rollout Diversity Prompt / Search Strategy Fix~~ ✅ 见 `experiments/phase118d_strategy_rollout_5_g4/`
-22. **下一步**：Phase 1.18e — Qrels / Metric Blindness Analysis（若 strategy rollout 后 zero_std 仍高）
+22. ~~**下一步**：Phase 1.18d — Rollout Diversity Prompt / Search Strategy Fix~~ ✅ 见 `experiments/phase118d_strategy_rollout_5_g4/`
+23. ~~**下一步**：Phase 1.19a — Strategy Rollout Reward Decomposition~~ ✅ 见 `experiments/phase119a_strategy_reward_decomposition_5_g4/`
+24. **下一步**：Phase 1.19b 或 1.19 — 取决于 1.19a gate 结果

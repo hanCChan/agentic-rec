@@ -40,6 +40,7 @@ from .large_k_reward_dryrun import (
     build_large_k_candidate_comparison_md,
     build_large_k_reward_recommendations,
 )
+from .real_grpo_loss_dryrun import RealGRPOLossDryRun, build_real_grpo_dryrun_report
 
 __all__ = [
     "ActionParseError",
@@ -97,4 +98,6 @@ __all__ = [
     "LargeKRewardDryRun",
     "build_large_k_candidate_comparison_md",
     "build_large_k_reward_recommendations",
+    "RealGRPOLossDryRun",
+    "build_real_grpo_dryrun_report",
 ]

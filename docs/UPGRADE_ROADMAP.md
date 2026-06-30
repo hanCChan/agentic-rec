@@ -104,5 +104,7 @@ agentic-rec/
 23. ~~**下一步**：Phase 1.19a — Strategy Rollout Reward Decomposition~~ ✅ 见 `experiments/phase119a_strategy_reward_decomposition_5_g4/`（gate **未通过**：`retrieval_quality_spread=0.20`，`penalty_only_spread=0.80`，`zero_std_quality_only=0.80`）
 24. ~~**下一步（阻塞 Phase 1.19）**：Phase 1.18e — Qrels / Metric Blindness~~ ✅ 见 `experiments/phase118e_qrels_metric_blindness_5_g4/`
 25. ~~**下一步**：Phase 1.18f — Large-K Reward Candidate Dry-Run~~ ✅ 见 `experiments/phase118f_large_k_reward_dryrun_5_g4/`
-26. **下一步**：按 1.18f gate → Phase 1.19（large-K quality reward）/ 1.18g / 1.18h
-27. **暂缓**：Phase 1.19b — Strategy rollout scale check（10_g4 / 20_g4）
+26. ~~**下一步**：Phase 1.19 — Real GRPO Loss Dry-Run with reward_largek_mix_1000~~ ✅ 见 `experiments/phase119_real_grpo_loss_dryrun_5_g4_largek1000/`
+27. **下一步**：Phase 1.19b — 10_g4 / 20_g4 scale gate check
+28. **并行**：Phase 1.18g / 1.18h — BM25 failure + strategy collapse
+29. **暂缓**：Phase 1.20 / Phase 2 — 需 1.19b gate 稳定后再做

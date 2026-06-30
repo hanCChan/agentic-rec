@@ -109,4 +109,7 @@ agentic-rec/
 28. ~~**下一步**：Phase 1.20 — No-update VERL Trainer Dry-Run~~ ✅ 见 `experiments/phase120_no_update_trainer_dryrun_20_g4/`
 29. ~~**下一步**：Phase 1.18g — BM25 Failure / Unlearnable Sample Cleanup~~ ✅ 见 `experiments/phase118g_bm25_failure_cleanup_20_g4/`
 30. ~~**下一步**：Phase 1.18h — Strategy Prompt V2 for Collapse Cases~~ ✅ 见 `experiments/phase118h_strategy_prompt_v2_20_g4/`（19 组 gate 通过）；`esci_val_3` targeted 未修复 → **用 1.18g replacement 替换**
-31. **下一步**：Phase 2.1 — Tiny GRPO Smoke Training（基于 `phase2_candidate_smoke_set_v2.jsonl`，排除/替换 esci_val_3）
+31. ~~**下一步**：Phase 2.1 — Tiny GRPO Smoke Training~~ ✅ 见 `experiments/phase21_tiny_grpo_smoke/`（commit `7bb5ade`；clean 20_g4，1-step，`optimizer_step_called=true`，checkpoint `SMOKE_ONLY_DO_NOT_PROMOTE`）
+32. ~~**下一步**：Phase 2.2 — 3-Step GRPO Stability Smoke~~ ✅ 见 `experiments/phase22_3step_grpo_stability_smoke/`（commit `27b7bf0`；修复 KL 诊断：`approx_kl_nonnegative`，ref logprob snapshot；3/3 steps 稳定）
+33. ~~**下一步**：Phase 2.3 — 10-Step Controlled GRPO Smoke~~ ✅ 见 `experiments/phase23_10step_grpo_controlled_smoke/`（commit `5475563`；lr=1e-6 与 5e-7 均通过；`both_stable=true`，推荐 lr=5e-7）
+34. **下一步**：Phase 2.4 — 50-Step Pilot GRPO Training **Plan**（只写计划，不直接开跑；仍不 promote checkpoint）

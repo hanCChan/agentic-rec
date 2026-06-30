@@ -44,6 +44,53 @@ def resolve_checkpoint_path(
     return output_dir / "checkpoints" / f"{checkpoint_prefix}_{eval_step}"
 
 
+def build_samples_from_clean_rows(
+    candidate_rows: List[Dict[str, Any]],
+    data_path: Path,
+    v2_module: Any,
+    *,
+    preflight_rollout_dir: Optional[Path] = None,
+) -> List[Dict[str, Any]]:
+    """Build rollout samples from clean-set rows, with optional preflight fallback."""
+    if preflight_rollout_dir is not None:
+        preflight_path = preflight_rollout_dir / "v2_rollout_records.jsonl"
+        if preflight_path.exists():
+            preflight_records = _load_jsonl_local(preflight_path)
+            return v2_module.build_samples(
+                candidate_rows,
+                v2_module._index_old_rollout(preflight_records),
+                data_path,
+            )
+
+    samples: List[Dict[str, Any]] = []
+    for row in candidate_rows:
+        target_items = list(row.get("target_items", []))
+        sample = {
+            "qid": row["group_id"],
+            "user_query": row.get("original_query", ""),
+            "target_items": target_items,
+        }
+        if not target_items:
+            loaded = v2_module._load_esci_sample_by_qid(data_path, row["group_id"])
+            if loaded is None:
+                raise KeyError(f"cannot resolve sample for group_id={row['group_id']}")
+            sample = loaded
+            if row.get("original_query"):
+                sample["user_query"] = row["original_query"]
+        samples.append(sample)
+    return samples
+
+
+def _load_jsonl_local(path: Path) -> List[Dict[str, Any]]:
+    rows: List[Dict[str, Any]] = []
+    with path.open("r", encoding="utf-8") as fin:
+        for line in fin:
+            line = line.strip()
+            if line:
+                rows.append(json.loads(line))
+    return rows
+
+
 def run_fresh_eval(
     *,
     clean_set_path: Path,
@@ -61,6 +108,8 @@ def run_fresh_eval(
     root: Path,
     checkpoint_prefix: str = "pilot_step",
     checkpoint_label: str = PILOT_CHECKPOINT_LABEL,
+    eval_split: str = "train",
+    eval_root_name: Optional[str] = None,
 ) -> Dict[str, Any]:
     """Fresh rollout eval on clean set (step 0 uses base model_path)."""
     script_path = root / "scripts/smoke_strategy_prompt_v2.py"
@@ -71,23 +120,18 @@ def run_fresh_eval(
     spec.loader.exec_module(v2_module)
 
     def _load_jsonl(path: Path) -> List[Dict[str, Any]]:
-        rows: List[Dict[str, Any]] = []
-        with path.open("r", encoding="utf-8") as fin:
-            for line in fin:
-                line = line.strip()
-                if line:
-                    rows.append(json.loads(line))
-        return rows
+        return _load_jsonl_local(path)
 
     candidate_rows = _load_jsonl(clean_set_path)
-    preflight_records = _load_jsonl(preflight_rollout_dir / "v2_rollout_records.jsonl")
-    samples = v2_module.build_samples(
+    samples = build_samples_from_clean_rows(
         candidate_rows,
-        v2_module._index_old_rollout(preflight_records),
         data_path,
+        v2_module,
+        preflight_rollout_dir=preflight_rollout_dir,
     )
 
-    eval_dir = output_dir / f"eval_step_{eval_step}"
+    eval_root = eval_root_name if eval_root_name is not None else f"eval_step_{eval_step}"
+    eval_dir = output_dir / eval_root / eval_split
     eval_dir.mkdir(parents=True, exist_ok=True)
 
     ckpt = str(checkpoint_path) if checkpoint_path else model_path
@@ -139,6 +183,7 @@ def run_fresh_eval(
 
     summary = {
         "eval_step": eval_step,
+        "eval_split": eval_split,
         "checkpoint_path": resolved_ckpt_path,
         "checkpoint_label": checkpoint_label,
         "num_groups": len(groups),
@@ -164,6 +209,186 @@ def run_fresh_eval(
     return summary
 
 
+def resolve_eval_checkpoint_path(step_result: Dict[str, Any]) -> Optional[Path]:
+    """Resolve checkpoint path for fresh eval from step result fields."""
+    for key in ("checkpoint_path", "eval_snapshot_path", "stop_snapshot_path"):
+        value = step_result.get(key)
+        if value:
+            return Path(value)
+    return None
+
+
+def run_dual_fresh_eval(
+    *,
+    train_clean_path: Path,
+    heldout_clean_path: Path,
+    checkpoint_path: Optional[Path],
+    output_dir: Path,
+    eval_step: int,
+    data_path: Path,
+    train_preflight_dir: Path,
+    heldout_preflight_dir: Optional[Path],
+    candidate_name: str,
+    model_path: str,
+    temperature: float,
+    top_p: float,
+    topk: int,
+    seed: int,
+    root: Path,
+    checkpoint_prefix: str = "pilot_step",
+    checkpoint_label: str = PILOT_CHECKPOINT_LABEL,
+    eval_root_name: Optional[str] = None,
+) -> Dict[str, Any]:
+    """Run fresh eval on both train and heldout clean sets."""
+    train_eval = run_fresh_eval(
+        clean_set_path=train_clean_path,
+        checkpoint_path=checkpoint_path,
+        output_dir=output_dir,
+        eval_step=eval_step,
+        data_path=data_path,
+        preflight_rollout_dir=train_preflight_dir,
+        candidate_name=candidate_name,
+        model_path=model_path,
+        temperature=temperature,
+        top_p=top_p,
+        topk=topk,
+        seed=seed,
+        root=root,
+        checkpoint_prefix=checkpoint_prefix,
+        checkpoint_label=checkpoint_label,
+        eval_split="train",
+        eval_root_name=eval_root_name,
+    )
+    heldout_eval = run_fresh_eval(
+        clean_set_path=heldout_clean_path,
+        checkpoint_path=checkpoint_path,
+        output_dir=output_dir,
+        eval_step=eval_step,
+        data_path=data_path,
+        preflight_rollout_dir=heldout_preflight_dir or train_preflight_dir,
+        candidate_name=candidate_name,
+        model_path=model_path,
+        temperature=temperature,
+        top_p=top_p,
+        topk=topk,
+        seed=seed + 1000,
+        root=root,
+        checkpoint_prefix=checkpoint_prefix,
+        checkpoint_label=checkpoint_label,
+        eval_split="heldout",
+        eval_root_name=eval_root_name,
+    )
+    return {"train": train_eval, "heldout": heldout_eval}
+
+
+def run_final_stop_dual_eval(
+    *,
+    train_clean_path: Path,
+    heldout_clean_path: Path,
+    checkpoint_path: Optional[Path],
+    output_dir: Path,
+    stop_step: int,
+    data_path: Path,
+    train_preflight_dir: Path,
+    heldout_preflight_dir: Optional[Path],
+    candidate_name: str,
+    model_path: str,
+    temperature: float,
+    top_p: float,
+    topk: int,
+    seed: int,
+    root: Path,
+    checkpoint_prefix: str = "pilot_step",
+    checkpoint_label: str = PILOT_CHECKPOINT_LABEL,
+) -> Dict[str, Any]:
+    """Run fresh eval at early stop step into final_stop_eval_step_<n>/."""
+    return run_dual_fresh_eval(
+        train_clean_path=train_clean_path,
+        heldout_clean_path=heldout_clean_path,
+        checkpoint_path=checkpoint_path,
+        output_dir=output_dir,
+        eval_step=stop_step,
+        data_path=data_path,
+        train_preflight_dir=train_preflight_dir,
+        heldout_preflight_dir=heldout_preflight_dir,
+        candidate_name=candidate_name,
+        model_path=model_path,
+        temperature=temperature,
+        top_p=top_p,
+        topk=topk,
+        seed=seed,
+        root=root,
+        checkpoint_prefix=checkpoint_prefix,
+        checkpoint_label=checkpoint_label,
+        eval_root_name=f"final_stop_eval_step_{stop_step}",
+    )
+
+
+def _run_dual_eval_at_step(
+    *,
+    step_idx: int,
+    step_result: Dict[str, Any],
+    run_dual_eval_fn: Callable[[int, Optional[Path]], Dict[str, Any]],
+    periodic_records: List[Dict[str, Any]],
+    monitor: Any,
+    early_stop_state: Dict[str, Any],
+    eval_label: str,
+) -> None:
+    ckpt_path = resolve_eval_checkpoint_path(step_result)
+    print(f"\n=== Step-{step_idx} {eval_label} train+heldout fresh eval ===")
+    try:
+        import torch
+
+        if torch.cuda.is_available():
+            torch.cuda.empty_cache()
+        dual = run_dual_eval_fn(step_idx, ckpt_path)
+        check = monitor.check_eval_pair(dual["train"], dual["heldout"], step=step_idx)
+        periodic_records.append(check)
+        if check["should_stop"]:
+            early_stop_state["stopped"] = True
+            early_stop_state["reason"] = check["stop_reason"]
+            step_result["hard_stop"] = True
+            step_result["hard_stop_reason"] = check["stop_reason"]
+    except Exception as exc:
+        early_stop_state["stopped"] = True
+        early_stop_state["reason"] = f"step-{step_idx} dual eval failed: {exc}"
+        step_result["hard_stop"] = True
+        step_result["hard_stop_reason"] = early_stop_state["reason"]
+
+
+def make_periodic_dual_eval_hook(
+    *,
+    eval_steps: List[int],
+    periodic_records: List[Dict[str, Any]],
+    run_dual_eval_fn: Callable[[int, Optional[Path]], Dict[str, Any]],
+    monitor: Any,
+    early_stop_state: Dict[str, Any],
+) -> Callable[[int, Dict[str, Any]], None]:
+    """Periodic hook that runs train + heldout eval independent of checkpoint saves."""
+
+    def hook(step_idx: int, step_result: Dict[str, Any]) -> None:
+        if early_stop_state.get("stopped"):
+            return
+        if step_idx not in eval_steps or step_idx <= 0:
+            return
+        if resolve_eval_checkpoint_path(step_result) is None:
+            print(
+                f"[eval hook] step {step_idx} in eval_steps but no checkpoint snapshot; skipping"
+            )
+            return
+        _run_dual_eval_at_step(
+            step_idx=step_idx,
+            step_result=step_result,
+            run_dual_eval_fn=run_dual_eval_fn,
+            periodic_records=periodic_records,
+            monitor=monitor,
+            early_stop_state=early_stop_state,
+            eval_label="periodic",
+        )
+
+    return hook
+
+
 def make_periodic_eval_hook(
     *,
     eval_steps: List[int],
@@ -175,7 +400,8 @@ def make_periodic_eval_hook(
     """
     Build a step_hook for TinyGrpoSmokeTrainer.
 
-    Calls fresh eval immediately after each checkpoint save at eval_steps.
+    Runs fresh eval at eval_steps using checkpoint or eval snapshot paths.
+    Independent of save_steps / checkpoint_saved.
     """
 
     def hook(step_idx: int, step_result: Dict[str, Any]) -> None:
@@ -183,10 +409,13 @@ def make_periodic_eval_hook(
             return
         if step_idx not in eval_steps or step_idx <= 0:
             return
-        if not step_result.get("checkpoint_saved"):
+        ckpt_path = resolve_eval_checkpoint_path(step_result)
+        if ckpt_path is None:
+            print(
+                f"[eval hook] step {step_idx} in eval_steps but no checkpoint snapshot; skipping"
+            )
             return
 
-        ckpt_path = Path(step_result["checkpoint_path"])
         print(f"\n=== Step-{step_idx} periodic fresh eval ===")
         try:
             import torch

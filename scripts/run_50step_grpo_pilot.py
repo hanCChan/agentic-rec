@@ -302,6 +302,7 @@ def run_pilot(args: argparse.Namespace) -> None:
             shaped_reward_path=shaped_path,
             output_dir=args.output_dir,
             save_steps=args.save_steps,
+            eval_steps=args.eval_steps,
             max_prompt_length=args.max_prompt_length,
             max_response_length=args.max_response_length,
             max_total_length=args.max_total_length,

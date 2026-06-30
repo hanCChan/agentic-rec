@@ -33,6 +33,7 @@ class ControlledGrpoSmokeTrainer(TinyGrpoSmokeTrainer):
         output_dir: str | Path,
         *,
         save_steps: Optional[List[int]] = None,
+        eval_steps: Optional[List[int]] = None,
         max_prompt_length: int = 1024,
         max_response_length: int = 2048,
         max_total_length: int = 3072,
@@ -65,6 +66,7 @@ class ControlledGrpoSmokeTrainer(TinyGrpoSmokeTrainer):
             mode=mode,
             stability_monitor=monitor,
             save_steps=save_steps,
+            eval_steps=eval_steps,
             checkpoint_prefix=checkpoint_prefix,
             step_hook=step_hook,
         )

@@ -549,6 +549,7 @@ class TinyGrpoSmokeTrainer:
         mode: str = "tiny_grpo_smoke_training",
         stability_monitor: Optional[Any] = None,
         save_steps: Optional[List[int]] = None,
+        eval_steps: Optional[List[int]] = None,
         checkpoint_prefix: str = "smoke_step",
         step_hook: Optional[Any] = None,
     ) -> Dict[str, Any]:
@@ -572,6 +573,8 @@ class TinyGrpoSmokeTrainer:
         merged_records: List[Dict[str, Any]] = []
         saved_checkpoints: List[Dict[str, Any]] = []
         save_step_set = set(save_steps) if save_steps is not None else None
+        eval_step_set = set(eval_steps) if eval_steps is not None else set()
+        stop_snapshot_path: Optional[str] = None
 
         try:
             inputs = self._builder.load_inputs(str(rollout_path), str(shaped_reward_path))
@@ -619,6 +622,16 @@ class TinyGrpoSmokeTrainer:
                         step_result["checkpoint_saved"] = False
                     step_result["checkpoint_promoted"] = False
 
+                if (
+                    step_idx in eval_step_set
+                    and not step_result.get("checkpoint_saved")
+                    and step_result.get("optimizer_step_called")
+                ):
+                    eval_ckpt_dir = self._save_checkpoint(
+                        out, step_idx, checkpoint_prefix=f"{checkpoint_prefix}_eval"
+                    )
+                    step_result["eval_snapshot_path"] = str(eval_ckpt_dir)
+
                 if stability_monitor is not None:
                     stop, stop_reason = stability_monitor.should_stop(step_result)
                     step_result["monitor_should_stop"] = stop
@@ -626,6 +639,18 @@ class TinyGrpoSmokeTrainer:
                     if stop and not step_result.get("hard_stop"):
                         step_result["hard_stop"] = True
                         step_result["hard_stop_reason"] = stop_reason
+
+                if (
+                    step_result.get("hard_stop")
+                    and step_result.get("optimizer_step_called")
+                    and not step_result.get("checkpoint_path")
+                    and not step_result.get("eval_snapshot_path")
+                ):
+                    stop_ckpt_dir = self._save_checkpoint(
+                        out, step_idx, checkpoint_prefix=f"{checkpoint_prefix}_stop"
+                    )
+                    step_result["stop_snapshot_path"] = str(stop_ckpt_dir)
+                    stop_snapshot_path = str(stop_ckpt_dir)
 
                 if step_hook is not None:
                     step_hook(step_idx, step_result)
@@ -718,6 +743,11 @@ class TinyGrpoSmokeTrainer:
                         "reward_std": last.get("reward_std"),
                     }
                 )
+                if last.get("hard_stop"):
+                    summary["hard_stop"] = True
+                    summary["hard_stop_reason"] = last.get("hard_stop_reason")
+            if stop_snapshot_path:
+                summary["stop_snapshot_path"] = stop_snapshot_path
 
             config = {
                 "model_path": self.model_path,

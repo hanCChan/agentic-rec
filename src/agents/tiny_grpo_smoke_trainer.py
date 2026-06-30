@@ -367,8 +367,14 @@ class TinyGrpoSmokeTrainer:
             )
         return False, None
 
-    def _save_checkpoint(self, output_dir: Path, step: int) -> Path:
-        ckpt_dir = output_dir / "checkpoints" / f"smoke_step_{step}"
+    def _save_checkpoint(
+        self,
+        output_dir: Path,
+        step: int,
+        *,
+        checkpoint_prefix: str = "smoke_step",
+    ) -> Path:
+        ckpt_dir = output_dir / "checkpoints" / f"{checkpoint_prefix}_{step}"
         ckpt_dir.mkdir(parents=True, exist_ok=True)
         assert self.model is not None
         assert self.tokenizer is not None
@@ -543,6 +549,8 @@ class TinyGrpoSmokeTrainer:
         mode: str = "tiny_grpo_smoke_training",
         stability_monitor: Optional[Any] = None,
         save_steps: Optional[List[int]] = None,
+        checkpoint_prefix: str = "smoke_step",
+        step_hook: Optional[Any] = None,
     ) -> Dict[str, Any]:
         out = Path(output_dir)
         out.mkdir(parents=True, exist_ok=True)
@@ -593,13 +601,16 @@ class TinyGrpoSmokeTrainer:
                     optimizer_step_called = True
                     should_save = save_step_set is None or step_idx in save_step_set
                     if should_save:
-                        checkpoint_dir = self._save_checkpoint(out, step_idx)
+                        checkpoint_dir = self._save_checkpoint(
+                            out, step_idx, checkpoint_prefix=checkpoint_prefix
+                        )
                         checkpoint_saved = True
                         step_result["checkpoint_saved"] = True
+                        step_result["checkpoint_path"] = str(checkpoint_dir)
                         saved_checkpoints.append(
                             {
                                 "step": step_idx,
-                                "path": str(out / "checkpoints" / f"smoke_step_{step_idx}"),
+                                "path": str(checkpoint_dir),
                                 "label": CHECKPOINT_LABEL,
                                 "optimizer_step_called": True,
                             }
@@ -615,6 +626,9 @@ class TinyGrpoSmokeTrainer:
                     if stop and not step_result.get("hard_stop"):
                         step_result["hard_stop"] = True
                         step_result["hard_stop_reason"] = stop_reason
+
+                if step_hook is not None:
+                    step_hook(step_idx, step_result)
 
                 step_metrics.append(step_result)
                 with metrics_path.open("a", encoding="utf-8") as fout:
@@ -671,7 +685,9 @@ class TinyGrpoSmokeTrainer:
                 "checkpoint_saved": checkpoint_saved,
                 "checkpoint_promoted": False,
                 "checkpoint_label": CHECKPOINT_LABEL,
-                "checkpoint_path": str(checkpoint_dir) if checkpoint_dir else None,
+                "checkpoint_path": (
+                    saved_checkpoints[-1]["path"] if saved_checkpoints else (str(checkpoint_dir) if checkpoint_dir else None)
+                ),
                 "used_real_dataproto": used_real_dataproto,
                 "used_verl_compute_advantage": adv_meta.get("used_verl_compute_advantage", False),
                 "training_smoke_passed": training_smoke_passed,
@@ -734,7 +750,7 @@ class TinyGrpoSmokeTrainer:
                 else [
                     {
                         "step": m["step"],
-                        "path": str(out / "checkpoints" / f"smoke_step_{m['step']}"),
+                        "path": str(out / "checkpoints" / f"{checkpoint_prefix}_{m['step']}"),
                         "label": CHECKPOINT_LABEL,
                         "optimizer_step_called": m.get("optimizer_step_called", False),
                     }
@@ -742,6 +758,7 @@ class TinyGrpoSmokeTrainer:
                     if m.get("optimizer_step_called") and m.get("checkpoint_saved")
                 ],
             }
+            manifest["checkpoint_prefix"] = checkpoint_prefix
             (out / "checkpoint_manifest.json").write_text(
                 json.dumps(manifest, ensure_ascii=False, indent=2),
                 encoding="utf-8",

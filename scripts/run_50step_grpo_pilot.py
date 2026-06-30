@@ -32,8 +32,11 @@ sys.path.insert(0, str(REC_R1))
 from src.agents.controlled_grpo_smoke_trainer import ControlledGrpoSmokeTrainer
 from src.agents.grpo_curve_analyzer import GRPOCurveAnalyzer
 from src.agents.grpo_pilot_monitor import GRPOPilotMonitor, PILOT_CHECKPOINT_LABEL
+from src.agents.periodic_fresh_eval import make_periodic_eval_hook, run_fresh_eval
 from src.agents.phase2_smoke_dataset import load_clean_set_rows
 from src.agents.tiny_grpo_smoke_trainer import CHECKPOINT_LABEL
+
+PILOT_CHECKPOINT_PREFIX = "pilot_step"
 
 DEFAULT_CONFIG: Dict[str, Any] = {
     "phase": "2.4",
@@ -82,128 +85,27 @@ def validate_clean_set(clean_set_path: Path, summary_path: Path) -> Dict[str, An
     return summary
 
 
-def run_fresh_eval(
-    *,
-    clean_set_path: Path,
-    checkpoint_path: Optional[Path],
-    output_dir: Path,
-    eval_step: int,
-    data_path: Path,
-    preflight_rollout_dir: Path,
-    candidate_name: str,
-    model_path: str,
-    temperature: float,
-    top_p: float,
-    topk: int,
-    seed: int,
-    eval_gpu: int,
-) -> Dict[str, Any]:
-    """Fresh rollout eval on clean 20_g4 (step 0 uses base model_path)."""
-    import importlib.util
-    from statistics import mean, pstdev
+def _make_eval_fn(args: argparse.Namespace, output_dir: Path):
+    def run_eval_at_step(eval_step: int, checkpoint_path: Path) -> Dict[str, Any]:
+        return run_fresh_eval(
+            clean_set_path=args.clean_set_path,
+            checkpoint_path=checkpoint_path,
+            output_dir=output_dir,
+            eval_step=eval_step,
+            data_path=args.data_path,
+            preflight_rollout_dir=args.preflight_rollout_dir,
+            candidate_name=args.reward_candidate,
+            model_path=args.model_path,
+            temperature=args.temperature,
+            top_p=args.top_p,
+            topk=args.topk,
+            seed=args.seed,
+            root=ROOT,
+            checkpoint_prefix=PILOT_CHECKPOINT_PREFIX,
+            checkpoint_label=PILOT_CHECKPOINT_LABEL,
+        )
 
-    script_path = ROOT / "scripts/smoke_strategy_prompt_v2.py"
-    spec = importlib.util.spec_from_file_location("smoke_strategy_prompt_v2", script_path)
-    if spec is None or spec.loader is None:
-        raise ImportError(f"cannot load {script_path}")
-    v2_module = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(v2_module)
-
-    def _load_jsonl(path: Path) -> List[Dict[str, Any]]:
-        rows: List[Dict[str, Any]] = []
-        with path.open("r", encoding="utf-8") as fin:
-            for line in fin:
-                line = line.strip()
-                if line:
-                    rows.append(json.loads(line))
-        return rows
-
-    candidate_rows = _load_jsonl(clean_set_path)
-    preflight_records = _load_jsonl(preflight_rollout_dir / "v2_rollout_records.jsonl")
-    samples = v2_module.build_samples(
-        candidate_rows,
-        v2_module._index_old_rollout(preflight_records),
-        data_path,
-    )
-
-    eval_dir = output_dir / f"eval_step_{eval_step}"
-    eval_dir.mkdir(parents=True, exist_ok=True)
-
-    ckpt = str(checkpoint_path) if checkpoint_path else model_path
-
-    groups, rollout_records, failures = v2_module.run_v2_rollout(
-        samples,
-        model_path=ckpt,
-        temperature=temperature,
-        top_p=top_p,
-        max_tokens=256,
-        max_steps=3,
-        topk=topk,
-        seed=seed + eval_step,
-        strategies=["exact_match", "attribute_expansion", "broad_recall", "constraint_preserving"],
-    )
-
-    rollout_path = eval_dir / "post_train_rollout_records.jsonl"
-    v2_module._write_jsonl(rollout_path, rollout_records)
-    v2_module.run_post_analysis(
-        rollout_path, eval_dir, k_list=[10, 50, 100, 1000], candidate_name=candidate_name
-    )
-
-    parse_rates = [float(g["group_metrics"].get("json_parse_success_rate", 0.0)) for g in groups]
-    finish_rates = [float(g["group_metrics"].get("finish_rate", 0.0)) for g in groups]
-    invalid_rates = [float(g["group_metrics"].get("invalid_action_rate", 0.0)) for g in groups]
-
-    shaped_rows = _load_jsonl(eval_dir / "large_k_shaped_record_rewards.jsonl")
-    rewards = [float(r[candidate_name]) for r in shaped_rows if candidate_name in r]
-    ndcg_vals = [float(r.get("ndcg@1000", 0.0)) for r in shaped_rows]
-    recall_vals = [float(r.get("recall@1000", 0.0)) for r in shaped_rows]
-    mrr_vals = [float(r.get("mrr@1000", 0.0)) for r in shaped_rows]
-
-    strategy_counts: Dict[str, int] = {}
-    for record in rollout_records:
-        strat = record.get("strategy") or record.get("search_strategy") or "unknown"
-        strategy_counts[strat] = strategy_counts.get(strat, 0) + 1
-    total_records = len(rollout_records) or 1
-    strategy_distribution = {k: v / total_records for k, v in strategy_counts.items()}
-
-    grouped: Dict[str, List[float]] = {}
-    shaped_by_id = {r["sample_id"]: float(r[candidate_name]) for r in shaped_rows}
-    for record in rollout_records:
-        sid = record.get("sample_id")
-        gid = record.get("group_id")
-        if sid in shaped_by_id:
-            grouped.setdefault(gid, []).append(shaped_by_id[sid])
-
-    zero_std = sum(1 for v in grouped.values() if len(v) > 1 and pstdev(v) <= 1e-6)
-    spread = sum(1 for v in grouped.values() if len(v) > 1 and (max(v) - min(v)) > 1e-6)
-    ng = len(grouped) or 1
-    parse_success_rate = float(mean(parse_rates)) if parse_rates else 0.0
-
-    summary = {
-        "eval_step": eval_step,
-        "checkpoint_path": str(checkpoint_path) if checkpoint_path else model_path,
-        "checkpoint_label": PILOT_CHECKPOINT_LABEL,
-        "num_groups": len(groups),
-        "num_rollout_records": len(rollout_records),
-        "num_failures": len(failures),
-        "parse_success_rate": parse_success_rate,
-        "finish_rate": float(mean(finish_rates)) if finish_rates else 0.0,
-        "invalid_action_rate": float(mean(invalid_rates)) if invalid_rates else 0.0,
-        "zero_std_group_rate": zero_std / ng,
-        "retrieval_quality_spread_group_rate": spread / ng,
-        "mean_reward_largek_mix_1000": float(mean(rewards)) if rewards else 0.0,
-        "mean_ndcg1000": float(mean(ndcg_vals)) if ndcg_vals else 0.0,
-        "mean_recall1000": float(mean(recall_vals)) if recall_vals else 0.0,
-        "mean_mrr1000": float(mean(mrr_vals)) if mrr_vals else 0.0,
-        "strategy_distribution": strategy_distribution,
-        "json_format_ok": parse_success_rate >= 0.95,
-        "eval_passed": len(failures) == 0 and parse_success_rate >= 0.95,
-    }
-    (eval_dir / "post_eval_summary.json").write_text(
-        json.dumps(summary, ensure_ascii=False, indent=2),
-        encoding="utf-8",
-    )
-    return summary
+    return run_eval_at_step
 
 
 def dry_config_check(args: argparse.Namespace) -> Dict[str, Any]:
@@ -348,7 +250,9 @@ def run_pilot(args: argparse.Namespace) -> None:
                 top_p=args.top_p,
                 topk=args.topk,
                 seed=args.seed,
-                eval_gpu=args.eval_gpu,
+                root=ROOT,
+                checkpoint_prefix=PILOT_CHECKPOINT_PREFIX,
+                checkpoint_label=PILOT_CHECKPOINT_LABEL,
             )
             eval_summaries.append(baseline)
             monitor.set_baseline_reward(baseline["mean_reward_largek_mix_1000"])
@@ -364,7 +268,19 @@ def run_pilot(args: argparse.Namespace) -> None:
         _write_failure(args.output_dir, early_stop_reason or "unknown")
         raise SystemExit(f"Pilot stopped before training: {early_stop_reason}")
 
-    # Rename checkpoint dirs from smoke_step_* to pilot_step_*
+    # Periodic eval hook: eval immediately after each checkpoint save step
+    early_stop_state: Dict[str, Any] = {"stopped": False, "reason": None}
+    eval_fn = _make_eval_fn(args, args.output_dir)
+    step_hook = None
+    if not args.skip_eval:
+        step_hook = make_periodic_eval_hook(
+            eval_steps=args.eval_steps,
+            eval_summaries=eval_summaries,
+            run_eval_fn=eval_fn,
+            monitor=monitor,
+            early_stop_state=early_stop_state,
+        )
+
     trainer = ControlledGrpoSmokeTrainer(
         model_path=args.model_path,
         tokenizer_path=args.tokenizer_path,
@@ -395,6 +311,8 @@ def run_pilot(args: argparse.Namespace) -> None:
             config_filename="pilot_train_config.yaml",
             phase="2.4",
             mode="50step_grpo_pilot",
+            checkpoint_prefix=PILOT_CHECKPOINT_PREFIX,
+            step_hook=step_hook,
         )
     except Exception as exc:
         (args.output_dir / "failure_report.md").write_text(
@@ -404,45 +322,10 @@ def run_pilot(args: argparse.Namespace) -> None:
         raise SystemExit(1) from exc
 
     step_metrics = result["step_metrics"]
-    _rename_checkpoints(args.output_dir, args.save_steps)
 
-    # Periodic eval at checkpoint steps
-    if not args.skip_eval:
-        import torch
-
-        for eval_step in sorted(s for s in args.eval_steps if s > 0):
-            ckpt = args.output_dir / "checkpoints" / f"pilot_step_{eval_step}"
-            if not ckpt.exists():
-                continue
-            if torch.cuda.is_available():
-                torch.cuda.empty_cache()
-            print(f"\n=== Step-{eval_step} fresh eval ===")
-            try:
-                ev = run_fresh_eval(
-                    clean_set_path=args.clean_set_path,
-                    checkpoint_path=ckpt,
-                    output_dir=args.output_dir,
-                    eval_step=eval_step,
-                    data_path=args.data_path,
-                    preflight_rollout_dir=args.preflight_rollout_dir,
-                    candidate_name=args.reward_candidate,
-                    model_path=args.model_path,
-                    temperature=args.temperature,
-                    top_p=args.top_p,
-                    topk=args.topk,
-                    seed=args.seed,
-                    eval_gpu=args.eval_gpu,
-                )
-                eval_summaries.append(ev)
-                check = monitor.check_eval_summary(ev, step=eval_step)
-                if check["should_stop"]:
-                    early_stop = True
-                    early_stop_reason = check["stop_reason"]
-                    break
-            except Exception as exc:
-                early_stop = True
-                early_stop_reason = f"step-{eval_step} eval failed: {exc}"
-                break
+    if early_stop_state.get("stopped"):
+        early_stop = True
+        early_stop_reason = early_stop_state.get("reason")
 
     monitor_report = monitor.summarize_pilot(step_metrics, eval_summaries)
     analyzer = GRPOCurveAnalyzer()
@@ -537,15 +420,6 @@ def run_pilot(args: argparse.Namespace) -> None:
     if not passed:
         _write_failure(args.output_dir, early_stop_reason or "acceptance criteria not met")
         raise SystemExit("50-step pilot did not pass acceptance criteria")
-
-
-def _rename_checkpoints(output_dir: Path, save_steps: List[int]) -> None:
-    ckpt_root = output_dir / "checkpoints"
-    for step in save_steps:
-        old = ckpt_root / f"smoke_step_{step}"
-        new = ckpt_root / f"pilot_step_{step}"
-        if old.exists() and not new.exists():
-            old.rename(new)
 
 
 def _build_manifest(output_dir: Path, save_steps: List[int]) -> Dict[str, Any]:

@@ -42,6 +42,8 @@ class ControlledGrpoSmokeTrainer(TinyGrpoSmokeTrainer):
         config_filename: str = "ten_step_train_config.yaml",
         phase: str = "2.3",
         mode: str = "10step_grpo_controlled_smoke",
+        checkpoint_prefix: str = "smoke_step",
+        step_hook: Optional[Any] = None,
     ) -> Dict[str, Any]:
         monitor = stability_monitor or GRPOStabilityMonitor(
             max_signed_logprob_gap_abs=5.0,
@@ -63,6 +65,8 @@ class ControlledGrpoSmokeTrainer(TinyGrpoSmokeTrainer):
             mode=mode,
             stability_monitor=monitor,
             save_steps=save_steps,
+            checkpoint_prefix=checkpoint_prefix,
+            step_hook=step_hook,
         )
 
         summary = result["summary"]

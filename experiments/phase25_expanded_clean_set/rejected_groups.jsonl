@@ -1,0 +1,24 @@
+{"group_id": "esci_val_72", "reject_reason": "Strategy final queries collapsed to identical or highly similar queries, producing zero metric spread.", "learnability_type": "strategy_collapse"}
+{"group_id": "esci_Video_Games_test_102", "reject_reason": "Strategy final queries collapsed to identical or highly similar queries, producing zero metric spread.", "learnability_type": "strategy_collapse"}
+{"group_id": "esci_Video_Games_test_113", "reject_reason": "Qrels are sparse and NDCG/Recall/MRR show no group spread at any K.", "learnability_type": "qrels_sparse_all_k_blind"}
+{"group_id": "esci_Video_Games_test_118", "reject_reason": "Strategy final queries collapsed to identical or highly similar queries, producing zero metric spread.", "learnability_type": "strategy_collapse"}
+{"group_id": "esci_Video_Games_test_102", "reject_reason": "Strategy final queries collapsed to identical or highly similar queries, producing zero metric spread.", "learnability_type": "strategy_collapse"}
+{"group_id": "esci_Video_Games_test_121", "reject_reason": "Qrels are sparse and NDCG/Recall/MRR show no group spread at any K.", "learnability_type": "qrels_sparse_all_k_blind"}
+{"group_id": "esci_Video_Games_test_131", "reject_reason": "Strategy final queries collapsed to identical or highly similar queries, producing zero metric spread.", "learnability_type": "strategy_collapse"}
+{"group_id": "esci_Video_Games_test_170", "reject_reason": "Strategy final queries collapsed to identical or highly similar queries, producing zero metric spread.", "learnability_type": "strategy_collapse"}
+{"group_id": "esci_Video_Games_test_113", "reject_reason": "Qrels are sparse and NDCG/Recall/MRR show no group spread at any K.", "learnability_type": "qrels_sparse_all_k_blind"}
+{"group_id": "esci_Video_Games_test_179", "reject_reason": "Strategy final queries collapsed to identical or highly similar queries, producing zero metric spread.", "learnability_type": "strategy_collapse"}
+{"group_id": "esci_Baby_Products_test_208", "reject_reason": "Strategy final queries collapsed to identical or highly similar queries, producing zero metric spread.", "learnability_type": "strategy_collapse"}
+{"group_id": "esci_Video_Games_test_117", "reject_reason": "Qrels are sparse and NDCG/Recall/MRR show no group spread at any K.", "learnability_type": "qrels_sparse_all_k_blind"}
+{"group_id": "esci_Office_Products_test_348", "reject_reason": "Qrels are sparse and NDCG/Recall/MRR show no group spread at any K.", "learnability_type": "qrels_sparse_all_k_blind"}
+{"group_id": "esci_Office_Products_test_350", "reject_reason": "Qrels are sparse and NDCG/Recall/MRR show no group spread at any K.", "learnability_type": "qrels_sparse_all_k_blind"}
+{"group_id": "esci_Office_Products_test_368", "reject_reason": "Strategy final queries collapsed to identical or highly similar queries, producing zero metric spread.", "learnability_type": "strategy_collapse"}
+{"group_id": "esci_Video_Games_test_118", "reject_reason": "learnable_large_k", "learnability_type": "learnable_large_k"}
+{"group_id": "esci_Video_Games_test_121", "reject_reason": "Qrels are sparse and NDCG/Recall/MRR show no group spread at any K.", "learnability_type": "qrels_sparse_all_k_blind"}
+{"group_id": "esci_Office_Products_test_442", "reject_reason": "Qrels are sparse and NDCG/Recall/MRR show no group spread at any K.", "learnability_type": "qrels_sparse_all_k_blind"}
+{"group_id": "esci_Office_Products_test_462", "reject_reason": "Strategy final queries collapsed to identical or highly similar queries, producing zero metric spread.", "learnability_type": "strategy_collapse"}
+{"group_id": "esci_Office_Products_test_467", "reject_reason": "learnable_small_k", "learnability_type": "learnable_small_k"}
+{"group_id": "esci_Office_Products_test_470", "reject_reason": "Strategy final queries collapsed to identical or highly similar queries, producing zero metric spread.", "learnability_type": "strategy_collapse"}
+{"group_id": "esci_Sports_and_Outdoors_test_492", "reject_reason": "Strategy final queries collapsed to identical or highly similar queries, producing zero metric spread.", "learnability_type": "strategy_collapse"}
+{"group_id": "esci_Sports_and_Outdoors_test_498", "reject_reason": "Strategy final queries collapsed to identical or highly similar queries, producing zero metric spread.", "learnability_type": "strategy_collapse"}
+{"group_id": "esci_Video_Games_test_170", "reject_reason": "Strategy final queries collapsed to identical or highly similar queries, producing zero metric spread.", "learnability_type": "strategy_collapse"}

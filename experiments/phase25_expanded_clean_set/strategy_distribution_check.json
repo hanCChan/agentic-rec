@@ -1,0 +1,8 @@
+{
+  "strategy_distribution": {
+    "exact_match": 0.25,
+    "attribute_expansion": 0.25,
+    "broad_recall": 0.25,
+    "constraint_preserving": 0.25
+  }
+}

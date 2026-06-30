@@ -1,0 +1,31 @@
+{
+  "phase": "2.5b",
+  "mode": "expanded_clean_set",
+  "target_train_groups": 50,
+  "target_heldout_groups": 20,
+  "train_clean_groups": 50,
+  "heldout_clean_groups": 20,
+  "num_scanned_from_pool": 87,
+  "replacement_pool_size": 300,
+  "train_heldout_overlap": [],
+  "expanded_clean_set_ready": true,
+  "train_gate_passed": true,
+  "heldout_gate_passed": true,
+  "strategy_distribution_check": {
+    "exact_match": 0.25,
+    "attribute_expansion": 0.25,
+    "broad_recall": 0.25,
+    "constraint_preserving": 0.25
+  },
+  "bm25_failure_count": 0,
+  "qrels_sparse_all_k_blind_count": 0,
+  "strategy_collapse_count": 0,
+  "candidate_name": "reward_largek_mix_1000",
+  "gate_thresholds": {
+    "retrieval_quality_spread_group_rate_min": 0.75,
+    "zero_std_group_rate_max": 0.25,
+    "penalty_only_spread_group_rate_max": 0.0,
+    "parse_success_rate_min": 0.95,
+    "invalid_action_rate_max": 0.05
+  }
+}

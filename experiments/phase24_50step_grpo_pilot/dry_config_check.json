@@ -1,0 +1,37 @@
+{
+  "phase": "2.4b",
+  "mode": "dry_config_check",
+  "checks": {
+    "clean_set": {
+      "passed": true,
+      "detail": "20 groups ready"
+    },
+    "preflight_rollout": {
+      "passed": true,
+      "detail": "/data1/hcc/agentic-rec/experiments/phase21_tiny_grpo_smoke/preflight_v2_rollout_20_g4"
+    },
+    "model_path": {
+      "passed": true,
+      "detail": "/data1/hcc/.hf_home/Qwen2.5-3B-Instruct"
+    },
+    "disk_space": {
+      "passed": true,
+      "detail": "free=851.8GB required>=40.0GB"
+    },
+    "gpu": {
+      "passed": true,
+      "detail": "8 devices: ['NVIDIA A100-SXM4-80GB', 'NVIDIA A100-SXM4-80GB', 'NVIDIA A100-SXM4-80GB', 'NVIDIA A100-SXM4-80GB', 'NVIDIA A100-SXM4-80GB', 'NVIDIA A100-SXM4-80GB', 'NVIDIA A100-SXM4-80GB', 'NVIDIA A100-SXM4-80GB']"
+    },
+    "phase23_baseline": {
+      "passed": true,
+      "detail": "max_kl=0.004605456721037626"
+    },
+    "config_write": {
+      "passed": true,
+      "detail": "/data1/hcc/agentic-rec/experiments/phase24_50step_grpo_pilot/pilot_config.yaml"
+    }
+  },
+  "dry_config_check_passed": true,
+  "ready_for_pilot": true,
+  "next_step": "Phase 2.4: run 50-step pilot with CUDA_VISIBLE_DEVICES=0,1,2,3"
+}

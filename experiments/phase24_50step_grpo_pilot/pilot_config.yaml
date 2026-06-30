@@ -1,0 +1,36 @@
+checkpoint_label: SMOKE_ONLY_DO_NOT_PROMOTE
+checkpoint_promoted: false
+clean_set_path: /data1/hcc/agentic-rec/experiments/phase21_tiny_grpo_smoke/phase2_clean_20_groups.jsonl
+cliprange: 0.2
+cuda_visible_devices: 0,1,2,3
+diagnostic_oracle_reward_used: false
+eval_gpu: 1
+eval_steps:
+- 0
+- 10
+- 25
+- 50
+kl_coef: 0.01
+learning_rate: 5.0e-07
+loss_agg_mode: token-mean
+max_prompt_length: 1024
+max_response_length: 2048
+max_total_length: 3072
+max_update_steps: 50
+micro_batch_size: 4
+min_disk_gb: 40
+mode: 50step_grpo_pilot
+model_path: /data1/hcc/.hf_home/Qwen2.5-3B-Instruct
+output_dir: /data1/hcc/agentic-rec/experiments/phase24_50step_grpo_pilot/lr_5e-7
+penalties_in_advantage: false
+phase: '2.4'
+ppo_mini_batch_size: 20
+preflight_rollout_dir: /data1/hcc/agentic-rec/experiments/phase21_tiny_grpo_smoke/preflight_v2_rollout_20_g4
+reward_candidate: reward_largek_mix_1000
+rollout_n: 4
+save_steps:
+- 10
+- 25
+- 50
+train_batch_size: 20
+train_gpu: 0

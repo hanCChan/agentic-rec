@@ -37,6 +37,11 @@ class ControlledGrpoSmokeTrainer(TinyGrpoSmokeTrainer):
         max_response_length: int = 2048,
         max_total_length: int = 3072,
         stability_monitor: Optional[GRPOStabilityMonitor] = None,
+        metrics_filename: str = "ten_step_train_metrics.jsonl",
+        summary_filename: str = "ten_step_train_summary.json",
+        config_filename: str = "ten_step_train_config.yaml",
+        phase: str = "2.3",
+        mode: str = "10step_grpo_controlled_smoke",
     ) -> Dict[str, Any]:
         monitor = stability_monitor or GRPOStabilityMonitor(
             max_signed_logprob_gap_abs=5.0,
@@ -51,11 +56,11 @@ class ControlledGrpoSmokeTrainer(TinyGrpoSmokeTrainer):
             max_prompt_length=max_prompt_length,
             max_response_length=max_response_length,
             max_total_length=max_total_length,
-            metrics_filename="ten_step_train_metrics.jsonl",
-            summary_filename="ten_step_train_summary.json",
-            config_filename="ten_step_train_config.yaml",
-            phase="2.3",
-            mode="10step_grpo_controlled_smoke",
+            metrics_filename=metrics_filename,
+            summary_filename=summary_filename,
+            config_filename=config_filename,
+            phase=phase,
+            mode=mode,
             stability_monitor=monitor,
             save_steps=save_steps,
         )
@@ -66,7 +71,7 @@ class ControlledGrpoSmokeTrainer(TinyGrpoSmokeTrainer):
         summary["checkpoint_label"] = CHECKPOINT_LABEL
 
         out = Path(output_dir)
-        (out / "ten_step_train_summary.json").write_text(
+        (out / summary_filename).write_text(
             __import__("json").dumps(summary, ensure_ascii=False, indent=2),
             encoding="utf-8",
         )

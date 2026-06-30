@@ -64,6 +64,7 @@ from .phase2_smoke_dataset import Phase2SmokeDatasetBuilder, load_clean_set_rows
 from .grpo_stability_monitor import GRPOStabilityMonitor
 from .controlled_grpo_smoke_trainer import ControlledGrpoSmokeTrainer, CONTROLLED_SMOKE_WARNING
 from .grpo_curve_analyzer import GRPOCurveAnalyzer
+from .grpo_pilot_monitor import GRPOPilotMonitor, PILOT_CHECKPOINT_LABEL
 from .tiny_grpo_smoke_trainer import (
     CHECKPOINT_LABEL,
     TINY_TRAIN_WARNING,
@@ -153,4 +154,6 @@ __all__ = [
     "ControlledGrpoSmokeTrainer",
     "CONTROLLED_SMOKE_WARNING",
     "GRPOCurveAnalyzer",
+    "GRPOPilotMonitor",
+    "PILOT_CHECKPOINT_LABEL",
 ]

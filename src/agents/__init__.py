@@ -61,6 +61,7 @@ from .search_strategy_prompts_v2 import (
 )
 from .strategy_collapse_diagnostics import StrategyCollapseDiagnostics
 from .phase2_smoke_dataset import Phase2SmokeDatasetBuilder, load_clean_set_rows
+from .grpo_stability_monitor import GRPOStabilityMonitor
 from .tiny_grpo_smoke_trainer import (
     CHECKPOINT_LABEL,
     TINY_TRAIN_WARNING,
@@ -146,4 +147,5 @@ __all__ = [
     "CHECKPOINT_LABEL",
     "TINY_TRAIN_WARNING",
     "build_tiny_grpo_smoke_report",
+    "GRPOStabilityMonitor",
 ]

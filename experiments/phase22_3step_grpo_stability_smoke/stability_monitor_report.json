@@ -1,0 +1,73 @@
+{
+  "num_steps": 3,
+  "optimizer_steps_called": 3,
+  "step_checks": [
+    {
+      "step": 1,
+      "nan_detected": false,
+      "oom_detected": false,
+      "loss_finite": true,
+      "grad_norm_finite": true,
+      "approx_kl_ok": true,
+      "grad_norm_ok": true,
+      "signed_gap_warn": false,
+      "signed_gap_abs_ok": true,
+      "json_format_ok": true,
+      "optimizer_step_called": true,
+      "should_stop": false,
+      "stop_reason": null,
+      "step_passed": true
+    },
+    {
+      "step": 2,
+      "nan_detected": false,
+      "oom_detected": false,
+      "loss_finite": true,
+      "grad_norm_finite": true,
+      "approx_kl_ok": true,
+      "grad_norm_ok": true,
+      "signed_gap_warn": false,
+      "signed_gap_abs_ok": true,
+      "json_format_ok": true,
+      "optimizer_step_called": true,
+      "should_stop": false,
+      "stop_reason": null,
+      "step_passed": true
+    },
+    {
+      "step": 3,
+      "nan_detected": false,
+      "oom_detected": false,
+      "loss_finite": true,
+      "grad_norm_finite": true,
+      "approx_kl_ok": true,
+      "grad_norm_ok": true,
+      "signed_gap_warn": false,
+      "signed_gap_abs_ok": true,
+      "json_format_ok": true,
+      "optimizer_step_called": true,
+      "should_stop": false,
+      "stop_reason": null,
+      "step_passed": true
+    }
+  ],
+  "nan_detected": false,
+  "oom_detected": false,
+  "kl_exploded": false,
+  "loss_finite_all_steps": true,
+  "grad_norm_finite_all_steps": true,
+  "max_approx_kl_nonnegative": 0.00470927357673645,
+  "max_grad_norm": 0.41796875,
+  "max_abs_signed_logprob_gap": 0.011784723959863186,
+  "max_signed_logprob_gap_abs_mean": 0.025390220806002617,
+  "max_clipfrac": 0.3546772003173828,
+  "max_policy_loss": 0.0956357792019844,
+  "min_policy_loss": 0.09525670856237411,
+  "warnings": [],
+  "all_steps_passed": true,
+  "thresholds": {
+    "max_approx_kl": 0.2,
+    "max_grad_norm": 10.0,
+    "max_signed_logprob_gap_abs": 5.0
+  }
+}

@@ -106,6 +106,7 @@ class TinyGrpoSmokeTrainer:
         self.model: Optional[AutoModelForCausalLM] = None
         self.tokenizer = None
         self.optimizer: Optional[torch.optim.Optimizer] = None
+        self._ref_log_probs_snapshot: Optional[torch.Tensor] = None
 
     def load_model(self) -> None:
         if self.dtype not in _DTYPE_MAP:
@@ -226,6 +227,50 @@ class TinyGrpoSmokeTrainer:
         self.model.train()
         return old_log_probs
 
+    def _compute_kl_diagnostics(
+        self,
+        data_proto: Any,
+        response_mask: torch.Tensor,
+    ) -> Dict[str, float]:
+        """Eval-mode current actor vs frozen ref snapshot logprob diagnostics."""
+        if self._ref_log_probs_snapshot is None:
+            raise RuntimeError("ref logprob snapshot missing; call run() first")
+
+        assert self.model is not None
+        ref_log_probs = self._ref_log_probs_snapshot.float() * response_mask.cpu()
+
+        was_training = self.model.training
+        self.model.eval()
+        try:
+            actor_log_probs = self._compute_old_log_probs(data_proto)
+        finally:
+            if was_training:
+                self.model.train()
+
+        valid = response_mask.bool()
+        gap = (actor_log_probs - ref_log_probs)[valid]
+        if gap.numel() == 0:
+            return {
+                "signed_logprob_gap_mean": 0.0,
+                "signed_logprob_gap_abs_mean": 0.0,
+                "approx_kl_nonnegative": 0.0,
+                "actor_logprob_mean": 0.0,
+                "ref_logprob_mean": 0.0,
+            }
+
+        log_ratio = gap
+        approx_kl_tokens = torch.exp(log_ratio) - 1.0 - log_ratio
+        valid_actor = actor_log_probs[valid]
+        valid_ref = ref_log_probs[valid]
+
+        return {
+            "signed_logprob_gap_mean": float(gap.mean().item()),
+            "signed_logprob_gap_abs_mean": float(gap.abs().mean().item()),
+            "approx_kl_nonnegative": float(approx_kl_tokens.mean().item()),
+            "actor_logprob_mean": float(valid_actor.mean().item()),
+            "ref_logprob_mean": float(valid_ref.mean().item()),
+        }
+
     def _reward_stats(self, merged_records: List[Dict[str, Any]]) -> Dict[str, float]:
         grouped: Dict[str, List[float]] = {}
         for row in merged_records:
@@ -267,9 +312,24 @@ class TinyGrpoSmokeTrainer:
         policy_loss = self._loss_fn._aggregate_loss(policy_loss_mat, response_mask)
 
         token_kl = (log_probs - ref_log_probs) * response_mask
+        log_ratio_ref = (log_probs - ref_log_probs) * response_mask
         valid_mask = response_mask.bool()
         valid_ratio = ratio[valid_mask]
         valid_kl = token_kl[valid_mask]
+        valid_log_ratio_ref = log_ratio_ref[valid_mask]
+        valid_actor_lp = log_probs[valid_mask]
+        valid_ref_lp = ref_log_probs[valid_mask]
+
+        # Non-negative KL surrogate: E[exp(r) - 1 - r] >= 0
+        approx_kl_tokens = torch.exp(valid_log_ratio_ref) - 1.0 - valid_log_ratio_ref
+        approx_kl_nonnegative = float(approx_kl_tokens.mean().item()) if approx_kl_tokens.numel() else 0.0
+        signed_logprob_gap_mean = float(valid_kl.mean().item()) if valid_kl.numel() else 0.0
+        signed_logprob_gap_abs_mean = (
+            float(valid_kl.abs().mean().item()) if valid_kl.numel() else 0.0
+        )
+        actor_logprob_mean = float(valid_actor_lp.mean().item()) if valid_actor_lp.numel() else 0.0
+        ref_logprob_mean = float(valid_ref_lp.mean().item()) if valid_ref_lp.numel() else 0.0
+
         clip_mask = ((ratio < 1.0 - self.cliprange) | (ratio > 1.0 + self.cliprange)) & valid_mask
         clipfrac = clip_mask.float().sum() / response_mask.sum().clamp_min(1.0)
 
@@ -277,16 +337,22 @@ class TinyGrpoSmokeTrainer:
             "policy_loss": policy_loss,
             "policy_loss_value": float(policy_loss.item()),
             "clipfrac": float(clipfrac.item()),
-            "mean_valid_kl": float(valid_kl.mean().item()) if valid_kl.numel() else 0.0,
+            "mean_valid_kl": signed_logprob_gap_mean,
+            "signed_logprob_gap_mean": signed_logprob_gap_mean,
+            "signed_logprob_gap_abs_mean": signed_logprob_gap_abs_mean,
+            "approx_kl_nonnegative": approx_kl_nonnegative,
+            "actor_logprob_mean": actor_logprob_mean,
+            "ref_logprob_mean": ref_logprob_mean,
         }
 
     def _hard_stop(
         self,
         *,
         nan_detected: bool,
-        mean_kl: float,
+        approx_kl_nonnegative: float,
         grad_norm: float,
         policy_loss_value: float,
+        check_kl: bool = True,
     ) -> Tuple[bool, Optional[str]]:
         if nan_detected:
             return True, "NaN detected in loss, KL, or gradients"
@@ -294,8 +360,11 @@ class TinyGrpoSmokeTrainer:
             return True, "policy loss is not finite"
         if not torch.isfinite(torch.tensor(grad_norm)):
             return True, "grad_norm is not finite"
-        if mean_kl > self.kl_explode_threshold:
-            return True, f"mean_kl {mean_kl:.4f} exceeds threshold {self.kl_explode_threshold}"
+        if check_kl and approx_kl_nonnegative > self.kl_explode_threshold:
+            return True, (
+                f"approx_kl_nonnegative {approx_kl_nonnegative:.4f} "
+                f"exceeds threshold {self.kl_explode_threshold}"
+            )
         return False, None
 
     def _save_checkpoint(self, output_dir: Path, step: int) -> Path:
@@ -324,7 +393,11 @@ class TinyGrpoSmokeTrainer:
         response_mask = batch["response_attention_mask"].float()
         advantages = batch["advantages"].float() * response_mask
         old_log_probs = batch["old_log_probs"].float() * response_mask
-        ref_log_probs = batch["ref_log_probs"].float() * response_mask
+        ref_log_probs = (
+            self._ref_log_probs_snapshot.float().to(old_log_probs.device)
+            if self._ref_log_probs_snapshot is not None
+            else batch["ref_log_probs"].float()
+        ) * response_mask
 
         self.optimizer.zero_grad(set_to_none=True)
         num_micro = num_records // self.micro_batch_size
@@ -396,20 +469,35 @@ class TinyGrpoSmokeTrainer:
             if not torch.isfinite(torch.tensor(grad_norm)):
                 nan_detected = True
 
-        mean_kl = float(last_loss_output.get("mean_valid_kl", 0.0) or 0.0)
         policy_loss_value = float(total_policy_loss.item()) if torch.isfinite(total_policy_loss) else float("nan")
 
-        hard_stop, hard_stop_reason = self._hard_stop(
+        pre_hard_stop, pre_reason = self._hard_stop(
             nan_detected=nan_detected,
-            mean_kl=mean_kl,
+            approx_kl_nonnegative=0.0,
             grad_norm=grad_norm,
             policy_loss_value=policy_loss_value,
+            check_kl=False,
         )
 
         optimizer_step_called = False
-        if not hard_stop:
+        if not pre_hard_stop:
             self.optimizer.step()
             optimizer_step_called = True
+
+        kl_diag = self._compute_kl_diagnostics(data_proto, response_mask)
+        mean_kl = float(kl_diag.get("signed_logprob_gap_mean", 0.0))
+        approx_kl = float(kl_diag.get("approx_kl_nonnegative", 0.0))
+
+        hard_stop, hard_stop_reason = self._hard_stop(
+            nan_detected=nan_detected,
+            approx_kl_nonnegative=approx_kl,
+            grad_norm=grad_norm,
+            policy_loss_value=policy_loss_value,
+            check_kl=True,
+        )
+        if pre_hard_stop:
+            hard_stop = True
+            hard_stop_reason = pre_reason
 
         return {
             "step": step_idx,
@@ -418,11 +506,23 @@ class TinyGrpoSmokeTrainer:
             "oom_detected": oom_detected,
             "policy_loss": policy_loss_value,
             "mean_kl": mean_kl,
-            "kl_loss": mean_kl * self.kl_coef,
+            "signed_logprob_gap_mean": mean_kl,
+            "signed_logprob_gap_abs_mean": float(
+                kl_diag.get("signed_logprob_gap_abs_mean", abs(mean_kl))
+            ),
+            "approx_kl_nonnegative": approx_kl,
+            "actor_logprob_mean": float(kl_diag.get("actor_logprob_mean", 0.0)),
+            "ref_logprob_mean": float(kl_diag.get("ref_logprob_mean", 0.0)),
+            "kl_loss": approx_kl * self.kl_coef,
             "clipfrac": float(last_loss_output.get("clipfrac", 0.0) or 0.0),
             "entropy": None,
             "grad_norm": grad_norm,
             "learning_rate": self.learning_rate,
+            "loss_finite": torch.isfinite(torch.tensor(policy_loss_value)).item(),
+            "grad_norm_finite": torch.isfinite(torch.tensor(grad_norm)).item(),
+            "json_format_ok": True,
+            "checkpoint_saved": False,
+            "checkpoint_promoted": False,
             "hard_stop": hard_stop,
             "hard_stop_reason": hard_stop_reason,
         }
@@ -436,11 +536,17 @@ class TinyGrpoSmokeTrainer:
         max_prompt_length: int = 1024,
         max_response_length: int = 2048,
         max_total_length: int = 3072,
+        metrics_filename: str = "tiny_train_metrics.jsonl",
+        summary_filename: str = "tiny_train_summary.json",
+        config_filename: str = "tiny_train_config.yaml",
+        phase: str = "2.1",
+        mode: str = "tiny_grpo_smoke_training",
+        stability_monitor: Optional[Any] = None,
     ) -> Dict[str, Any]:
         out = Path(output_dir)
         out.mkdir(parents=True, exist_ok=True)
 
-        metrics_path = out / "tiny_train_metrics.jsonl"
+        metrics_path = out / metrics_filename
         failure_flags = {
             "nan_detected": False,
             "oom_detected": False,
@@ -467,9 +573,10 @@ class TinyGrpoSmokeTrainer:
 
             self.load_model()
             old_log_probs = self._compute_old_log_probs(data_proto)
+            self._ref_log_probs_snapshot = old_log_probs.clone()
             batch = _get_batch(data_proto)
             batch["old_log_probs"] = old_log_probs
-            batch["ref_log_probs"] = old_log_probs.clone()
+            batch["ref_log_probs"] = self._ref_log_probs_snapshot.clone()
 
             data_proto, adv_meta = self._builder.compute_verl_grpo_advantage_no_update(data_proto)
             reward_stats = self._reward_stats(merged_records)
@@ -477,8 +584,24 @@ class TinyGrpoSmokeTrainer:
             for step_idx in range(1, self.max_update_steps + 1):
                 step_result = self._optimizer_step(data_proto, step_idx)
                 step_result.update(reward_stats)
-                step_metrics.append(step_result)
 
+                if step_result.get("optimizer_step_called"):
+                    actual_update_steps += 1
+                    optimizer_step_called = True
+                    checkpoint_dir = self._save_checkpoint(out, step_idx)
+                    checkpoint_saved = True
+                    step_result["checkpoint_saved"] = True
+                    step_result["checkpoint_promoted"] = False
+
+                if stability_monitor is not None:
+                    stop, stop_reason = stability_monitor.should_stop(step_result)
+                    step_result["monitor_should_stop"] = stop
+                    step_result["monitor_stop_reason"] = stop_reason
+                    if stop and not step_result.get("hard_stop"):
+                        step_result["hard_stop"] = True
+                        step_result["hard_stop_reason"] = stop_reason
+
+                step_metrics.append(step_result)
                 with metrics_path.open("a", encoding="utf-8") as fout:
                     fout.write(json.dumps(step_result, ensure_ascii=False) + "\n")
 
@@ -486,7 +609,7 @@ class TinyGrpoSmokeTrainer:
                     failure_flags["nan_detected"] = True
                 if step_result.get("oom_detected"):
                     failure_flags["oom_detected"] = True
-                if step_result.get("mean_kl") is not None and step_result["mean_kl"] > self.kl_explode_threshold:
+                if step_result.get("approx_kl_nonnegative", 0.0) > self.kl_explode_threshold:
                     failure_flags["kl_exploded"] = True
                 if step_result.get("grad_norm") is not None and not torch.isfinite(
                     torch.tensor(step_result["grad_norm"])
@@ -496,12 +619,6 @@ class TinyGrpoSmokeTrainer:
                     torch.tensor(step_result["policy_loss"])
                 ):
                     failure_flags["loss_finite"] = False
-
-                if step_result.get("optimizer_step_called"):
-                    actual_update_steps += 1
-                    optimizer_step_called = True
-                    checkpoint_dir = self._save_checkpoint(out, step_idx)
-                    checkpoint_saved = True
 
                 if step_result.get("hard_stop"):
                     break
@@ -517,8 +634,8 @@ class TinyGrpoSmokeTrainer:
             )
 
             summary = {
-                "phase": "2.1",
-                "mode": "tiny_grpo_smoke_training",
+                "phase": phase,
+                "mode": mode,
                 "max_update_steps": self.max_update_steps,
                 "actual_update_steps": actual_update_steps,
                 "train_batch_size": self.train_batch_size,
@@ -562,6 +679,8 @@ class TinyGrpoSmokeTrainer:
                     {
                         "policy_loss": last.get("policy_loss"),
                         "mean_kl": last.get("mean_kl"),
+                        "signed_logprob_gap_mean": last.get("signed_logprob_gap_mean"),
+                        "approx_kl_nonnegative": last.get("approx_kl_nonnegative"),
                         "clipfrac": last.get("clipfrac"),
                         "grad_norm": last.get("grad_norm"),
                         "mean_reward": last.get("mean_reward"),
@@ -582,11 +701,11 @@ class TinyGrpoSmokeTrainer:
                 "micro_batch_size": self.micro_batch_size,
             }
 
-            (out / "tiny_train_config.yaml").write_text(
+            (out / config_filename).write_text(
                 "\n".join(f"{k}: {v}" for k, v in config.items()) + "\n",
                 encoding="utf-8",
             )
-            (out / "tiny_train_summary.json").write_text(
+            (out / summary_filename).write_text(
                 json.dumps(summary, ensure_ascii=False, indent=2),
                 encoding="utf-8",
             )
@@ -598,6 +717,7 @@ class TinyGrpoSmokeTrainer:
                     {
                         "step": m["step"],
                         "path": str(out / "checkpoints" / f"smoke_step_{m['step']}"),
+                        "label": CHECKPOINT_LABEL,
                         "optimizer_step_called": m.get("optimizer_step_called", False),
                     }
                     for m in step_metrics

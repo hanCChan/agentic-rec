@@ -1,0 +1,24 @@
+{
+  "checkpoint_label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+  "checkpoint_promoted": false,
+  "checkpoints": [
+    {
+      "step": 1,
+      "path": "experiments/phase22_3step_grpo_stability_smoke/checkpoints/smoke_step_1",
+      "label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+      "optimizer_step_called": true
+    },
+    {
+      "step": 2,
+      "path": "experiments/phase22_3step_grpo_stability_smoke/checkpoints/smoke_step_2",
+      "label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+      "optimizer_step_called": true
+    },
+    {
+      "step": 3,
+      "path": "experiments/phase22_3step_grpo_stability_smoke/checkpoints/smoke_step_3",
+      "label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+      "optimizer_step_called": true
+    }
+  ]
+}

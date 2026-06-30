@@ -1,0 +1,18 @@
+{
+  "checkpoint_path": "experiments/phase22_3step_grpo_stability_smoke/checkpoints/smoke_step_3",
+  "checkpoint_label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+  "num_groups": 20,
+  "num_rollout_records": 80,
+  "num_failures": 0,
+  "parse_success_rate": 1.0,
+  "finish_rate": 1.0,
+  "invalid_action_rate": 0.0,
+  "zero_std_group_rate": 0.15,
+  "retrieval_quality_spread_group_rate": 0.85,
+  "mean_reward_largek_mix_1000": 0.3960897209640319,
+  "mean_ndcg1000": 0.2212790810195503,
+  "mean_recall1000": 0.8003819444444444,
+  "mean_mrr1000": 0.1473425105559269,
+  "json_format_ok": true,
+  "eval_passed": true
+}

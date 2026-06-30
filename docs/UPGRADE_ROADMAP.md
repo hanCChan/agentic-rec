@@ -96,4 +96,5 @@ agentic-rec/
 15. ~~**下一步**：Phase 1.16 — GRPO Loss Dry-Run~~ ✅ 见 `experiments/phase116_grpo_loss_dryrun_10_g4/`
 16. ~~**下一步**：Phase 1.17 — Real Multi-Sample Rollout Smoke~~ ✅ 见 `experiments/phase117_multisample_rollout_5_g4/`
 17. ~~**下一步**：Phase 1.18 — Real GRPO Loss Dry-Run（或若 `zero_std_group_rate` 高则先做 Phase 1.18a Rollout Diversity Diagnostics）~~ ✅ 见 `experiments/phase118a_rollout_diagnostics_5_g4/`
-18. **下一步**：Phase 1.18b — Reward Sensitivity Diagnostics（Phase 1.18a 显示 `diverse_trajectory_zero_reward_rate` 高）
+18. ~~**下一步**：Phase 1.18b — Reward Sensitivity Diagnostics~~ ✅ 见 `experiments/phase118b_reward_sensitivity_5_g4/`
+19. **下一步**：Phase 1.18c — Reward Shaping Proposal + Dry-Run（Phase 1.18b 显示 reward spread 主要来自 penalty）

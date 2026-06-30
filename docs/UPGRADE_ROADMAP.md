@@ -108,5 +108,5 @@ agentic-rec/
 27. ~~**进行中**：Phase 1.19b — 10_g4 / 20_g4 scale gate check~~ ✅ 见 `experiments/phase119b_scale_gate_check/`（**stable gate passed**）
 28. ~~**下一步**：Phase 1.20 — No-update VERL Trainer Dry-Run~~ ✅ 见 `experiments/phase120_no_update_trainer_dryrun_20_g4/`
 29. ~~**下一步**：Phase 1.18g — BM25 Failure / Unlearnable Sample Cleanup~~ ✅ 见 `experiments/phase118g_bm25_failure_cleanup_20_g4/`
-30. **下一步**：Phase 1.18h — Strategy Prompt V2 for Collapse Cases
-31. **之后**：Phase 2.1 — Tiny GRPO Smoke Training（极小步数，需 1.18h 完成后）
+30. ~~**下一步**：Phase 1.18h — Strategy Prompt V2 for Collapse Cases~~ ✅ 见 `experiments/phase118h_strategy_prompt_v2_20_g4/`（19 组 gate 通过）；`esci_val_3` targeted 未修复 → **用 1.18g replacement 替换**
+31. **下一步**：Phase 2.1 — Tiny GRPO Smoke Training（基于 `phase2_candidate_smoke_set_v2.jsonl`，排除/替换 esci_val_3）

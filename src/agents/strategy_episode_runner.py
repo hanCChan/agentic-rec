@@ -8,7 +8,7 @@ Does NOT train and does NOT change reward.
 from __future__ import annotations
 
 import hashlib
-from typing import Any, Callable, Dict, List
+from typing import Any, Callable, Dict, List, Optional
 
 from src.agents.episode_runner import run_finish_aware_episode
 from src.agents.multisample_episode_runner import compute_group_metrics, trajectory_to_rollout_record
@@ -47,6 +47,7 @@ def strategy_trajectory_to_record(
     sampling_temperature: float,
     sampling_top_p: float,
     max_steps: int = 3,
+    strategy_version: str = "v1",
 ) -> Dict[str, Any]:
     record = trajectory_to_rollout_record(
         trajectory,
@@ -62,11 +63,13 @@ def strategy_trajectory_to_record(
         {
             "strategy_name": strategy_name,
             "strategy_instruction": strategy_instruction,
+            "strategy_version": strategy_version,
             "is_strategy_controlled": True,
             "is_real_multisample": True,
         }
     )
     record["extra_info"]["strategy_name"] = strategy_name
+    record["extra_info"]["strategy_version"] = strategy_version
     return record
 
 
@@ -134,11 +137,15 @@ class StrategyEpisodeRunner:
         base_seed: int = 42,
         sampling_temperature: float = 0.7,
         sampling_top_p: float = 0.95,
+        strategy_getter: Callable[[str], Dict[str, str]] | None = None,
+        strategy_version: str = "v1",
     ):
         self.env_factory = env_factory
         self.policy = policy
         self.strategies = list(strategies or DEFAULT_STRATEGY_ORDER)
         validate_strategies(self.strategies)
+        self.strategy_getter = strategy_getter or get_strategy
+        self.strategy_version = strategy_version
         self.group_size = len(self.strategies)
         self.max_steps = max_steps
         self.topk = topk
@@ -157,7 +164,7 @@ class StrategyEpisodeRunner:
         group_index: int,
     ) -> Dict[str, Any]:
         group_id = sample.get("qid") or sample.get("sample_id") or "unknown"
-        strategy = get_strategy(strategy_name)
+        strategy = self.strategy_getter(strategy_name)
         sample_seed = self._member_seed(group_id, group_index)
         episode_sample = {**sample, "qid": f"{group_id}#{strategy_name}"}
 
@@ -183,6 +190,7 @@ class StrategyEpisodeRunner:
             sampling_temperature=self.sampling_temperature,
             sampling_top_p=self.sampling_top_p,
             max_steps=self.max_steps,
+            strategy_version=self.strategy_version,
         )
 
     def run_group(self, sample: Dict[str, Any]) -> Dict[str, Any]:

@@ -53,6 +53,13 @@ from .no_update_trainer_dryrun import (
     build_no_update_trainer_report,
 )
 from .bm25_failure_cleanup import BM25FailureCleanup, build_bm25_failure_cleanup_report
+from .search_strategy_prompts_v2 import (
+    DEFAULT_STRATEGY_ORDER_V2,
+    SEARCH_STRATEGIES_V2,
+    get_strategy_v2,
+    validate_strategies_v2,
+)
+from .strategy_collapse_diagnostics import StrategyCollapseDiagnostics
 
 __all__ = [
     "ActionParseError",
@@ -121,4 +128,9 @@ __all__ = [
     "build_no_update_trainer_report",
     "BM25FailureCleanup",
     "build_bm25_failure_cleanup_report",
+    "SEARCH_STRATEGIES_V2",
+    "DEFAULT_STRATEGY_ORDER_V2",
+    "get_strategy_v2",
+    "validate_strategies_v2",
+    "StrategyCollapseDiagnostics",
 ]

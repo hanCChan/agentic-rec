@@ -17,6 +17,12 @@ from .dataproto_mock import (
     check_actor_inputs,
 )
 from .real_dataproto_adapter import RealDataProtoAdapter
+from .actor_logprob_mock import (
+    MOCK_LOGPROB_WARNING,
+    ActorLogProbInterfaceMock,
+    VERL_COMPUTE_LOG_PROB_KEYS,
+    tensor_shape_report,
+)
 
 __all__ = [
     "ActionParseError",
@@ -41,4 +47,8 @@ __all__ = [
     "build_dataproto_shapes",
     "check_actor_inputs",
     "RealDataProtoAdapter",
+    "ActorLogProbInterfaceMock",
+    "MOCK_LOGPROB_WARNING",
+    "VERL_COMPUTE_LOG_PROB_KEYS",
+    "tensor_shape_report",
 ]

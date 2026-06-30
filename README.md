@@ -276,6 +276,18 @@ python scripts/smoke_real_dataproto_compat.py \
 
 结果见 [`experiments/phase111_real_dataproto_compat/`](experiments/phase111_real_dataproto_compat/README.md)。
 
+### Phase 1.12 已完成：Actor LogProb Interface Mock
+
+侦察 verl `compute_log_prob` 字段，构造 actor-logprob-ready request，生成 mock logprob 并做 shape check。**不调用 actor.forward，不训练。**
+
+```bash
+python scripts/smoke_actor_logprob_mock.py \
+  --rollout-path experiments/phase17_verl_adapter_smoke_10/rollout_records.jsonl \
+  --output-dir experiments/phase112_actor_logprob_mock_10
+```
+
+结果见 [`experiments/phase112_actor_logprob_mock/`](experiments/phase112_actor_logprob_mock/README.md)（`is_mock=true`）。
+
 ---
 
 ## 引用

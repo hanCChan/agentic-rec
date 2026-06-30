@@ -1,0 +1,16 @@
+{
+  "old_log_probs": {
+    "shape": [
+      10,
+      1402
+    ],
+    "dtype": "torch.float32"
+  },
+  "entropys": {
+    "shape": [
+      10,
+      1402
+    ],
+    "dtype": "torch.float32"
+  }
+}

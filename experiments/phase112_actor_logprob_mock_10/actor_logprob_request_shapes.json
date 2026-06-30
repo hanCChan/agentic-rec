@@ -1,0 +1,44 @@
+{
+  "input_ids": {
+    "shape": [
+      10,
+      1457
+    ],
+    "dtype": "torch.int64"
+  },
+  "attention_mask": {
+    "shape": [
+      10,
+      1457
+    ],
+    "dtype": "torch.int64"
+  },
+  "position_ids": {
+    "shape": [
+      10,
+      1457
+    ],
+    "dtype": "torch.int64"
+  },
+  "responses": {
+    "shape": [
+      10,
+      1402
+    ],
+    "dtype": "torch.int64"
+  },
+  "response_attention_mask": {
+    "shape": [
+      10,
+      1402
+    ],
+    "dtype": "torch.int64"
+  },
+  "response_mask": {
+    "shape": [
+      10,
+      1457
+    ],
+    "dtype": "torch.int64"
+  }
+}

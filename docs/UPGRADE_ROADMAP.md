@@ -89,4 +89,5 @@ agentic-rec/
 8. ~~**下一步**：Phase 1.9 — VERL training fields mock / field alignment~~ ✅ 见 `experiments/phase19_verl_training_fields_mock_10/`
 9. ~~**下一步**：Phase 1.10 — DataProto / reward_fn dry-run~~ ✅ 见 `experiments/phase110_dataproto_reward_dryrun_10/`
 10. ~~**下一步**：Phase 1.11 — 真实 `verl.DataProto` import 兼容性检查~~ ✅ 见 `experiments/phase111_real_dataproto_compat_10/`
-11. **下一步**：Phase 1.12 — Actor LogProb dry-run 设计（仍不调用 actor.forward）
+11. ~~**下一步**：Phase 1.12 — Actor LogProb dry-run 设计（仍不调用 actor.forward）~~ ✅ 见 `experiments/phase112_actor_logprob_mock_10/`
+12. **下一步**：Phase 1.13 — 真实 actor logprob dry-run（单 batch、no grad、仍不接 trainer）

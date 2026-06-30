@@ -1,0 +1,36 @@
+{
+  "phase": "1.15",
+  "num_base_records": 10,
+  "group_size": 4,
+  "num_grouped_records": 40,
+  "used_real_dataproto": true,
+  "normalize_by_std": true,
+  "synthetic_reward_jitter": 0.02,
+  "advantage_check_passed": true,
+  "sequence_rewards_shape": [
+    40
+  ],
+  "sequence_advantages_shape": [
+    40
+  ],
+  "token_level_advantages_shape": [
+    40,
+    1402
+  ],
+  "num_groups": 10,
+  "zero_std_group_count": 0,
+  "zero_std_group_rate": 0.0,
+  "mean_group_reward_std": 0.014907119795680046,
+  "mean_abs_sequence_advantage": 0.8943670988082886,
+  "zero_advantage_token_rate": 0.0,
+  "group_mean_advantage_close_to_zero": true,
+  "padding_advantages_zero": true,
+  "is_mock": true,
+  "mock_warning": "Synthetic grouped records are for GRPO advantage dry-run only and must not be used for real training.",
+  "config": {
+    "rollout_path": "experiments/phase17_verl_adapter_smoke_10/rollout_records.jsonl",
+    "tokenizer_path": "/data1/hcc/.hf_home/Qwen2.5-3B-Instruct",
+    "num_base_records": 10,
+    "no_synthetic_jitter": false
+  }
+}

@@ -60,6 +60,10 @@ class DataProtoMock:
             "metrics": fields["metrics"],
             "extra_info": fields["extra_info"],
         }
+        if "group_ids" in fields:
+            non_tensor_batch["group_ids"] = fields["group_ids"]
+            non_tensor_batch["group_indices"] = fields["group_indices"]
+            non_tensor_batch["group_size"] = fields.get("group_size")
         meta_info = {
             "phase": "1.10",
             "source": "agentic-rec phase19 training fields mock",

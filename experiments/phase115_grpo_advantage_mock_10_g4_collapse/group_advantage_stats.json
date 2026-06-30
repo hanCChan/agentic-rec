@@ -1,0 +1,12 @@
+{
+  "num_groups": 10,
+  "group_size": 4,
+  "zero_std_group_rate": 1.0,
+  "mean_group_reward_std": 0.0,
+  "min_group_reward_std": 0.0,
+  "max_group_reward_std": 0.0,
+  "mean_abs_sequence_advantage": 0.0,
+  "zero_advantage_token_rate": 1.0,
+  "group_mean_advantage_close_to_zero": true,
+  "padding_advantages_zero": true
+}

@@ -314,6 +314,19 @@ CUDA_VISIBLE_DEVICES=2 python scripts/smoke_ref_kl_dryrun.py \
 
 结果见 [`experiments/phase114_ref_kl_dryrun/`](experiments/phase114_ref_kl_dryrun/README.md)（shared-ref 下 KL≈0，ratio≈1）。
 
+### Phase 1.15 已完成：GRPO Advantage Mock / Grouped Reward Dry-Run
+
+Synthetic grouped rollout + 组内 reward 归一化 advantage。**不训练、不接 GRPO trainer。**
+
+```bash
+python scripts/smoke_grpo_advantage_mock.py \
+  --rollout-path experiments/phase17_verl_adapter_smoke_10/rollout_records.jsonl \
+  --output-dir experiments/phase115_grpo_advantage_mock_10_g4 \
+  --num-base-records 10 --group-size 4
+```
+
+结果见 [`experiments/phase115_grpo_advantage_mock/`](experiments/phase115_grpo_advantage_mock/README.md)。
+
 ---
 
 ## 引用

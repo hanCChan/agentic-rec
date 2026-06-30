@@ -92,4 +92,5 @@ agentic-rec/
 11. ~~**下一步**：Phase 1.12 — Actor LogProb dry-run 设计（仍不调用 actor.forward）~~ ✅ 见 `experiments/phase112_actor_logprob_mock_10/`
 12. ~~**下一步**：Phase 1.13 — 真实 actor logprob dry-run（单 batch、no grad、仍不接 trainer）~~ ✅ 见 `experiments/phase113_actor_logprob_dryrun_2/`
 13. ~~**下一步**：Phase 1.14 — Reference LogProb / KL Dry-Run 设计~~ ✅ 见 `experiments/phase114_ref_kl_dryrun_2/`
-14. **下一步**：Phase 1.15 — GRPO Advantage Mock / Grouped Reward Dry-Run
+14. ~~**下一步**：Phase 1.15 — GRPO Advantage Mock / Grouped Reward Dry-Run~~ ✅ 见 `experiments/phase115_grpo_advantage_mock_10_g4/`
+15. **下一步**：Phase 1.16 — GRPO Loss Dry-Run

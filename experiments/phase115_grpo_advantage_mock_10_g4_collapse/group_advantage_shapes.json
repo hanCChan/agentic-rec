@@ -1,0 +1,12 @@
+{
+  "sequence_rewards": [
+    40
+  ],
+  "sequence_advantages": [
+    40
+  ],
+  "token_level_advantages": [
+    40,
+    1402
+  ]
+}

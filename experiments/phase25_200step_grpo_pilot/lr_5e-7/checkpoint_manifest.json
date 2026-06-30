@@ -1,0 +1,23 @@
+{
+  "checkpoint_promoted": false,
+  "checkpoint_label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+  "save_steps": [
+    50,
+    100,
+    200
+  ],
+  "checkpoints": [
+    {
+      "step": 50,
+      "path": "experiments/phase25_200step_grpo_pilot/lr_5e-7/checkpoints/pilot_step_50",
+      "label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+      "optimizer_step_called": true
+    },
+    {
+      "step": 100,
+      "path": "experiments/phase25_200step_grpo_pilot/lr_5e-7/checkpoints/pilot_step_100",
+      "label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+      "optimizer_step_called": true
+    }
+  ]
+}

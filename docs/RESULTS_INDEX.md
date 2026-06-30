@@ -59,9 +59,39 @@ checkpoint_promoted = false
 7. run_50step_grpo_pilot.py           → 50-step pilot
 ```
 
+## Phase 2.5 — Expanded Clean Set + 200-Step Pilot
+
+| Phase | Commit | Dir | Key Metrics | Trained? | Result |
+|-------|--------|-----|-------------|----------|--------|
+| **2.5a-b** | `c7c0d7c` | `experiments/phase25_expanded_clean_set/` | 50 train + 20 heldout, expanded clean set ready | No | Gate passed |
+| **2.5c** | (pending) | `experiments/phase25_200step_grpo_pilot/lr_5e-7/` | 117/200 steps, KL stop at 0.202, heldout stable | 117 steps | **pilot_passed=false**, kl_guard_stop |
+
+### Phase 2.5c Fresh Eval Curve
+
+| Step | train_reward | heldout_reward | parse (train/heldout) |
+|------|-------------:|---------------:|----------------------|
+| 0 | 0.548 | 0.550 | 1.0 / 1.0 |
+| 50 | 0.552 | 0.552 | 0.998 / 0.994 |
+| 100 | 0.545 | 0.564 | 1.0 / 0.994 |
+
+> Step 25 eval missing due to eval hook tied to checkpoint save (fixed in 2.5d).
+
+### Phase 2.5c Diagnosis
+
+```text
+pilot_passed = false
+failure_type = kl_guard_stop
+actual_update_steps = 117/200
+approx_kl_nonnegative = 0.202 (> 0.2 threshold)
+heldout reward did not collapse
+JSON/parse stable
+diagnosis = long-horizon KL drift on fixed preflight batch
+next = Phase 2.5d KL-controlled rerun (kl_coef=0.02)
+```
+
 ## Next Step
 
-**Phase 2.5**: Expand clean set (50 train + 20 heldout from ESCI val rescan), fix eval bugs, write 200-step pilot plan. See [PHASE2_5_ALIGNMENT_QUESTIONS.md](./PHASE2_5_ALIGNMENT_QUESTIONS.md).
+**Phase 2.5d**: Fix eval hook (eval_steps independent of save_steps), rerun 200-step pilot with `kl_coef=0.02`. See `experiments/phase25_200step_grpo_pilot/lr_5e-7/kl_stop_report.md`.
 
 ## Claim Boundary
 

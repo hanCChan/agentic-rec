@@ -1,0 +1,11 @@
+{
+  "policy_loss_value": 0.0,
+  "clipfrac": 0.0,
+  "mean_valid_ratio": 1.020201563835144,
+  "min_valid_ratio": 1.020201325416565,
+  "max_valid_ratio": 1.020201325416565,
+  "mean_valid_kl": 0.019999997690320015,
+  "mean_valid_kl_penalty": 0.00019999989308416843,
+  "zero_std_group_rate": 1.0,
+  "mean_abs_sequence_advantage": 0.0
+}

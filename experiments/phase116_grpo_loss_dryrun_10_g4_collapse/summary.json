@@ -1,0 +1,48 @@
+{
+  "phase": "1.16",
+  "num_base_records": 10,
+  "group_size": 4,
+  "num_grouped_records": 40,
+  "used_real_dataproto": true,
+  "advantage_check_passed": true,
+  "loss_check_passed": true,
+  "loss_agg_mode": "token-mean",
+  "cliprange": 0.2,
+  "kl_coef": 0.01,
+  "synthetic_logprob_delta": 0.02,
+  "policy_loss_value": 0.0,
+  "policy_loss_finite": true,
+  "policy_loss_mat_shape": [
+    40,
+    1402
+  ],
+  "ratio_shape": [
+    40,
+    1402
+  ],
+  "token_kl_shape": [
+    40,
+    1402
+  ],
+  "kl_penalty_shape": [
+    40,
+    1402
+  ],
+  "clipfrac": 0.0,
+  "mean_valid_ratio": 1.020201563835144,
+  "min_valid_ratio": 1.020201325416565,
+  "max_valid_ratio": 1.020201325416565,
+  "mean_valid_kl": 0.019999997690320015,
+  "mean_valid_kl_penalty": 0.00019999989308416843,
+  "zero_std_group_rate": 1.0,
+  "mean_abs_sequence_advantage": 0.0,
+  "padding_loss_zero": true,
+  "padding_ratio_zero": true,
+  "padding_kl_zero": true,
+  "is_dryrun": true,
+  "dryrun_warning": "GRPO loss was computed for validation only; no training or optimizer.step was performed.",
+  "config": {
+    "rollout_path": "experiments/phase17_verl_adapter_smoke_10/rollout_records.jsonl",
+    "no_synthetic_jitter": true
+  }
+}

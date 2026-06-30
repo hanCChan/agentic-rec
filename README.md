@@ -327,6 +327,19 @@ python scripts/smoke_grpo_advantage_mock.py \
 
 结果见 [`experiments/phase115_grpo_advantage_mock/`](experiments/phase115_grpo_advantage_mock/README.md)。
 
+### Phase 1.16 已完成：GRPO Loss Dry-Run
+
+PPO/GRPO clipped policy loss + KL penalty 独立 dry-run（mock log_probs）。**不训练、不接 GRPO trainer。**
+
+```bash
+python scripts/smoke_grpo_loss_dryrun.py \
+  --rollout-path experiments/phase17_verl_adapter_smoke_10/rollout_records.jsonl \
+  --output-dir experiments/phase116_grpo_loss_dryrun_10_g4 \
+  --num-base-records 10 --group-size 4
+```
+
+结果见 [`experiments/phase116_grpo_loss_dryrun/`](experiments/phase116_grpo_loss_dryrun/README.md)。
+
 ---
 
 ## 引用

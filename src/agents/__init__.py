@@ -26,6 +26,7 @@ from .actor_logprob_mock import (
 from .actor_logprob_dryrun import DRYRUN_WARNING, ActorLogProbDryRun
 from .ref_kl_dryrun import KL_DRYRUN_WARNING, ReferenceKLDryRun
 from .grpo_advantage_mock import GRPOAdvantageMock, MOCK_GROUP_WARNING
+from .grpo_loss_dryrun import GRPOLossDryRun, LOSS_DRYRUN_WARNING
 
 __all__ = [
     "ActionParseError",
@@ -60,4 +61,6 @@ __all__ = [
     "KL_DRYRUN_WARNING",
     "GRPOAdvantageMock",
     "MOCK_GROUP_WARNING",
+    "GRPOLossDryRun",
+    "LOSS_DRYRUN_WARNING",
 ]

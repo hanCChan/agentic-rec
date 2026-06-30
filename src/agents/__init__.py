@@ -16,6 +16,7 @@ from .dataproto_mock import (
     build_dataproto_shapes,
     check_actor_inputs,
 )
+from .real_dataproto_adapter import RealDataProtoAdapter
 
 __all__ = [
     "ActionParseError",
@@ -39,4 +40,5 @@ __all__ = [
     "DRY_RUN_WARNING",
     "build_dataproto_shapes",
     "check_actor_inputs",
+    "RealDataProtoAdapter",
 ]

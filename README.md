@@ -264,6 +264,18 @@ python scripts/smoke_dataproto_reward_dryrun.py \
 
 结果见 [`experiments/phase110_dataproto_reward_dryrun/`](experiments/phase110_dataproto_reward_dryrun/README.md)（三项 check 均通过）。
 
+### Phase 1.11 已完成：Real DataProto Compatibility Check
+
+尝试将 `DataProtoMock` 转为真实 `verl.protocol.DataProto`；环境不支持时 graceful fallback。**不训练 GRPO。**
+
+```bash
+python scripts/smoke_real_dataproto_compat.py \
+  --rollout-path experiments/phase17_verl_adapter_smoke_10/rollout_records.jsonl \
+  --output-dir experiments/phase111_real_dataproto_compat_10
+```
+
+结果见 [`experiments/phase111_real_dataproto_compat/`](experiments/phase111_real_dataproto_compat/README.md)。
+
 ---
 
 ## 引用

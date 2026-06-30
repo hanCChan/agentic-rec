@@ -213,6 +213,20 @@ CUDA_VISIBLE_DEVICES=2 python scripts/smoke_qwen_rollout.py --num-samples 10
 
 结果见 [`experiments/phase16_finish_aware_smoke/`](experiments/phase16_finish_aware_smoke/README.md)（finish_rate=1.0，parse=1.0）。
 
+### Phase 1.7 已完成：VERL Rollout Adapter 骨架
+
+将 `CommerceAgentEnv + QwenRolloutPolicy` episode 包装为 VERL-like rollout record（`prompt/response/reward/trajectory/metrics/extra_info`）。**不训练 GRPO，未接入 VERL worker。**
+
+```bash
+CUDA_VISIBLE_DEVICES=2 python scripts/smoke_verl_rollout_adapter.py \
+  --num-samples 10 \
+  --max-steps 3 \
+  --model-path /data1/hcc/.hf_home/Qwen2.5-3B-Instruct \
+  --output-dir experiments/phase17_verl_adapter_smoke_10
+```
+
+结果见 [`experiments/phase17_verl_adapter_smoke/`](experiments/phase17_verl_adapter_smoke/README.md)（10 条：finish_rate=1.0，invalid=0.0，num_rollout_records=10）。
+
 ---
 
 ## 引用

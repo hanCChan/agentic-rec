@@ -84,4 +84,5 @@ agentic-rec/
 3. ~~确认 MVP 后开始阶段 1 代码~~ ✅ 见 `experiments/phase1_env_smoke/`
 4. ~~**进行中**：Qwen rollout policy smoke~~ ✅ 见 `experiments/phase15_qwen_rollout_smoke/`
 5. ~~**下一步**：prompt 强化 final_answer → VERL rollout wrapper~~ ✅ Phase 1.6 finish-aware 完成
-6. **下一步**：VERL rollout wrapper 骨架（仍不训 GRPO）
+6. ~~**下一步**：VERL rollout wrapper 骨架（仍不训 GRPO）~~ ✅ Phase 1.7 完成，见 `experiments/phase17_verl_adapter_smoke_10/`
+7. **下一步**：Phase 1.8 — 接到 Rec-R1/VERL reward/rollout 入口（mock shape check，仍不训 GRPO）

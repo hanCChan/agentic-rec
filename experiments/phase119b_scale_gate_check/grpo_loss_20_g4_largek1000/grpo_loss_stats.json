@@ -1,0 +1,8 @@
+{
+  "policy_loss_value": -0.00887137558311224,
+  "clipfrac": 0.0,
+  "mean_valid_ratio": 1.0202014446258545,
+  "mean_valid_kl": 0.019999997690320015,
+  "zero_std_group_rate": 0.15,
+  "mean_abs_sequence_advantage": 0.7581583261489868
+}

@@ -1,0 +1,254 @@
+{
+  "num_groups": 10,
+  "num_rollout_records": 40,
+  "candidates": [
+    {
+      "candidate_name": "reward_current",
+      "diagnostic_only": false,
+      "description": "Current total_reward from Phase 1.18d rollout (baseline).",
+      "num_groups": 10,
+      "zero_std_group_count": 2,
+      "zero_std_group_rate": 0.2,
+      "mean_group_reward_std": 0.0634103586706258,
+      "mean_reward_spread": 0.14575080958406267,
+      "mean_abs_sequence_advantage": 0.7146375543469021,
+      "retrieval_quality_spread_group_count": 2,
+      "retrieval_quality_spread_group_rate": 0.2,
+      "penalty_only_spread_group_count": 6,
+      "penalty_only_spread_group_rate": 0.6,
+      "groups_with_spread": [
+        "esci_val_0",
+        "esci_val_1",
+        "esci_val_2",
+        "esci_val_3",
+        "esci_val_4",
+        "esci_val_6",
+        "esci_val_7",
+        "esci_val_8"
+      ],
+      "groups_still_collapsed": [
+        "esci_val_5",
+        "esci_val_9"
+      ],
+      "safe_candidate": false
+    },
+    {
+      "candidate_name": "reward_ndcg10",
+      "diagnostic_only": false,
+      "description": "Quality-only NDCG@10 (reproduces small-K sparsity).",
+      "num_groups": 10,
+      "zero_std_group_count": 8,
+      "zero_std_group_rate": 0.8,
+      "mean_group_reward_std": 0.029084253517215646,
+      "mean_reward_spread": 0.0671672063893751,
+      "mean_abs_sequence_advantage": 0.1731998551419957,
+      "retrieval_quality_spread_group_count": 2,
+      "retrieval_quality_spread_group_rate": 0.2,
+      "penalty_only_spread_group_count": 0,
+      "penalty_only_spread_group_rate": 0.0,
+      "groups_with_spread": [
+        "esci_val_1",
+        "esci_val_6"
+      ],
+      "groups_still_collapsed": [
+        "esci_val_0",
+        "esci_val_2",
+        "esci_val_3",
+        "esci_val_4",
+        "esci_val_5",
+        "esci_val_7",
+        "esci_val_8",
+        "esci_val_9"
+      ],
+      "safe_candidate": false
+    },
+    {
+      "candidate_name": "reward_ndcg100",
+      "diagnostic_only": false,
+      "description": "Quality-only NDCG@100.",
+      "num_groups": 10,
+      "zero_std_group_count": 6,
+      "zero_std_group_rate": 0.6,
+      "mean_group_reward_std": 0.022463985364865383,
+      "mean_reward_spread": 0.05194119714376183,
+      "mean_abs_sequence_advantage": 0.338441645931208,
+      "retrieval_quality_spread_group_count": 4,
+      "retrieval_quality_spread_group_rate": 0.4,
+      "penalty_only_spread_group_count": 0,
+      "penalty_only_spread_group_rate": 0.0,
+      "groups_with_spread": [
+        "esci_val_1",
+        "esci_val_4",
+        "esci_val_5",
+        "esci_val_6"
+      ],
+      "groups_still_collapsed": [
+        "esci_val_0",
+        "esci_val_2",
+        "esci_val_3",
+        "esci_val_7",
+        "esci_val_8",
+        "esci_val_9"
+      ],
+      "safe_candidate": false
+    },
+    {
+      "candidate_name": "reward_ndcg1000",
+      "diagnostic_only": false,
+      "description": "Quality-only NDCG@1000 for small-K blind groups.",
+      "num_groups": 10,
+      "zero_std_group_count": 2,
+      "zero_std_group_rate": 0.2,
+      "mean_group_reward_std": 0.03462722175736752,
+      "mean_reward_spread": 0.08029837048744384,
+      "mean_abs_sequence_advantage": 0.691848432338404,
+      "retrieval_quality_spread_group_count": 8,
+      "retrieval_quality_spread_group_rate": 0.8,
+      "penalty_only_spread_group_count": 0,
+      "penalty_only_spread_group_rate": 0.0,
+      "groups_with_spread": [
+        "esci_val_0",
+        "esci_val_1",
+        "esci_val_4",
+        "esci_val_5",
+        "esci_val_6",
+        "esci_val_7",
+        "esci_val_8",
+        "esci_val_9"
+      ],
+      "groups_still_collapsed": [
+        "esci_val_2",
+        "esci_val_3"
+      ],
+      "safe_candidate": true
+    },
+    {
+      "candidate_name": "reward_largek_mix_100",
+      "diagnostic_only": false,
+      "description": "Global K=100: NDCG@100 + 0.2*Recall@100 + 0.1*MRR@100.",
+      "num_groups": 10,
+      "zero_std_group_count": 6,
+      "zero_std_group_rate": 0.6,
+      "mean_group_reward_std": 0.024753956384487703,
+      "mean_reward_spread": 0.057229658682223385,
+      "mean_abs_sequence_advantage": 0.3384421409273631,
+      "retrieval_quality_spread_group_count": 4,
+      "retrieval_quality_spread_group_rate": 0.4,
+      "penalty_only_spread_group_count": 0,
+      "penalty_only_spread_group_rate": 0.0,
+      "groups_with_spread": [
+        "esci_val_1",
+        "esci_val_4",
+        "esci_val_5",
+        "esci_val_6"
+      ],
+      "groups_still_collapsed": [
+        "esci_val_0",
+        "esci_val_2",
+        "esci_val_3",
+        "esci_val_7",
+        "esci_val_8",
+        "esci_val_9"
+      ],
+      "safe_candidate": false
+    },
+    {
+      "candidate_name": "reward_largek_mix_1000",
+      "diagnostic_only": false,
+      "description": "Global K=1000: NDCG@1000 + 0.2*Recall@1000 + 0.1*MRR@1000.",
+      "num_groups": 10,
+      "zero_std_group_count": 2,
+      "zero_std_group_rate": 0.2,
+      "mean_group_reward_std": 0.05811021995185941,
+      "mean_reward_spread": 0.1345376838644976,
+      "mean_abs_sequence_advantage": 0.6919105384072218,
+      "retrieval_quality_spread_group_count": 8,
+      "retrieval_quality_spread_group_rate": 0.8,
+      "penalty_only_spread_group_count": 0,
+      "penalty_only_spread_group_rate": 0.0,
+      "groups_with_spread": [
+        "esci_val_0",
+        "esci_val_1",
+        "esci_val_4",
+        "esci_val_5",
+        "esci_val_6",
+        "esci_val_7",
+        "esci_val_8",
+        "esci_val_9"
+      ],
+      "groups_still_collapsed": [
+        "esci_val_2",
+        "esci_val_3"
+      ],
+      "safe_candidate": true
+    },
+    {
+      "candidate_name": "reward_best_global_k",
+      "diagnostic_only": true,
+      "description": "Diagnostic only: max(largek_mix_100, largek_mix_1000) per record.",
+      "num_groups": 10,
+      "zero_std_group_count": 2,
+      "zero_std_group_rate": 0.2,
+      "mean_group_reward_std": 0.05811021995185941,
+      "mean_reward_spread": 0.1345376838644976,
+      "mean_abs_sequence_advantage": 0.6919105384072218,
+      "retrieval_quality_spread_group_count": 8,
+      "retrieval_quality_spread_group_rate": 0.8,
+      "penalty_only_spread_group_count": 0,
+      "penalty_only_spread_group_rate": 0.0,
+      "groups_with_spread": [
+        "esci_val_0",
+        "esci_val_1",
+        "esci_val_4",
+        "esci_val_5",
+        "esci_val_6",
+        "esci_val_7",
+        "esci_val_8",
+        "esci_val_9"
+      ],
+      "groups_still_collapsed": [
+        "esci_val_2",
+        "esci_val_3"
+      ],
+      "safe_candidate": false
+    },
+    {
+      "candidate_name": "reward_per_group_best_k",
+      "diagnostic_only": true,
+      "description": "Diagnostic only: per-group oracle K maximizing group spread.",
+      "num_groups": 10,
+      "zero_std_group_count": 2,
+      "zero_std_group_rate": 0.2,
+      "mean_group_reward_std": 0.07369508365612468,
+      "mean_reward_spread": 0.17052938488426234,
+      "mean_abs_sequence_advantage": 0.6919106952410272,
+      "retrieval_quality_spread_group_count": 8,
+      "retrieval_quality_spread_group_rate": 0.8,
+      "penalty_only_spread_group_count": 0,
+      "penalty_only_spread_group_rate": 0.0,
+      "groups_with_spread": [
+        "esci_val_0",
+        "esci_val_1",
+        "esci_val_4",
+        "esci_val_5",
+        "esci_val_6",
+        "esci_val_7",
+        "esci_val_8",
+        "esci_val_9"
+      ],
+      "groups_still_collapsed": [
+        "esci_val_2",
+        "esci_val_3"
+      ],
+      "safe_candidate": false
+    }
+  ],
+  "gate": {
+    "gate_passed": true,
+    "safe_for_phase_119": true,
+    "recommended_candidate": "reward_largek_mix_1000",
+    "reason": "Deployable global candidate `reward_largek_mix_1000` passes gate: retrieval_spread=0.80, penalty_only=0.00, zero_std=0.20."
+  },
+  "best_non_diagnostic_candidate": "reward_largek_mix_1000",
+  "best_non_diagnostic_zero_std_group_rate": 0.2
+}

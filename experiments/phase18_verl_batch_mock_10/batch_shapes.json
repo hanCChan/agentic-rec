@@ -1,0 +1,41 @@
+{
+  "input_ids": {
+    "shape": [
+      10,
+      1457
+    ],
+    "dtype": "torch.int64"
+  },
+  "attention_mask": {
+    "shape": [
+      10,
+      1457
+    ],
+    "dtype": "torch.int64"
+  },
+  "response_mask": {
+    "shape": [
+      10,
+      1457
+    ],
+    "dtype": "torch.int64"
+  },
+  "rewards": {
+    "shape": [
+      10
+    ],
+    "dtype": "torch.float32"
+  },
+  "prompt_lengths": {
+    "shape": [
+      10
+    ],
+    "dtype": "torch.int64"
+  },
+  "response_lengths": {
+    "shape": [
+      10
+    ],
+    "dtype": "torch.int64"
+  }
+}

@@ -85,4 +85,5 @@ agentic-rec/
 4. ~~**进行中**：Qwen rollout policy smoke~~ ✅ 见 `experiments/phase15_qwen_rollout_smoke/`
 5. ~~**下一步**：prompt 强化 final_answer → VERL rollout wrapper~~ ✅ Phase 1.6 finish-aware 完成
 6. ~~**下一步**：VERL rollout wrapper 骨架（仍不训 GRPO）~~ ✅ Phase 1.7 完成，见 `experiments/phase17_verl_adapter_smoke_10/`
-7. **下一步**：Phase 1.8 — 接到 Rec-R1/VERL reward/rollout 入口（mock shape check，仍不训 GRPO）
+7. ~~**下一步**：Phase 1.8 — VERL batch mock / reward tensor / token mask shape check~~ ✅ 见 `experiments/phase18_verl_batch_mock_10/`
+8. **下一步**：Phase 1.9 — mock batch 对齐 Rec-R1/VERL 训练数据字段（仍不训 GRPO）

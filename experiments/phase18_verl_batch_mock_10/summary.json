@@ -1,0 +1,37 @@
+{
+  "phase": "1.8",
+  "num_records": 10,
+  "batch_size": 10,
+  "seq_len": 1457,
+  "input_ids_shape": [
+    10,
+    1457
+  ],
+  "attention_mask_shape": [
+    10,
+    1457
+  ],
+  "response_mask_shape": [
+    10,
+    1457
+  ],
+  "rewards_shape": [
+    10
+  ],
+  "reward_mean": 0.03305933624505997,
+  "reward_min": -0.15000000596046448,
+  "reward_max": 0.3731973171234131,
+  "avg_prompt_length": 55.29999923706055,
+  "avg_response_length": 1211.800048828125,
+  "num_prompt_truncated": 0,
+  "num_response_truncated": 0,
+  "num_total_truncated": 0,
+  "shape_check_passed": true,
+  "config": {
+    "rollout_path": "experiments/phase17_verl_adapter_smoke_10/rollout_records.jsonl",
+    "tokenizer_path": "/data1/hcc/.hf_home/Qwen2.5-3B-Instruct",
+    "max_prompt_length": 1024,
+    "max_response_length": 2048,
+    "max_total_length": 3072
+  }
+}

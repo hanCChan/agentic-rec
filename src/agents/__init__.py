@@ -4,6 +4,7 @@ from .episode_runner import load_esci_samples, run_finish_aware_episode
 from .qwen_rollout_policy import QwenRolloutPolicy
 from .trajectory import EpisodeTrajectory, save_trajectories_jsonl
 from .verl_rollout_adapter import VerlRolloutAdapter, build_actor_prompt, build_multistep_response
+from .verl_batch_builder import VerlBatchBuilder, check_batch_shapes
 
 __all__ = [
     "ActionParseError",
@@ -18,4 +19,6 @@ __all__ = [
     "VerlRolloutAdapter",
     "build_actor_prompt",
     "build_multistep_response",
+    "VerlBatchBuilder",
+    "check_batch_shapes",
 ]

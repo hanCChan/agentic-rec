@@ -227,6 +227,19 @@ CUDA_VISIBLE_DEVICES=2 python scripts/smoke_verl_rollout_adapter.py \
 
 结果见 [`experiments/phase17_verl_adapter_smoke/`](experiments/phase17_verl_adapter_smoke/README.md)（10 条：finish_rate=1.0，invalid=0.0，num_rollout_records=10）。
 
+### Phase 1.8 已完成：VERL Batch Mock / Shape Check
+
+读取 Phase 1.7 `rollout_records.jsonl`，用 Qwen tokenizer 构造 mock batch（`input_ids` / `attention_mask` / `response_mask` / `rewards`）。**不训练 GRPO，不调用 vLLM/env/BM25。**
+
+```bash
+python scripts/smoke_verl_batch_mock.py \
+  --rollout-path experiments/phase17_verl_adapter_smoke_10/rollout_records.jsonl \
+  --tokenizer-path /data1/hcc/.hf_home/Qwen2.5-3B-Instruct \
+  --output-dir experiments/phase18_verl_batch_mock_10
+```
+
+结果见 [`experiments/phase18_verl_batch_mock/`](experiments/phase18_verl_batch_mock/README.md)（shape_check_passed=true）。
+
 ---
 
 ## 引用

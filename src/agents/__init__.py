@@ -28,6 +28,7 @@ from .ref_kl_dryrun import KL_DRYRUN_WARNING, ReferenceKLDryRun
 from .grpo_advantage_mock import GRPOAdvantageMock, MOCK_GROUP_WARNING
 from .grpo_loss_dryrun import GRPOLossDryRun, LOSS_DRYRUN_WARNING
 from .multisample_episode_runner import MultiSampleEpisodeRunner, trajectory_to_rollout_record
+from .rollout_diagnostics import RolloutDiagnostics, build_case_studies, token_jaccard
 
 __all__ = [
     "ActionParseError",
@@ -66,4 +67,7 @@ __all__ = [
     "LOSS_DRYRUN_WARNING",
     "MultiSampleEpisodeRunner",
     "trajectory_to_rollout_record",
+    "RolloutDiagnostics",
+    "build_case_studies",
+    "token_jaccard",
 ]

@@ -542,6 +542,7 @@ class TinyGrpoSmokeTrainer:
         phase: str = "2.1",
         mode: str = "tiny_grpo_smoke_training",
         stability_monitor: Optional[Any] = None,
+        save_steps: Optional[List[int]] = None,
     ) -> Dict[str, Any]:
         out = Path(output_dir)
         out.mkdir(parents=True, exist_ok=True)
@@ -561,6 +562,8 @@ class TinyGrpoSmokeTrainer:
         checkpoint_dir: Optional[Path] = None
         step_metrics: List[Dict[str, Any]] = []
         merged_records: List[Dict[str, Any]] = []
+        saved_checkpoints: List[Dict[str, Any]] = []
+        save_step_set = set(save_steps) if save_steps is not None else None
 
         try:
             inputs = self._builder.load_inputs(str(rollout_path), str(shaped_reward_path))
@@ -588,9 +591,21 @@ class TinyGrpoSmokeTrainer:
                 if step_result.get("optimizer_step_called"):
                     actual_update_steps += 1
                     optimizer_step_called = True
-                    checkpoint_dir = self._save_checkpoint(out, step_idx)
-                    checkpoint_saved = True
-                    step_result["checkpoint_saved"] = True
+                    should_save = save_step_set is None or step_idx in save_step_set
+                    if should_save:
+                        checkpoint_dir = self._save_checkpoint(out, step_idx)
+                        checkpoint_saved = True
+                        step_result["checkpoint_saved"] = True
+                        saved_checkpoints.append(
+                            {
+                                "step": step_idx,
+                                "path": str(out / "checkpoints" / f"smoke_step_{step_idx}"),
+                                "label": CHECKPOINT_LABEL,
+                                "optimizer_step_called": True,
+                            }
+                        )
+                    else:
+                        step_result["checkpoint_saved"] = False
                     step_result["checkpoint_promoted"] = False
 
                 if stability_monitor is not None:
@@ -713,7 +728,10 @@ class TinyGrpoSmokeTrainer:
             manifest = {
                 "checkpoint_label": CHECKPOINT_LABEL,
                 "checkpoint_promoted": False,
-                "checkpoints": [
+                "save_steps": sorted(save_step_set) if save_step_set is not None else "all",
+                "checkpoints": saved_checkpoints
+                if saved_checkpoints
+                else [
                     {
                         "step": m["step"],
                         "path": str(out / "checkpoints" / f"smoke_step_{m['step']}"),
@@ -721,7 +739,7 @@ class TinyGrpoSmokeTrainer:
                         "optimizer_step_called": m.get("optimizer_step_called", False),
                     }
                     for m in step_metrics
-                    if m.get("optimizer_step_called")
+                    if m.get("optimizer_step_called") and m.get("checkpoint_saved")
                 ],
             }
             (out / "checkpoint_manifest.json").write_text(
@@ -737,6 +755,7 @@ class TinyGrpoSmokeTrainer:
                 "step_metrics": step_metrics,
                 "merged_records": merged_records,
                 "checkpoint_dir": checkpoint_dir,
+                "saved_checkpoints": saved_checkpoints,
                 "adv_meta": adv_meta,
             }
 

@@ -1,0 +1,20 @@
+{
+  "lr_1e-6_completed": true,
+  "lr_5e-7_completed": true,
+  "lr_1e-6_passed": true,
+  "lr_5e-7_passed": true,
+  "comparison": {
+    "run_a_learning_rate": 1e-06,
+    "run_b_learning_rate": 5e-07,
+    "run_a_stability_class": "mild_drift",
+    "run_b_stability_class": "mild_drift",
+    "run_a_max_approx_kl": 0.027961695566773415,
+    "run_b_max_approx_kl": 0.004605456721037626,
+    "run_a_max_grad_norm": 0.427734375,
+    "run_b_max_grad_norm": 0.421875,
+    "run_a_ten_step_smoke_passed": true,
+    "run_b_ten_step_smoke_passed": true,
+    "recommended_learning_rate": 5e-07,
+    "both_stable": true
+  }
+}

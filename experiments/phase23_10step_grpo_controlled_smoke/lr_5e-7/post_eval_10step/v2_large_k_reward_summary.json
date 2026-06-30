@@ -1,0 +1,52 @@
+{
+  "num_groups": 20,
+  "num_rollout_records": 80,
+  "candidate_name": "reward_largek_mix_1000",
+  "candidate_summary": {
+    "candidate_name": "reward_largek_mix_1000",
+    "diagnostic_only": false,
+    "description": "Global K=1000: NDCG@1000 + 0.2*Recall@1000 + 0.1*MRR@1000.",
+    "num_groups": 20,
+    "zero_std_group_count": 3,
+    "zero_std_group_rate": 0.15,
+    "mean_group_reward_std": 0.06860455230893622,
+    "mean_reward_spread": 0.16521315992247682,
+    "mean_abs_sequence_advantage": 0.7747239863085269,
+    "retrieval_quality_spread_group_count": 17,
+    "retrieval_quality_spread_group_rate": 0.85,
+    "penalty_only_spread_group_count": 0,
+    "penalty_only_spread_group_rate": 0.0,
+    "groups_with_spread": [
+      "esci_val_0",
+      "esci_val_1",
+      "esci_val_10",
+      "esci_val_12",
+      "esci_val_13",
+      "esci_val_14",
+      "esci_val_15",
+      "esci_val_17",
+      "esci_val_18",
+      "esci_val_35",
+      "esci_val_37",
+      "esci_val_4",
+      "esci_val_5",
+      "esci_val_52",
+      "esci_val_57",
+      "esci_val_7",
+      "esci_val_9"
+    ],
+    "groups_still_collapsed": [
+      "esci_val_11",
+      "esci_val_19",
+      "esci_val_21"
+    ],
+    "safe_candidate": true
+  },
+  "gate_passed": true,
+  "scale_gate_passed": true,
+  "recommended_candidate": "reward_ndcg1000",
+  "gate_reason": "Deployable global candidate `reward_ndcg1000` passes gate: retrieval_spread=0.85, penalty_only=0.00, zero_std=0.15.",
+  "zero_std_group_rate": 0.15,
+  "retrieval_quality_spread_group_rate": 0.85,
+  "penalty_only_spread_group_rate": 0.0
+}

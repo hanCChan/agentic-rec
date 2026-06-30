@@ -1,0 +1,18 @@
+{
+  "checkpoint_path": "experiments/phase23_10step_grpo_controlled_smoke/lr_5e-7/checkpoints/smoke_step_10",
+  "checkpoint_label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+  "num_groups": 20,
+  "num_rollout_records": 80,
+  "num_failures": 0,
+  "parse_success_rate": 1.0,
+  "finish_rate": 1.0,
+  "invalid_action_rate": 0.0,
+  "zero_std_group_rate": 0.15,
+  "retrieval_quality_spread_group_rate": 0.85,
+  "mean_reward_largek_mix_1000": 0.3893170713839431,
+  "mean_ndcg1000": 0.21796498954049362,
+  "mean_recall1000": 0.7826736111111111,
+  "mean_mrr1000": 0.14817359621227238,
+  "json_format_ok": true,
+  "eval_passed": true
+}

@@ -102,6 +102,7 @@ def run_finish_aware_episode(
     env: CommerceAgentEnv,
     policy: QwenRolloutPolicy,
     sample: Dict[str, Any],
+    sample_seed: int | None = None,
 ) -> Dict[str, Any]:
     """Run one finish-aware CommerceAgentEnv episode and return trajectory dict."""
     user_query = sample["user_query"]
@@ -153,6 +154,7 @@ def run_finish_aware_episode(
             remaining_steps=remaining,
             best_query_by_ndcg=best_query_by_ndcg,
             best_ndcg_at_10=best_ndcg_at_10,
+            seed=(sample_seed + current_step) if sample_seed is not None else None,
         )
         total_output_tokens += policy.count_output_tokens(policy_out["raw_output"])
         total_policy_steps += 1

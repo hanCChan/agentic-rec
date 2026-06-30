@@ -27,6 +27,7 @@ from .actor_logprob_dryrun import DRYRUN_WARNING, ActorLogProbDryRun
 from .ref_kl_dryrun import KL_DRYRUN_WARNING, ReferenceKLDryRun
 from .grpo_advantage_mock import GRPOAdvantageMock, MOCK_GROUP_WARNING
 from .grpo_loss_dryrun import GRPOLossDryRun, LOSS_DRYRUN_WARNING
+from .multisample_episode_runner import MultiSampleEpisodeRunner, trajectory_to_rollout_record
 
 __all__ = [
     "ActionParseError",
@@ -63,4 +64,6 @@ __all__ = [
     "MOCK_GROUP_WARNING",
     "GRPOLossDryRun",
     "LOSS_DRYRUN_WARNING",
+    "MultiSampleEpisodeRunner",
+    "trajectory_to_rollout_record",
 ]

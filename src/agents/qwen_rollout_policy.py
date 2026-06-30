@@ -86,6 +86,7 @@ class QwenRolloutPolicy:
         remaining_steps: int | None = None,
         best_query_by_ndcg: str | None = None,
         best_ndcg_at_10: float | None = None,
+        seed: int | None = None,
     ) -> Dict[str, Any]:
         filled = build_rollout_prompt(
             user_query=user_query,
@@ -99,7 +100,20 @@ class QwenRolloutPolicy:
         )
         prompt = self._format_prompt(filled)
 
-        outputs = self.llm.generate([prompt], self._sampling_params)
+        if seed is not None:
+            from vllm import SamplingParams
+
+            sampling_params = SamplingParams(
+                temperature=self.temperature,
+                top_p=self.top_p,
+                max_tokens=self.max_tokens,
+                n=1,
+                seed=seed,
+            )
+        else:
+            sampling_params = self._sampling_params
+
+        outputs = self.llm.generate([prompt], sampling_params)
         raw_output = outputs[0].outputs[0].text.strip()
 
         error_parts: List[str] = []

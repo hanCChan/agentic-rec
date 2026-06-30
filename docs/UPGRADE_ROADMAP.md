@@ -94,4 +94,5 @@ agentic-rec/
 13. ~~**下一步**：Phase 1.14 — Reference LogProb / KL Dry-Run 设计~~ ✅ 见 `experiments/phase114_ref_kl_dryrun_2/`
 14. ~~**下一步**：Phase 1.15 — GRPO Advantage Mock / Grouped Reward Dry-Run~~ ✅ 见 `experiments/phase115_grpo_advantage_mock_10_g4/`
 15. ~~**下一步**：Phase 1.16 — GRPO Loss Dry-Run~~ ✅ 见 `experiments/phase116_grpo_loss_dryrun_10_g4/`
-16. **下一步**：Phase 1.17 — Real Multi-Sample Rollout Smoke
+16. ~~**下一步**：Phase 1.17 — Real Multi-Sample Rollout Smoke~~ ✅ 见 `experiments/phase117_multisample_rollout_5_g4/`
+17. **下一步**：Phase 1.18 — Real GRPO Loss Dry-Run（或若 `zero_std_group_rate` 高则先做 Phase 1.18a Rollout Diversity Diagnostics）

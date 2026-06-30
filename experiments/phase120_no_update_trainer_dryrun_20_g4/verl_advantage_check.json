@@ -1,0 +1,20 @@
+{
+  "advantage_check_passed": true,
+  "advantages_shape": [
+    80,
+    1440
+  ],
+  "returns_shape": [
+    80,
+    1440
+  ],
+  "mean_abs_sequence_advantage": 0.6610666513442993,
+  "zero_std_group_rate": 0.15,
+  "num_groups": 20,
+  "padding_advantages_zero": false,
+  "used_verl_compute_advantage": true,
+  "fallback_to_project_advantage": false,
+  "fallback_reason": null,
+  "norm_adv_by_std_in_grpo": true,
+  "num_repeat": 4
+}

@@ -106,5 +106,6 @@ agentic-rec/
 25. ~~**下一步**：Phase 1.18f — Large-K Reward Candidate Dry-Run~~ ✅ 见 `experiments/phase118f_large_k_reward_dryrun_5_g4/`
 26. ~~**下一步**：Phase 1.19 — Real GRPO Loss Dry-Run with reward_largek_mix_1000~~ ✅ 见 `experiments/phase119_real_grpo_loss_dryrun_5_g4_largek1000/`
 27. ~~**进行中**：Phase 1.19b — 10_g4 / 20_g4 scale gate check~~ ✅ 见 `experiments/phase119b_scale_gate_check/`（**stable gate passed**）
-28. **下一步**：Phase 1.20 — No-update VERL Trainer Dry-Run
-29. **并行**：Phase 1.18g / 1.18h — 处理 BM25 failure + strategy collapse（不阻塞 1.20 dry-run）
+28. ~~**下一步**：Phase 1.20 — No-update VERL Trainer Dry-Run~~ ✅ 见 `experiments/phase120_no_update_trainer_dryrun_20_g4/`
+29. **下一步**：Phase 1.18g / 1.18h — BM25 failure + strategy collapse cleanup
+30. **之后**：Phase 2.1 — Tiny GRPO Smoke Training（极小步数，需 1.18g/1.18h 改善后）

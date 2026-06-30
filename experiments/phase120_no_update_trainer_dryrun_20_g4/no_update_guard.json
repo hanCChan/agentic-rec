@@ -1,0 +1,7 @@
+{
+  "trainer_fit_called": false,
+  "update_actor_called": false,
+  "optimizer_step_called": false,
+  "no_update_guard_passed": true,
+  "optimizer_step_guard_enabled": true
+}

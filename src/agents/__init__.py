@@ -46,6 +46,12 @@ from .scale_gate_check import (
     build_scale_gate_comparison_md,
     build_scale_gate_recommendations_md,
 )
+from .no_update_trainer_dryrun import (
+    NO_UPDATE_TRAINER_WARNING,
+    NoUpdateGuard,
+    NoUpdateTrainerDryRun,
+    build_no_update_trainer_report,
+)
 
 __all__ = [
     "ActionParseError",
@@ -108,4 +114,8 @@ __all__ = [
     "ScaleGateCheck",
     "build_scale_gate_comparison_md",
     "build_scale_gate_recommendations_md",
+    "NoUpdateTrainerDryRun",
+    "NoUpdateGuard",
+    "NO_UPDATE_TRAINER_WARNING",
+    "build_no_update_trainer_report",
 ]

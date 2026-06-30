@@ -1,0 +1,35 @@
+{
+  "trainer_required_keys_passed": true,
+  "missing_batch_keys": [],
+  "missing_non_tensor_keys": [],
+  "batch_size": 80,
+  "num_unique_uids": 20,
+  "uid_equals_group_id": true,
+  "all_groups_size_equal_rollout_n": true,
+  "uid_group_sizes_sample": {
+    "esci_val_0": 4,
+    "esci_val_1": 4,
+    "esci_val_10": 4,
+    "esci_val_11": 4,
+    "esci_val_12": 4
+  },
+  "required_batch_keys_present": [
+    "input_ids",
+    "attention_mask",
+    "position_ids",
+    "prompts",
+    "responses",
+    "response_mask",
+    "token_level_rewards",
+    "old_log_probs",
+    "ref_log_probs"
+  ],
+  "required_non_tensor_keys_present": [
+    "uid",
+    "sample_id",
+    "group_id",
+    "group_index",
+    "strategy_name",
+    "reward_candidate"
+  ]
+}

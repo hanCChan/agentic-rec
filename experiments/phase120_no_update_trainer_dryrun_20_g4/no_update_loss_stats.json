@@ -1,0 +1,55 @@
+{
+  "loss_output": {
+    "policy_loss_value": -0.007683046627789736,
+    "clipfrac": 0.0,
+    "mean_valid_ratio": 1.0202014446258545,
+    "min_valid_ratio": 1.020201325416565,
+    "max_valid_ratio": 1.020201325416565,
+    "mean_valid_kl": 0.019999997690320015,
+    "mean_valid_kl_penalty": 0.00019999990763608366,
+    "loss_agg_mode": "token-mean",
+    "cliprange": 0.2,
+    "kl_coef": 0.01,
+    "is_dryrun": true
+  },
+  "loss_check": {
+    "loss_check_passed": true,
+    "policy_loss_finite": true,
+    "ratio_finite": true,
+    "kl_finite": true,
+    "padding_loss_zero": true,
+    "padding_ratio_zero": true,
+    "padding_kl_zero": true,
+    "policy_loss_mat_shape": [
+      80,
+      1440
+    ],
+    "ratio_shape": [
+      80,
+      1440
+    ],
+    "token_kl_shape": [
+      80,
+      1440
+    ],
+    "kl_penalty_shape": [
+      80,
+      1440
+    ],
+    "clipfrac": 0.0,
+    "mean_valid_ratio": 1.0202014446258545,
+    "mean_valid_kl": 0.019999997690320015
+  },
+  "loss_input_check": {
+    "loss_input_check_passed": true,
+    "missing_keys": [],
+    "advantages_shape": [
+      80,
+      1440
+    ],
+    "old_log_probs_shape": [
+      80,
+      1440
+    ]
+  }
+}

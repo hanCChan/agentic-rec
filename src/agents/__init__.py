@@ -34,6 +34,7 @@ from .reward_shaping_dryrun import RewardShapingDryRun, build_candidate_comparis
 from .search_strategy_prompts import DEFAULT_STRATEGY_ORDER, SEARCH_STRATEGIES, get_strategy
 from .strategy_episode_runner import StrategyEpisodeRunner
 from .strategy_reward_decomposition import StrategyRewardDecomposition, build_case_studies as build_decomposition_case_studies
+from .qrels_metric_blindness import QrelsMetricBlindness, build_metric_blindness_report
 
 __all__ = [
     "ActionParseError",
@@ -86,4 +87,6 @@ __all__ = [
     "StrategyEpisodeRunner",
     "StrategyRewardDecomposition",
     "build_decomposition_case_studies",
+    "QrelsMetricBlindness",
+    "build_metric_blindness_report",
 ]

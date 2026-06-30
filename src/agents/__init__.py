@@ -31,6 +31,8 @@ from .multisample_episode_runner import MultiSampleEpisodeRunner, trajectory_to_
 from .rollout_diagnostics import RolloutDiagnostics, build_case_studies, token_jaccard
 from .reward_sensitivity_diagnostics import RewardSensitivityDiagnostics, build_reward_recommendations
 from .reward_shaping_dryrun import RewardShapingDryRun, build_candidate_comparison_md, build_reward_shaping_recommendations
+from .search_strategy_prompts import DEFAULT_STRATEGY_ORDER, SEARCH_STRATEGIES, get_strategy
+from .strategy_episode_runner import StrategyEpisodeRunner
 
 __all__ = [
     "ActionParseError",
@@ -77,4 +79,8 @@ __all__ = [
     "RewardShapingDryRun",
     "build_candidate_comparison_md",
     "build_reward_shaping_recommendations",
+    "SEARCH_STRATEGIES",
+    "DEFAULT_STRATEGY_ORDER",
+    "get_strategy",
+    "StrategyEpisodeRunner",
 ]

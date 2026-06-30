@@ -1,0 +1,39 @@
+{
+  "strategies": [
+    "exact_match",
+    "attribute_expansion",
+    "broad_recall",
+    "constraint_preserving"
+  ],
+  "per_strategy_stats": {
+    "exact_match": {
+      "mean_reward": -0.01891259906685221,
+      "mean_ndcg_at_10": 0.0740582672887652,
+      "best_group_count": 2
+    },
+    "attribute_expansion": {
+      "mean_reward": -0.008912599066852211,
+      "mean_ndcg_at_10": 0.0740582672887652,
+      "best_group_count": 1
+    },
+    "broad_recall": {
+      "mean_reward": 0.19036632700458508,
+      "mean_ndcg_at_10": 0.20024421800305667,
+      "best_group_count": 2
+    },
+    "constraint_preserving": {
+      "mean_reward": -0.008912599066852211,
+      "mean_ndcg_at_10": 0.0740582672887652,
+      "best_group_count": 0
+    }
+  },
+  "best_strategy_overall_by_mean_reward": "broad_recall",
+  "best_strategy_overall_by_mean_ndcg_at_10": "broad_recall",
+  "phase117_baseline_comparison": {
+    "zero_std_group_rate": 0.8,
+    "mean_unique_final_query_count": 2.0,
+    "mean_unique_trajectory_count": 3.4,
+    "mean_pairwise_final_query_jaccard": 0.776,
+    "mean_pairwise_trajectory_jaccard": 0.734
+  }
+}

@@ -87,6 +87,8 @@ class QwenRolloutPolicy:
         best_query_by_ndcg: str | None = None,
         best_ndcg_at_10: float | None = None,
         seed: int | None = None,
+        strategy_name: str | None = None,
+        strategy_instruction: str | None = None,
     ) -> Dict[str, Any]:
         filled = build_rollout_prompt(
             user_query=user_query,
@@ -97,6 +99,8 @@ class QwenRolloutPolicy:
             remaining_steps=remaining_steps,
             best_query_by_ndcg=best_query_by_ndcg,
             best_ndcg_at_10=best_ndcg_at_10,
+            strategy_name=strategy_name,
+            strategy_instruction=strategy_instruction,
         )
         prompt = self._format_prompt(filled)
 

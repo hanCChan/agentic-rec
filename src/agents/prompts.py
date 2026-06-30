@@ -29,6 +29,8 @@ def build_rollout_prompt(
     remaining_steps: int | None = None,
     best_query_by_ndcg: str | None = None,
     best_ndcg_at_10: float | None = None,
+    strategy_name: str | None = None,
+    strategy_instruction: str | None = None,
 ) -> str:
     obs = observation.strip() if observation.strip() else "(none yet — you have not searched)"
     remaining = remaining_steps if remaining_steps is not None else max(max_steps - current_step + 1, 0)
@@ -45,10 +47,23 @@ def build_rollout_prompt(
         last_step_rule = """
 - You have only 2 steps left. Prefer one more bm25_search, then you must finish with final_answer."""
 
+    strategy_block = ""
+    if strategy_name and strategy_instruction:
+        strategy_block = f"""
+Search strategy name: {strategy_name}
+Search strategy instruction:
+{strategy_instruction}
+
+You must follow the assigned search strategy.
+Do not switch to another strategy.
+The goal is not to produce the most generic rewrite, but to produce a valid rewrite under this strategy.
+"""
+
     return f"""You are an e-commerce search agent.
 
 Your task is to improve product search for a user shopping query.
 You can interact with a BM25 search engine for at most {max_steps} steps.
+{strategy_block}
 
 Current step: {current_step} of {max_steps}
 Remaining steps: {remaining}

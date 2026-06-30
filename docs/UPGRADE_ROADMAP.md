@@ -98,4 +98,6 @@ agentic-rec/
 17. ~~**下一步**：Phase 1.18 — Real GRPO Loss Dry-Run（或若 `zero_std_group_rate` 高则先做 Phase 1.18a Rollout Diversity Diagnostics）~~ ✅ 见 `experiments/phase118a_rollout_diagnostics_5_g4/`
 18. ~~**下一步**：Phase 1.18b — Reward Sensitivity Diagnostics~~ ✅ 见 `experiments/phase118b_reward_sensitivity_5_g4/`
 19. ~~**下一步**：Phase 1.18c — Reward Shaping Proposal + Dry-Run~~ ✅ 见 `experiments/phase118c_reward_shaping_dryrun_5_g4/`
-20. **下一步**：Phase 1.18d — Rollout Diversity Prompt / Search Strategy Fix（无 safe training candidate）
+20. ~~**下一步**：Phase 1.18c — Reward Shaping Proposal + Dry-Run~~ ✅ 见 `experiments/phase118c_reward_shaping_dryrun_5_g4/`
+21. ~~**下一步**：Phase 1.18d — Rollout Diversity Prompt / Search Strategy Fix~~ ✅ 见 `experiments/phase118d_strategy_rollout_5_g4/`
+22. **下一步**：Phase 1.18e — Qrels / Metric Blindness Analysis（若 strategy rollout 后 zero_std 仍高）

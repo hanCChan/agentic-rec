@@ -45,6 +45,8 @@ clean 20_g4 → V2 strategy rollout → reward_largek_mix_1000
 
 **Smoke/pilot checkpoint 仅本地保存，标记 `SMOKE_ONLY_DO_NOT_PROMOTE`，不提交 Git、不可 promote。**
 
+**Claim boundary（当前口径）：** Phase 2.4 证明 pilot 级工程稳定性与 curated clean 20 groups 上的 early fresh-eval 信号；**不**代表完整 benchmark 结论或超越 Rec-R1。详见 [docs/EXTERNAL_CLAIMS_GUIDE.md](./docs/EXTERNAL_CLAIMS_GUIDE.md) 与 [docs/PHASE2_5_ALIGNMENT_QUESTIONS.md](./docs/PHASE2_5_ALIGNMENT_QUESTIONS.md)。
+
 ---
 
 ## 核心思路

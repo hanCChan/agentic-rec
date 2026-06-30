@@ -114,4 +114,14 @@ agentic-rec/
 33. ~~**下一步**：Phase 2.3 — 10-Step Controlled GRPO Smoke~~ ✅ 见 `experiments/phase23_10step_grpo_controlled_smoke/`（commit `5475563`；lr=1e-6 与 5e-7 均通过；`both_stable=true`，推荐 lr=5e-7）
 34. ~~**下一步**：Phase 2.4a — 50-Step Pilot GRPO Training Plan~~ ✅ 见 `docs/PHASE2_4_50STEP_PILOT_PLAN.md`（commit `6d9953c`）
 35. ~~**下一步**：Phase 2.4 — 50-step controlled pilot~~ ✅ 见 `experiments/phase24_50step_grpo_pilot/`（commit `286b12c`；lr=5e-7，`pilot_passed=true`，fresh eval 0.373→0.395）
-36. **下一步**：Phase 2.5 — 200-step pilot plan 或 clean set 扩到 50–100 groups（只写计划，不直接开跑）
+36. **下一步**：Phase 2.5 — 扩 clean set + held-out + 200-step pilot 计划（见 `docs/PHASE2_5_ALIGNMENT_QUESTIONS.md`、`docs/EXTERNAL_CLAIMS_GUIDE.md`；只写计划，不直接开跑）
+
+## Claim Boundary（当前口径）
+
+```text
+Rec-R1 范式延伸 + Agentic Search 工程化 + pilot 级 GRPO 验证
+≠ 完整 Rec-R1 benchmark 复现并超越
+
+Phase 2.4: pilot 工程稳定 + curated 20 groups fresh eval early signal
+Phase 2.5+: 泛化、baseline、ablation 才能支撑 L3 科学结论
+```

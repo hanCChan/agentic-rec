@@ -4,6 +4,9 @@
 
 ## Phase 1.x — Engineering Dry-Run (archived locally, metrics summarized here)
 
+> Phase 1.15–1.20 / 1.19b experiment directories were removed from Git in cleanup commit `3161297`.
+> Core metrics are summarized below; detailed JSONL artifacts are not in the repo.
+
 | Phase | Commit | Dir | Key Result | Trained? | Next |
 |-------|--------|-----|------------|----------|------|
 | 1.15–1.20 | `98024c1` etc. | (removed) | DataProto, logprob, advantage, loss, no-update trainer dry-run | No | Phase 2.1 |
@@ -21,6 +24,10 @@
 | **2.4** | `286b12c` | `experiments/phase24_50step_grpo_pilot/` | 50/50 steps, pilot_passed, max_kl=0.049, fresh eval reward 0.373→0.395 | 50 steps | SMOKE_ONLY |
 
 ### Phase 2.4 Fresh Eval Curve
+
+> **Note:** In-batch training `mean_reward` stayed flat (~0.373) on fixed preflight batch.
+> The +5.9% trend below is from **fresh rollout eval**, not the training reward curve.
+> See [EXTERNAL_CLAIMS_GUIDE.md](./EXTERNAL_CLAIMS_GUIDE.md).
 
 | Step | mean_reward_largek_mix_1000 | parse_success_rate |
 |------|----------------------------|-------------------|
@@ -54,4 +61,14 @@ checkpoint_promoted = false
 
 ## Next Step
 
-**Phase 2.5**: 200-step pilot or expand clean set to 50–100 groups (plan only, do not auto-run).
+**Phase 2.5**: Expand clean set (50 train + 20 heldout from ESCI val rescan), fix eval bugs, write 200-step pilot plan. See [PHASE2_5_ALIGNMENT_QUESTIONS.md](./PHASE2_5_ALIGNMENT_QUESTIONS.md).
+
+## Claim Boundary
+
+```text
+Phase 2.4 establishes pilot-level engineering stability and early fresh-eval signal
+on a curated clean 20-group set. It does NOT establish full benchmark performance
+or outperformance over Rec-R1.
+```
+
+See [EXTERNAL_CLAIMS_GUIDE.md](./EXTERNAL_CLAIMS_GUIDE.md).

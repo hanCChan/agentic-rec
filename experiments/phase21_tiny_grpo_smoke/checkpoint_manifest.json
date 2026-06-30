@@ -1,0 +1,11 @@
+{
+  "checkpoint_label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+  "checkpoint_promoted": false,
+  "checkpoints": [
+    {
+      "step": 1,
+      "path": "experiments/phase21_tiny_grpo_smoke/checkpoints/smoke_step_1",
+      "optimizer_step_called": true
+    }
+  ]
+}

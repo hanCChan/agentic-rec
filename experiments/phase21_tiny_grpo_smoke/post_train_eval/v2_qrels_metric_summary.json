@@ -1,0 +1,33 @@
+{
+  "phase": "1.18e",
+  "num_groups": 20,
+  "num_rollout_records": 80,
+  "k_list": [
+    10,
+    50,
+    100,
+    1000
+  ],
+  "metric_blindness_type_counts": {
+    "small_k_blind_large_k_signal": 15,
+    "metric_has_quality_signal": 2,
+    "qrels_sparse_all_k_blind": 1,
+    "strategy_query_too_similar": 2
+  },
+  "metric_has_quality_signal_group_rate": 0.1,
+  "small_k_blind_large_k_signal_group_rate": 0.75,
+  "qrels_sparse_all_k_blind_group_rate": 0.05,
+  "bm25_retrieval_failure_group_rate": 0.0,
+  "strategy_query_too_similar_group_rate": 0.1,
+  "mean_ndcg10_spread": 0.07835369102954079,
+  "mean_ndcg100_spread": 0.12113819946657416,
+  "mean_ndcg1000_spread": 0.11853216764108253,
+  "mean_recall100_spread": 0.20833333333333334,
+  "mean_recall1000_spread": 0.21513888888888888,
+  "mean_mrr100_spread": 0.086157258223578,
+  "qrels_sparse_query_rate": 0.35,
+  "bm25_can_retrieve_query_rate": 1.0,
+  "recommended_next_phase": "Phase 1.18f: Large-K Reward Candidate Dry-Run",
+  "recommendation": "Some groups show retrieval-quality spread at larger K. Proceed to Phase 1.18f reward candidate dry-run, then re-run Phase 1.19a gate.",
+  "is_training": false
+}

@@ -1,0 +1,15 @@
+{
+  "num_groups": 20,
+  "excluded_group_ids": [
+    "esci_val_3"
+  ],
+  "num_replacements_added": 2,
+  "replacement_group_ids": [
+    "esci_val_52",
+    "esci_val_57"
+  ],
+  "has_bm25_failure": false,
+  "has_qrels_sparse_all_k_blind": false,
+  "has_strategy_collapse": false,
+  "phase2_clean_set_ready": true
+}

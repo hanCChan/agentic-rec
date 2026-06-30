@@ -1,0 +1,800 @@
+{
+  "strategy_version": "v2",
+  "strategies": [
+    "exact_match",
+    "attribute_expansion",
+    "broad_recall",
+    "constraint_preserving"
+  ],
+  "v1_effect": {
+    "group_summaries": [
+      {
+        "group_id": "esci_val_0",
+        "original_query": "bathroom fan without light",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.6396825396825397,
+        "reward_largek_mix_1000_spread": 0.05000000000000002,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "bathroom fan without light",
+          "bathroom fan without light pack",
+          "bathroom fan without light source",
+          "bathroom fan without light and no lights"
+        ]
+      },
+      {
+        "group_id": "esci_val_1",
+        "original_query": "!awnmower tires without rims",
+        "unique_final_query_count": 2,
+        "avg_pairwise_final_query_jaccard": 0.75,
+        "reward_largek_mix_1000_spread": 0.9963946303571863,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "!awnmower tires without rims",
+          "!awnmower tires without rims",
+          "lawn mower tires without rims",
+          "!awnmower tires without rims"
+        ]
+      },
+      {
+        "group_id": "esci_val_10",
+        "original_query": "resveratrol complex 60 caps",
+        "unique_final_query_count": 3,
+        "avg_pairwise_final_query_jaccard": 0.8111111111111112,
+        "reward_largek_mix_1000_spread": 0.05000000000000002,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "resveratrol complex 60 caps",
+          "resveratrol complex 60 caps pack",
+          "resveratrol complex 60 caps",
+          "resveratrol complex 60 caps tablet"
+        ]
+      },
+      {
+        "group_id": "esci_val_11",
+        "original_query": "#10 window envelopes not self seal",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.5684523809523809,
+        "reward_largek_mix_1000_spread": 0.1540638254201495,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "#10 window envelopes not self-seal",
+          "#10 window envelopes not self seal size material",
+          "#10 window envelopes not self seal",
+          "#10 window envelopes without self seal"
+        ]
+      },
+      {
+        "group_id": "esci_val_12",
+        "original_query": "#4 braiding hair not stretched",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.47301587301587295,
+        "reward_largek_mix_1000_spread": 0.05000000000000002,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "#4 braiding hair not stretched",
+          "not stretched pre-stretched hair not stretched",
+          "braiding hair not pre-stretched",
+          "#4 braiding hair without stretched"
+        ]
+      },
+      {
+        "group_id": "esci_val_13",
+        "original_query": "overnight pads for women extra heavy without wings",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.6444805194805194,
+        "reward_largek_mix_1000_spread": 0.0,
+        "zero_std": true,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "overnight pads for women extra heavy wings",
+          "overnight pads for women extra heavy without wings pack size 12",
+          "women overnight pads extra heavy without wings",
+          "overnight pads for women extra heavy without wings under brand not wings"
+        ]
+      },
+      {
+        "group_id": "esci_val_14",
+        "original_query": "10 hour pads without wings",
+        "unique_final_query_count": 3,
+        "avg_pairwise_final_query_jaccard": 0.7867063492063493,
+        "reward_largek_mix_1000_spread": 0.0,
+        "zero_std": true,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "10 hour pads without wings -flex-wings",
+          "10 hour pads without wings pack alternatives",
+          "10 hour pads without wings",
+          "10 hour pads without wings"
+        ]
+      },
+      {
+        "group_id": "esci_val_15",
+        "original_query": "maxi pads without wings",
+        "unique_final_query_count": 3,
+        "avg_pairwise_final_query_jaccard": 0.8666666666666667,
+        "reward_largek_mix_1000_spread": 0.0,
+        "zero_std": true,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "maxi pads without wings wings",
+          "maxi pads without wings non-wings",
+          "maxi pads without wings",
+          "maxi pads without wings non-wings"
+        ]
+      },
+      {
+        "group_id": "esci_val_17",
+        "original_query": "always maxi overnight pads without wings",
+        "unique_final_query_count": 3,
+        "avg_pairwise_final_query_jaccard": 0.5833333333333334,
+        "reward_largek_mix_1000_spread": 0.05000000000000002,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "always maxi overnight pads without wings",
+          "always maxi overnight pads without wings size and heavy duty",
+          "maxi overnight pads",
+          "always maxi overnight pads without wings"
+        ]
+      },
+      {
+        "group_id": "esci_val_18",
+        "original_query": "always maxi pads long super without wings",
+        "unique_final_query_count": 3,
+        "avg_pairwise_final_query_jaccard": 0.7797619047619048,
+        "reward_largek_mix_1000_spread": 0.0,
+        "zero_std": true,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "always maxi pads long super wings",
+          "always maxi pads long super without wings size",
+          "always maxi pads long without wings",
+          "always maxi pads long super wings"
+        ]
+      },
+      {
+        "group_id": "esci_val_19",
+        "original_query": "#8 tags without string",
+        "unique_final_query_count": 3,
+        "avg_pairwise_final_query_jaccard": 0.6222222222222222,
+        "reward_largek_mix_1000_spread": 0.050000000000000044,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "no string tags #8",
+          "8 tags without string",
+          "#8 tags without string",
+          "#8 tags without string"
+        ]
+      },
+      {
+        "group_id": "esci_val_4",
+        "original_query": "#10 window envelopes without plastic",
+        "unique_final_query_count": 2,
+        "avg_pairwise_final_query_jaccard": 0.8571428571428572,
+        "reward_largek_mix_1000_spread": 0.04999999999999999,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "#10 window envelopes without plastic",
+          "#10 window envelopes without plastic",
+          "#10 window envelopes without plastic",
+          "#10 window envelopes without plastic -self seal"
+        ]
+      },
+      {
+        "group_id": "esci_val_5",
+        "original_query": "10 open window envelopes without plastic window",
+        "unique_final_query_count": 3,
+        "avg_pairwise_final_query_jaccard": 0.7946428571428572,
+        "reward_largek_mix_1000_spread": 0.0,
+        "zero_std": true,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "10 open window envelopes without plastic window",
+          "10 open window envelopes without plastic window window envelope",
+          "10 open window envelopes without plastic window",
+          "10 open window envelopes no plastic window"
+        ]
+      },
+      {
+        "group_id": "esci_val_7",
+        "original_query": "08 do not disturb",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.41203703703703703,
+        "reward_largek_mix_1000_spread": 0.15,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "08 do not disturb -socks -gaming -gifts",
+          "08 do not disturb heavy duty",
+          "do not disturb alarm clock",
+          "08 do not disturb without accessory"
+        ]
+      },
+      {
+        "group_id": "esci_val_9",
+        "original_query": "#1 best and not expensive bath back brush cream color",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.6322751322751322,
+        "reward_largek_mix_1000_spread": 0.0,
+        "zero_std": true,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "#1 best and not expensive bath back brush cream color",
+          "bath back brush cream color not expensive",
+          "bath back cream color",
+          "#1 best bath back brush cream color not expensive"
+        ]
+      }
+    ],
+    "num_groups": 15,
+    "strategy_collapse_count": 0,
+    "zero_std_group_count": 6,
+    "zero_std_group_rate": 0.4
+  },
+  "v2_effect": {
+    "group_summaries": [
+      {
+        "group_id": "esci_val_0",
+        "original_query": "bathroom fan without light",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.5138888888888888,
+        "reward_largek_mix_1000_spread": 0.04889575391467898,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "bathroom fan without light",
+          "bathroom fan without light business security",
+          "bathroom exhaust fan no light",
+          "bathroom fan no light no illumination"
+        ]
+      },
+      {
+        "group_id": "esci_val_1",
+        "original_query": "!awnmower tires without rims",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.2594246031746032,
+        "reward_largek_mix_1000_spread": 0.8809297535714575,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "!awnmower tires without rims",
+          "!awnmower tires without rims business security adhesive peel seal gummed pack white office mailing",
+          "tires without rims lawn mower",
+          "!awnmower tires no rim"
+        ]
+      },
+      {
+        "group_id": "esci_val_10",
+        "original_query": "resveratrol complex 60 caps",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.5944444444444443,
+        "reward_largek_mix_1000_spread": 0.16585087437446414,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "resveratrol complex 60 caps",
+          "resveratrol complex 60 caps pack",
+          "resveratrol formula 60 caps",
+          "resveratrol complex 60 caps no window"
+        ]
+      },
+      {
+        "group_id": "esci_val_11",
+        "original_query": "#10 window envelopes not self seal",
+        "unique_final_query_count": 3,
+        "avg_pairwise_final_query_jaccard": 0.7946428571428571,
+        "reward_largek_mix_1000_spread": 0.0018396266796015803,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "#10 window envelopes not self seal",
+          "#10 window envelopes not self seal security",
+          "10 window envelopes not self seal",
+          "#10 window envelopes not self seal"
+        ]
+      },
+      {
+        "group_id": "esci_val_12",
+        "original_query": "#4 braiding hair not stretched",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.6984126984126985,
+        "reward_largek_mix_1000_spread": 0.011350950089777712,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "#4 braiding hair not stretched",
+          "#4 braiding hair not stretched business",
+          "#4 braiding hair not stretched not loose",
+          "#4 braiding hair not pre-stretched"
+        ]
+      },
+      {
+        "group_id": "esci_val_13",
+        "original_query": "overnight pads for women extra heavy without wings",
+        "unique_final_query_count": 3,
+        "avg_pairwise_final_query_jaccard": 0.7655723905723907,
+        "reward_largek_mix_1000_spread": 0.11107459217028129,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "overnight pads for women extra heavy without wings",
+          "overnight pads for women extra heavy without wings office security adhesive",
+          "overnight pads for women extra heavy without wings",
+          "overnight pads for women extra heavy no wings"
+        ]
+      },
+      {
+        "group_id": "esci_val_14",
+        "original_query": "10 hour pads without wings",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.6517857142857143,
+        "reward_largek_mix_1000_spread": 0.04510607915001397,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "10 hour pads without wings",
+          "10 hour pads without wings security",
+          "10 hour back support pads without wings",
+          "10 hour pads no wings"
+        ]
+      },
+      {
+        "group_id": "esci_val_15",
+        "original_query": "maxi pads without wings",
+        "unique_final_query_count": 3,
+        "avg_pairwise_final_query_jaccard": 0.6666666666666666,
+        "reward_largek_mix_1000_spread": 0.09568371625075481,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "maxi pads without wings",
+          "maxi pads without wings pack",
+          "maxi pads no wings",
+          "maxi pads no wings"
+        ]
+      },
+      {
+        "group_id": "esci_val_17",
+        "original_query": "always maxi overnight pads without wings",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.6142857142857143,
+        "reward_largek_mix_1000_spread": 0.00977973121893616,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "always maxi overnight pads without wings",
+          "always maxi overnight pads without wings office mailing security",
+          "maxi overnight pads no wings",
+          "always maxi overnight pads no wings"
+        ]
+      },
+      {
+        "group_id": "esci_val_18",
+        "original_query": "always maxi pads long super without wings",
+        "unique_final_query_count": 3,
+        "avg_pairwise_final_query_jaccard": 0.8194444444444443,
+        "reward_largek_mix_1000_spread": 0.021728715917454344,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "always maxi pads long super without wings",
+          "always maxi pads long super without wings pack",
+          "always maxi pads long super no wings",
+          "always maxi pads long super without wings"
+        ]
+      },
+      {
+        "group_id": "esci_val_19",
+        "original_query": "#8 tags without string",
+        "unique_final_query_count": 2,
+        "avg_pairwise_final_query_jaccard": 0.8999999999999999,
+        "reward_largek_mix_1000_spread": 0.0,
+        "zero_std": true,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "#8 tags without string",
+          "#8 tags without string electronics",
+          "#8 tags without string",
+          "#8 tags without string"
+        ]
+      },
+      {
+        "group_id": "esci_val_21",
+        "original_query": "iphone xr screen",
+        "unique_final_query_count": 3,
+        "avg_pairwise_final_query_jaccard": 0.7000000000000001,
+        "reward_largek_mix_1000_spread": 0.004826758907349404,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "iphone xr screen",
+          "iphone xr screen business",
+          "iphone xr screen",
+          "iphone xr screen no window"
+        ]
+      },
+      {
+        "group_id": "esci_val_35",
+        "original_query": "1 day shipping fidgets not from china",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.6124999999999999,
+        "reward_largek_mix_1000_spread": 0.12333562476916837,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "1 day shipping fidgets not from china",
+          "1 day shipping fidgets not from china adhesive",
+          "1 day shipping fidgets not made in taiwan",
+          "1 day shipping fidgets not made in mainland china"
+        ]
+      },
+      {
+        "group_id": "esci_val_37",
+        "original_query": "$13 fidget toys without paying for delivery",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.45542328042328045,
+        "reward_largek_mix_1000_spread": 0.6814759839481928,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "$13 fidget toys without paying for delivery",
+          "fidget toys without paying for delivery office",
+          "fidget toys free no delivery",
+          "$13 fidget toys no delivery fee"
+        ]
+      },
+      {
+        "group_id": "esci_val_4",
+        "original_query": "#10 window envelopes without plastic",
+        "unique_final_query_count": 2,
+        "avg_pairwise_final_query_jaccard": 0.7142857142857143,
+        "reward_largek_mix_1000_spread": 0.03680736043113331,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "#10 window envelopes without plastic",
+          "#10 window envelopes without plastic",
+          "10 window envelopes no plastic window",
+          "#10 window envelopes without plastic"
+        ]
+      },
+      {
+        "group_id": "esci_val_5",
+        "original_query": "10 open window envelopes without plastic window",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.7056878306878306,
+        "reward_largek_mix_1000_spread": 0.037812910708819425,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "10 open window envelopes without plastic window",
+          "10 open window envelopes without plastic window security",
+          "10 open window envelopes no plastic window",
+          "10 open window envelopes no plastic no seal"
+        ]
+      },
+      {
+        "group_id": "esci_val_52",
+        "original_query": "visa gift card",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.3523809523809524,
+        "reward_largek_mix_1000_spread": 0.43462578573743116,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "visa gift card",
+          "visa gift card business security",
+          "amazon gift cards",
+          "visa gift card without greeting card"
+        ]
+      },
+      {
+        "group_id": "esci_val_57",
+        "original_query": "lol surprise box",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.3523809523809524,
+        "reward_largek_mix_1000_spread": 0.3019526405967623,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "lol surprise box",
+          "lol surprise box business security",
+          "fun gift box",
+          "lol surprise box no window"
+        ]
+      },
+      {
+        "group_id": "esci_val_7",
+        "original_query": "08 do not disturb",
+        "unique_final_query_count": 4,
+        "avg_pairwise_final_query_jaccard": 0.6396825396825397,
+        "reward_largek_mix_1000_spread": 0.014477756132522335,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "08 do not disturb",
+          "08 do not disturb office",
+          "08 do not disturb novelty",
+          "08 do not disturb without do not disturb security tint"
+        ]
+      },
+      {
+        "group_id": "esci_val_9",
+        "original_query": "#1 best and not expensive bath back brush cream color",
+        "unique_final_query_count": 2,
+        "avg_pairwise_final_query_jaccard": 0.8181818181818182,
+        "reward_largek_mix_1000_spread": 0.0035091536721307826,
+        "zero_std": false,
+        "strategy_collapse": false,
+        "collapse_types": [],
+        "strategy_names": [
+          "exact_match",
+          "attribute_expansion",
+          "broad_recall",
+          "constraint_preserving"
+        ],
+        "final_queries": [
+          "#1 best and not expensive bath back brush cream color",
+          "#1 best and not expensive bath back brush cream color",
+          "bath back brush cream color not expensive good",
+          "#1 best and not expensive bath back brush cream color"
+        ]
+      }
+    ],
+    "num_groups": 20,
+    "strategy_collapse_count": 0,
+    "zero_std_group_count": 1,
+    "zero_std_group_rate": 0.05
+  },
+  "compare": {
+    "targeted_collapse_group_count": 0,
+    "collapse_fixed_count": 0,
+    "targeted_fix_rate": 0.0
+  }
+}

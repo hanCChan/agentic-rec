@@ -60,6 +60,13 @@ from .search_strategy_prompts_v2 import (
     validate_strategies_v2,
 )
 from .strategy_collapse_diagnostics import StrategyCollapseDiagnostics
+from .phase2_smoke_dataset import Phase2SmokeDatasetBuilder, load_clean_set_rows
+from .tiny_grpo_smoke_trainer import (
+    CHECKPOINT_LABEL,
+    TINY_TRAIN_WARNING,
+    TinyGrpoSmokeTrainer,
+    build_tiny_grpo_smoke_report,
+)
 
 __all__ = [
     "ActionParseError",
@@ -133,4 +140,10 @@ __all__ = [
     "get_strategy_v2",
     "validate_strategies_v2",
     "StrategyCollapseDiagnostics",
+    "Phase2SmokeDatasetBuilder",
+    "load_clean_set_rows",
+    "TinyGrpoSmokeTrainer",
+    "CHECKPOINT_LABEL",
+    "TINY_TRAIN_WARNING",
+    "build_tiny_grpo_smoke_report",
 ]

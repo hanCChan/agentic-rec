@@ -1,0 +1,97 @@
+{
+  "input_ids": {
+    "shape": [
+      10,
+      1457
+    ],
+    "dtype": "torch.int64"
+  },
+  "attention_mask": {
+    "shape": [
+      10,
+      1457
+    ],
+    "dtype": "torch.int64"
+  },
+  "position_ids": {
+    "shape": [
+      10,
+      1457
+    ],
+    "dtype": "torch.int64"
+  },
+  "prompts": {
+    "shape": [
+      10,
+      59
+    ],
+    "dtype": "torch.int64"
+  },
+  "responses": {
+    "shape": [
+      10,
+      1402
+    ],
+    "dtype": "torch.int64"
+  },
+  "response_attention_mask": {
+    "shape": [
+      10,
+      1402
+    ],
+    "dtype": "torch.int64"
+  },
+  "response_mask": {
+    "shape": [
+      10,
+      1457
+    ],
+    "dtype": "torch.int64"
+  },
+  "sequence_rewards": {
+    "shape": [
+      10
+    ],
+    "dtype": "torch.float32"
+  },
+  "token_level_rewards": {
+    "shape": [
+      10,
+      1402
+    ],
+    "dtype": "torch.float32"
+  },
+  "mock_old_log_probs": {
+    "shape": [
+      10,
+      1402
+    ],
+    "dtype": "torch.float32"
+  },
+  "mock_advantages": {
+    "shape": [
+      10,
+      1402
+    ],
+    "dtype": "torch.float32"
+  },
+  "mock_returns": {
+    "shape": [
+      10,
+      1402
+    ],
+    "dtype": "torch.float32"
+  },
+  "prompt_lengths": {
+    "shape": [
+      10
+    ],
+    "dtype": "torch.int64"
+  },
+  "response_lengths": {
+    "shape": [
+      10
+    ],
+    "dtype": "torch.int64"
+  }
+}

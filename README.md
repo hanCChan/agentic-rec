@@ -240,6 +240,18 @@ python scripts/smoke_verl_batch_mock.py \
 
 结果见 [`experiments/phase18_verl_batch_mock/`](experiments/phase18_verl_batch_mock/README.md)（shape_check_passed=true）。
 
+### Phase 1.9 已完成：VERL Training Fields Mock
+
+在 Phase 1.8 batch 上补齐 `position_ids`、`prompts`、`responses`、`token_level_rewards` 及 mock logprob/advantage 占位。**不训练 GRPO，不重算真实 logprob。**
+
+```bash
+python scripts/smoke_verl_training_fields.py \
+  --rollout-path experiments/phase17_verl_adapter_smoke_10/rollout_records.jsonl \
+  --output-dir experiments/phase19_verl_training_fields_mock_10
+```
+
+结果见 [`experiments/phase19_verl_training_fields_mock/`](experiments/phase19_verl_training_fields_mock/README.md)（shape_check_passed=true）。
+
 ---
 
 ## 引用

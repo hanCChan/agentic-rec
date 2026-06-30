@@ -5,6 +5,11 @@ from .qwen_rollout_policy import QwenRolloutPolicy
 from .trajectory import EpisodeTrajectory, save_trajectories_jsonl
 from .verl_rollout_adapter import VerlRolloutAdapter, build_actor_prompt, build_multistep_response
 from .verl_batch_builder import VerlBatchBuilder, check_batch_shapes
+from .verl_training_field_builder import (
+    MOCK_FIELDS_WARNING,
+    VerlTrainingFieldBuilder,
+    check_training_fields,
+)
 
 __all__ = [
     "ActionParseError",
@@ -21,4 +26,7 @@ __all__ = [
     "build_multistep_response",
     "VerlBatchBuilder",
     "check_batch_shapes",
+    "VerlTrainingFieldBuilder",
+    "check_training_fields",
+    "MOCK_FIELDS_WARNING",
 ]

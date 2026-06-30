@@ -1,0 +1,26 @@
+{
+  "num_input_groups": 20,
+  "num_keep_for_phase2": 16,
+  "num_replace_recommended": 3,
+  "learnability_counts": {
+    "learnable_large_k": 11,
+    "learnable_small_k": 5,
+    "bm25_retrieval_failure": 2,
+    "qrels_sparse_all_k_blind": 1,
+    "strategy_collapse": 1,
+    "ambiguous_keep_for_analysis": 0
+  },
+  "bm25_failure_count": 2,
+  "qrels_sparse_all_k_blind_count": 1,
+  "strategy_collapse_count": 1,
+  "replace_target_group_ids": [
+    "esci_val_16",
+    "esci_val_2",
+    "esci_val_8"
+  ],
+  "replacement_candidate_queries": [
+    "iphone xr screen",
+    "1 day shipping fidgets not from china",
+    "$13 fidget toys without paying for delivery"
+  ]
+}

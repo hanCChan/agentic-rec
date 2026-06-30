@@ -52,6 +52,7 @@ from .no_update_trainer_dryrun import (
     NoUpdateTrainerDryRun,
     build_no_update_trainer_report,
 )
+from .bm25_failure_cleanup import BM25FailureCleanup, build_bm25_failure_cleanup_report
 
 __all__ = [
     "ActionParseError",
@@ -118,4 +119,6 @@ __all__ = [
     "NoUpdateGuard",
     "NO_UPDATE_TRAINER_WARNING",
     "build_no_update_trainer_report",
+    "BM25FailureCleanup",
+    "build_bm25_failure_cleanup_report",
 ]

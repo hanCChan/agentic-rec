@@ -1,0 +1,78 @@
+{
+  "audit_passed": false,
+  "loss_formula_expected": "total_loss = policy_loss + kl_coef * kl_loss_used_in_loss",
+  "loss_formula_observed": "policy_loss.backward() only; KL not added to total_loss",
+  "wiring_issue_detected": true,
+  "run_summaries": {
+    "kl_0": {
+      "effective_kl_coef": 0.0,
+      "num_steps": 10,
+      "step1_policy_loss": 0.08093596994876862,
+      "step1_grad_norm": 0.435546875,
+      "step10_approx_kl": 0.003645054530352354,
+      "effective_kl_coef_matches_cli": true,
+      "kl_loss_logged_nonzero": false,
+      "kl_loss_signed_gap_nonzero": true
+    },
+    "kl_0.01": {
+      "effective_kl_coef": 0.01,
+      "num_steps": 10,
+      "step1_policy_loss": 0.08093596994876862,
+      "step1_grad_norm": 0.435546875,
+      "step10_approx_kl": 0.004079723730683327,
+      "effective_kl_coef_matches_cli": true,
+      "kl_loss_logged_nonzero": true,
+      "kl_loss_signed_gap_nonzero": true
+    },
+    "kl_0.1": {
+      "effective_kl_coef": 0.1,
+      "num_steps": 2,
+      "step1_policy_loss": 0.08093596994876862,
+      "step1_grad_norm": 0.435546875,
+      "step10_approx_kl": 0.0022036104928702116,
+      "effective_kl_coef_matches_cli": true,
+      "kl_loss_logged_nonzero": true,
+      "kl_loss_signed_gap_nonzero": true
+    }
+  },
+  "checks": [
+    {
+      "name": "effective_kl_coef_matches_cli",
+      "passed": true,
+      "detail": "Trainer self.kl_coef equals CLI value in audit records"
+    },
+    {
+      "name": "kl_loss_used_in_loss_nonzero",
+      "passed": true,
+      "detail": "Actor/ref logprob gap exists so KL term could be nonzero"
+    },
+    {
+      "name": "total_loss_changes_with_kl_coef",
+      "passed": false,
+      "detail": "step-1 policy_loss spread=0.00e+00 (invariant=True)"
+    },
+    {
+      "name": "grad_norm_changes_with_kl_coef",
+      "passed": false,
+      "detail": "step-1 grad_norm spread=0.00e+00 (invariant=True)"
+    },
+    {
+      "name": "approx_kl_changes_with_kl_coef",
+      "passed": true,
+      "detail": "step-10 approx_kl values={'kl_0': 0.003645054530352354, 'kl_0.01': 0.004079723730683327, 'kl_0.1': 0.0022036104928702116} (invariant=False)"
+    },
+    {
+      "name": "kl_coef_times_kl_loss_nonzero",
+      "passed": true,
+      "detail": "Signed-gap KL penalty magnitude is nonzero when coef>0"
+    }
+  ],
+  "diagnosis": [
+    "kl_coef is stored on trainer but backward uses policy_loss only; logged kl_loss = approx_kl * kl_coef is post-hoc, not in autograd graph.",
+    "Changing kl_coef does not change step-1 policy_loss (backward target).",
+    "Changing kl_coef does not change step-1 grad_norm."
+  ],
+  "can_run_config_b": false,
+  "recommended_next": "Fix TinyGrpoSmokeTrainer: add kl_coef * kl_loss to total_loss before backward; align hard-stop metric with loss KL term.",
+  "note": "kl_0.1 sweep truncated at step 2; kl_0 and kl_0.01 completed 10 steps"
+}

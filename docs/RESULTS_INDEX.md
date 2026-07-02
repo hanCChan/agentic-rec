@@ -106,9 +106,24 @@ next = Phase 2.5e KL/loss wiring audit (do not run config B until audit passes)
 
 See `experiments/phase25d_kl_controlled_200step/lr_5e-7_kl_0.02/kl_stop_report.md`.
 
+| Phase | Commit | Dir | Key Metrics | Result |
+|-------|--------|-----|-------------|--------|
+| **2.5e** | (pending) | `experiments/phase25e_kl_loss_audit/` | kl_coef sweep 0/0.01/0.10 × 10 steps | **audit_passed=false**, KL not in backward loss |
+
+### Phase 2.5e KL Wiring Audit
+
+```text
+audit_passed = false
+root cause: TinyGrpoSmokeTrainer calls policy_loss.backward() only
+kl_loss logged as approx_kl * kl_coef is post-hoc, not in autograd graph
+step-1 policy_loss identical across kl_coef=0, 0.01, 0.10 (0.080936)
+step-1 grad_norm identical (0.4355)
+can_run_config_b = false until loss wiring fixed
+```
+
 ## Next Step
 
-**Phase 2.5e**: KL/loss wiring audit — verify `kl_coef` affects `total_loss` and gradients. See `experiments/phase25e_kl_loss_audit/`.
+**Fix KL loss wiring** in `TinyGrpoSmokeTrainer`, re-run 2.5e audit, then config B.
 
 ## Claim Boundary
 

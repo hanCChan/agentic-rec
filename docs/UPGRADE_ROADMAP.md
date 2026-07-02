@@ -117,7 +117,8 @@ agentic-rec/
 36. ~~**下一步**：Phase 2.5 — 扩 clean set + held-out + 200-step pilot 计划~~ ✅ Phase 2.5a-b clean set ready（commit `c7c0d7c`）
 37. ~~**下一步**：Phase 2.5c — 200-step GRPO pilot（lr=5e-7, kl_coef=0.01）~~ ⚠️ 117/200 step KL stop（`approx_kl=0.202`）；见 `experiments/phase25_200step_grpo_pilot/lr_5e-7/kl_stop_report.md`
 38. ~~**下一步**：Phase 2.5d-A — eval hook fix + KL-controlled rerun（kl_coef=0.02）~~ ⚠️ 同样 117/200 KL stop（`approx_kl=0.204`）；kl_coef 加倍未改变 stop horizon
-39. **下一步**：Phase 2.5e — KL/loss wiring audit（验证 kl_coef 是否进入 actor loss）；audit 通过后再跑 config B
+39. ~~**下一步**：Phase 2.5e — KL/loss wiring audit~~ ⚠️ **audit_passed=false**；`kl_coef` 未进入 backward loss；见 `experiments/phase25e_kl_loss_audit/`
+40. **下一步**：修复 `TinyGrpoSmokeTrainer` KL loss wiring → 重跑 audit → 再考虑 config B 或 periodic re-rollout
 
 ## Claim Boundary（当前口径）
 

@@ -335,6 +335,7 @@ def run_pilot(args: argparse.Namespace) -> None:
             root=ROOT,
             checkpoint_prefix=PILOT_CHECKPOINT_PREFIX,
             checkpoint_label=PILOT_CHECKPOINT_LABEL,
+            eval_cuda_device=args.eval_gpu,
         )
 
     if 0 in args.eval_steps and not args.skip_eval:
@@ -385,6 +386,7 @@ def run_pilot(args: argparse.Namespace) -> None:
         kl_coef=args.kl_coef,
         cliprange=args.cliprange,
         seed=args.seed,
+        cuda_device_index=args.train_gpu,
     )
 
     try:
@@ -452,6 +454,7 @@ def run_pilot(args: argparse.Namespace) -> None:
                 root=ROOT,
                 checkpoint_prefix=PILOT_CHECKPOINT_PREFIX,
                 checkpoint_label=PILOT_CHECKPOINT_LABEL,
+                eval_cuda_device=args.eval_gpu,
             )
             rec = monitor.check_eval_pair(dual["train"], dual["heldout"], step=actual_step)
             rec["final_stop_eval"] = True
@@ -523,11 +526,15 @@ def run_pilot(args: argparse.Namespace) -> None:
         "safe_for_larger_training": passed,
         "next_recommendation": rec["action"],
     }
-    if kl_hard_stop and actual_step < args.max_update_steps:
-        summary["failure_type"] = "kl_guard_stop"
-        summary["stopped_by"] = result["summary"].get(
-            "hard_stop_reason", "KL hard stop"
-        )
+    if actual_step < args.max_update_steps:
+        if kl_hard_stop:
+            summary["failure_type"] = "kl_guard_stop"
+            summary["stopped_by"] = result["summary"].get(
+                "hard_stop_reason", "KL hard stop"
+            )
+        elif early_stop:
+            summary["failure_type"] = "eval_early_stop"
+            summary["stopped_by"] = early_stop_reason or "eval early stop"
         summary["stopped_at_step"] = actual_step
     (args.output_dir / "pilot_200step_summary.json").write_text(
         json.dumps(summary, ensure_ascii=False, indent=2),

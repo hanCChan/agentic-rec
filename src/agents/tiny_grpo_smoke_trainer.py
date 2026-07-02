@@ -59,6 +59,7 @@ class TinyGrpoSmokeTrainer:
         kl_explode_threshold: float = KL_EXPLODE_THRESHOLD,
         dtype: str = "bfloat16",
         device: str = "cuda",
+        cuda_device_index: Optional[int] = None,
         logprob_micro_batch_size: int = 2,
         seed: int = 42,
         eps: float = EPS,
@@ -79,6 +80,7 @@ class TinyGrpoSmokeTrainer:
         self.kl_explode_threshold = kl_explode_threshold
         self.dtype = dtype
         self.device = device
+        self.cuda_device_index = cuda_device_index
         self.logprob_micro_batch_size = logprob_micro_batch_size
         self.seed = seed
         self.eps = eps
@@ -119,10 +121,19 @@ class TinyGrpoSmokeTrainer:
         if self.tokenizer.pad_token_id is None:
             self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
 
+        device_map: Any
+        if self.device == "cuda":
+            if self.cuda_device_index is not None:
+                device_map = {"": f"cuda:{self.cuda_device_index}"}
+            else:
+                device_map = "auto"
+        else:
+            device_map = None
+
         self.model = AutoModelForCausalLM.from_pretrained(
             self.model_path,
             torch_dtype=_DTYPE_MAP[self.dtype],
-            device_map="auto" if self.device == "cuda" else None,
+            device_map=device_map,
             trust_remote_code=True,
         )
         self.model.train()

@@ -153,6 +153,7 @@ def run_v2_rollout(
     topk: int,
     seed: int,
     strategies: List[str],
+    cuda_device: int | None = None,
 ) -> tuple[List[Dict[str, Any]], List[Dict[str, Any]], List[Dict[str, Any]]]:
     def env_factory() -> CommerceAgentEnv:
         search_tool = BM25SearchTool(rec_r1_root=REC_R1)
@@ -167,6 +168,7 @@ def run_v2_rollout(
         temperature=temperature,
         top_p=top_p,
         max_tokens=max_tokens,
+        cuda_device=cuda_device,
     )
     runner = StrategyEpisodeRunner(
         env_factory=env_factory,

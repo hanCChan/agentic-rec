@@ -110,6 +110,7 @@ def run_fresh_eval(
     checkpoint_label: str = PILOT_CHECKPOINT_LABEL,
     eval_split: str = "train",
     eval_root_name: Optional[str] = None,
+    eval_cuda_device: Optional[int] = None,
 ) -> Dict[str, Any]:
     """Fresh rollout eval on clean set (step 0 uses base model_path)."""
     script_path = root / "scripts/smoke_strategy_prompt_v2.py"
@@ -146,6 +147,7 @@ def run_fresh_eval(
         topk=topk,
         seed=seed + eval_step,
         strategies=["exact_match", "attribute_expansion", "broad_recall", "constraint_preserving"],
+        cuda_device=eval_cuda_device,
     )
 
     rollout_path = eval_dir / "post_train_rollout_records.jsonl"
@@ -238,6 +240,7 @@ def run_dual_fresh_eval(
     checkpoint_prefix: str = "pilot_step",
     checkpoint_label: str = PILOT_CHECKPOINT_LABEL,
     eval_root_name: Optional[str] = None,
+    eval_cuda_device: Optional[int] = None,
 ) -> Dict[str, Any]:
     """Run fresh eval on both train and heldout clean sets."""
     train_eval = run_fresh_eval(
@@ -258,6 +261,7 @@ def run_dual_fresh_eval(
         checkpoint_label=checkpoint_label,
         eval_split="train",
         eval_root_name=eval_root_name,
+        eval_cuda_device=eval_cuda_device,
     )
     heldout_eval = run_fresh_eval(
         clean_set_path=heldout_clean_path,
@@ -277,6 +281,7 @@ def run_dual_fresh_eval(
         checkpoint_label=checkpoint_label,
         eval_split="heldout",
         eval_root_name=eval_root_name,
+        eval_cuda_device=eval_cuda_device,
     )
     return {"train": train_eval, "heldout": heldout_eval}
 
@@ -300,6 +305,7 @@ def run_final_stop_dual_eval(
     root: Path,
     checkpoint_prefix: str = "pilot_step",
     checkpoint_label: str = PILOT_CHECKPOINT_LABEL,
+    eval_cuda_device: Optional[int] = None,
 ) -> Dict[str, Any]:
     """Run fresh eval at early stop step into final_stop_eval_step_<n>/."""
     return run_dual_fresh_eval(
@@ -321,6 +327,7 @@ def run_final_stop_dual_eval(
         checkpoint_prefix=checkpoint_prefix,
         checkpoint_label=checkpoint_label,
         eval_root_name=f"final_stop_eval_step_{stop_step}",
+        eval_cuda_device=eval_cuda_device,
     )
 
 

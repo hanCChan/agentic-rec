@@ -52,6 +52,7 @@ class GRPOPilotHeldoutMonitor(GRPOPilotMonitor):
 
         overfit_risk = False
         overfit_reason: Optional[str] = None
+        heldout_drop_ratio = 0.0
         train_reward = float(train_eval.get("mean_reward_largek_mix_1000", 0.0))
         heldout_reward = float(heldout_eval.get("mean_reward_largek_mix_1000", 0.0))
 
@@ -62,11 +63,16 @@ class GRPOPilotHeldoutMonitor(GRPOPilotMonitor):
         ):
             train_delta = train_reward - self.baseline_train_reward
             heldout_delta = heldout_reward - self.baseline_heldout_reward
+            heldout_drop_ratio = max(
+                0.0,
+                (self.baseline_heldout_reward - heldout_reward)
+                / self.baseline_heldout_reward,
+            )
             if train_delta > 1e-4 and heldout_delta < -1e-4:
                 overfit_risk = True
                 overfit_reason = (
                     f"train reward up ({train_delta:+.4f}) but heldout reward down "
-                    f"({heldout_delta:+.4f}) at step {step}"
+                    f"({heldout_delta:+.4f}, drop={heldout_drop_ratio:.1%}) at step {step}"
                 )
 
         should_stop = False
@@ -77,7 +83,7 @@ class GRPOPilotHeldoutMonitor(GRPOPilotMonitor):
         elif heldout_check["should_stop"]:
             should_stop = True
             stop_reason = f"heldout: {heldout_check['stop_reason']}"
-        elif overfit_risk:
+        elif overfit_risk and heldout_drop_ratio >= self.max_heldout_reward_drop_ratio * 0.5:
             should_stop = True
             stop_reason = overfit_reason
 

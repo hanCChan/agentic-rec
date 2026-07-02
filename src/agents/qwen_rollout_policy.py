@@ -27,11 +27,16 @@ class QwenRolloutPolicy:
         max_tokens: int = 256,
         tensor_parallel_size: int = 1,
         gpu_memory_utilization: float = 0.45,
+        cuda_device: int | None = None,
     ):
         try:
+            import torch
             from vllm import LLM, SamplingParams
         except ImportError as exc:
             raise RuntimeError("vLLM is required for QwenRolloutPolicy") from exc
+
+        if cuda_device is not None and torch.cuda.is_available():
+            torch.cuda.set_device(cuda_device)
 
         self.model_path = str(model_path)
         self.temperature = temperature

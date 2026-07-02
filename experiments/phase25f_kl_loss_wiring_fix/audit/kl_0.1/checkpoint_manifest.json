@@ -1,0 +1,7 @@
+{
+  "checkpoint_label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+  "checkpoint_promoted": false,
+  "save_steps": [],
+  "checkpoints": [],
+  "checkpoint_prefix": "smoke_step"
+}

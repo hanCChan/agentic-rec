@@ -108,9 +108,10 @@ See `experiments/phase25d_kl_controlled_200step/lr_5e-7_kl_0.02/kl_stop_report.m
 
 | Phase | Commit | Dir | Key Metrics | Result |
 |-------|--------|-----|-------------|--------|
-| **2.5e** | (pending) | `experiments/phase25e_kl_loss_audit/` | kl_coef sweep 0/0.01/0.10 × 10 steps | **audit_passed=false**, KL not in backward loss |
+| **2.5e** | `abb8470` | `experiments/phase25e_kl_loss_audit/` | kl_coef sweep 0/0.01/0.10 × 10 steps | **audit_passed=false**, KL not in backward loss |
+| **2.5f** | (pending) | `experiments/phase25f_kl_loss_wiring_fix/` | KL wiring fix + audit + 20-step sanity | **audit_passed=true** after fix |
 
-### Phase 2.5e KL Wiring Audit
+### Phase 2.5e KL Wiring Audit (pre-fix)
 
 ```text
 audit_passed = false
@@ -121,9 +122,27 @@ step-1 grad_norm identical (0.4355)
 can_run_config_b = false until loss wiring fixed
 ```
 
+### Phase 2.5f KL Loss Wiring Fix
+
+```text
+fix: total_loss = policy_loss + kl_coef * kl_loss; total_loss.backward()
+kl_loss_estimator = exp(logp_actor-logp_ref)-1-(logp_actor-logp_ref)
+hard_stop_kl_metric = approx_kl_nonnegative (unchanged)
+audit_passed = true (experiments/phase25f_kl_loss_wiring_fix/audit/)
+step-1 total_loss: kl_0=0.080936, kl_0.01=0.080960, kl_0.1=0.081180
+step-1 grad_norm: kl_0=0.4355, kl_0.01=0.4316, kl_0.1=0.4648
+step-10 approx_kl: kl_0=0.00353, kl_0.01=0.00372, kl_0.1=0.00197
+policy_loss invariant across kl_coef (expected); total_loss and grad_norm vary
+20-step sanity (kl_coef=0.02): pilot_passed=true, actual_update_steps=20/20
+  max_approx_kl_nonnegative=0.0048, max_grad_norm=0.428, no NaN/OOM
+  train reward @0/10/20: 0.547 / 0.568 / 0.552
+  heldout reward @0/10/20: 0.545 / 0.540 / 0.526
+next = Phase 2.5g 200-step rerun (lr=5e-7, kl_coef=0.02)
+```
+
 ## Next Step
 
-**Fix KL loss wiring** in `TinyGrpoSmokeTrainer`, re-run 2.5e audit, then config B.
+**Phase 2.5g**: 200-step pilot with `lr=5e-7, kl_coef=0.02` (first true KL-controlled run after wiring fix). Do **not** use pre-fix 2.5d-A as evidence that kl_coef=0.02 is ineffective.
 
 ## Claim Boundary
 

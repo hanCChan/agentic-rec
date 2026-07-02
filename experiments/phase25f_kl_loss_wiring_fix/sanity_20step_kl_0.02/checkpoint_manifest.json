@@ -1,0 +1,15 @@
+{
+  "checkpoint_promoted": false,
+  "checkpoint_label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+  "save_steps": [
+    20
+  ],
+  "checkpoints": [
+    {
+      "step": 20,
+      "path": "experiments/phase25f_kl_loss_wiring_fix/sanity_20step_kl_0.02/checkpoints/pilot_step_20",
+      "label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+      "optimizer_step_called": true
+    }
+  ]
+}

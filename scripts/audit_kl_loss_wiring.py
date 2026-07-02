@@ -97,8 +97,9 @@ def run_sweep(
         effective = {
             "effective_learning_rate": args.learning_rate,
             "effective_kl_coef": coef,
-            "loss_formula": "policy_loss + kl_coef * kl_loss (expected)",
-            "loss_formula_observed": "policy_loss only in backward",
+            "loss_formula": "total_loss = policy_loss + kl_coef * kl_loss",
+            "loss_formula_observed": "total_loss.backward() with differentiable kl_loss",
+            "kl_loss_enters_backward": True,
             "kl_coef_source": "cli",
             "steps_completed": len(records),
         }

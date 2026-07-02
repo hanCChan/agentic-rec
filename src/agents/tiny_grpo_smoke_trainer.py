@@ -331,8 +331,13 @@ class TinyGrpoSmokeTrainer:
         policy_loss_mat = -torch.min(unclipped, clipped) * response_mask
         policy_loss = self._loss_fn._aggregate_loss(policy_loss_mat, response_mask)
 
-        token_kl = (log_probs - ref_log_probs) * response_mask
-        log_ratio_ref = (log_probs - ref_log_probs) * response_mask
+        log_ratio_ref = log_probs - ref_log_probs
+        log_ratio_ref = torch.clamp(log_ratio_ref, min=-20.0, max=20.0)
+        approx_kl_mat = (torch.exp(log_ratio_ref) - 1.0 - log_ratio_ref) * response_mask
+        kl_loss = self._loss_fn._aggregate_loss(approx_kl_mat, response_mask)
+        total_loss = policy_loss + self.kl_coef * kl_loss
+
+        token_kl = log_ratio_ref * response_mask
         valid_mask = response_mask.bool()
         valid_ratio = ratio[valid_mask]
         valid_kl = token_kl[valid_mask]
@@ -340,9 +345,10 @@ class TinyGrpoSmokeTrainer:
         valid_actor_lp = log_probs[valid_mask]
         valid_ref_lp = ref_log_probs[valid_mask]
 
-        # Non-negative KL surrogate: E[exp(r) - 1 - r] >= 0
+        # Non-negative KL surrogate for logging / hard stop (detached)
         approx_kl_tokens = torch.exp(valid_log_ratio_ref) - 1.0 - valid_log_ratio_ref
         approx_kl_nonnegative = float(approx_kl_tokens.mean().item()) if approx_kl_tokens.numel() else 0.0
+        kl_loss_value = float(kl_loss.detach().item())
         signed_logprob_gap_mean = float(valid_kl.mean().item()) if valid_kl.numel() else 0.0
         signed_logprob_gap_abs_mean = (
             float(valid_kl.abs().mean().item()) if valid_kl.numel() else 0.0
@@ -355,12 +361,18 @@ class TinyGrpoSmokeTrainer:
 
         return {
             "policy_loss": policy_loss,
+            "kl_loss": kl_loss,
+            "total_loss": total_loss,
             "policy_loss_value": float(policy_loss.item()),
+            "kl_loss_value": kl_loss_value,
+            "total_loss_value": float(total_loss.item()),
+            "kl_coef_times_kl_loss_value": float((self.kl_coef * kl_loss).detach().item()),
             "clipfrac": float(clipfrac.item()),
             "mean_valid_kl": signed_logprob_gap_mean,
             "signed_logprob_gap_mean": signed_logprob_gap_mean,
             "signed_logprob_gap_abs_mean": signed_logprob_gap_abs_mean,
             "approx_kl_nonnegative": approx_kl_nonnegative,
+            "approx_kl_nonnegative_for_stop": approx_kl_nonnegative,
             "actor_logprob_mean": actor_logprob_mean,
             "ref_logprob_mean": ref_logprob_mean,
         }
@@ -428,6 +440,9 @@ class TinyGrpoSmokeTrainer:
         self.optimizer.zero_grad(set_to_none=True)
         num_micro = num_records // self.micro_batch_size
         total_policy_loss = torch.tensor(0.0, device=self.model_device)
+        total_kl_loss = torch.tensor(0.0, device=self.model_device)
+        total_loss_accum = torch.tensor(0.0, device=self.model_device)
+        total_kl_coef_times_kl = torch.tensor(0.0, device=self.model_device)
         last_loss_output: Dict[str, Any] = {}
 
         nan_detected = False
@@ -457,12 +472,18 @@ class TinyGrpoSmokeTrainer:
                     advantages=micro_adv,
                     response_mask=micro_mask,
                 )
-                policy_loss = loss_output["policy_loss"] / num_micro
-                if not torch.isfinite(policy_loss):
+                micro_total_loss = loss_output["total_loss"] / num_micro
+                if not torch.isfinite(micro_total_loss):
                     nan_detected = True
                     break
-                policy_loss.backward()
-                total_policy_loss = total_policy_loss + policy_loss.detach()
+                micro_total_loss.backward()
+                total_policy_loss = total_policy_loss + loss_output["policy_loss"].detach() / num_micro
+                total_kl_loss = total_kl_loss + loss_output["kl_loss"].detach() / num_micro
+                total_loss_accum = total_loss_accum + loss_output["total_loss"].detach() / num_micro
+                total_kl_coef_times_kl = (
+                    total_kl_coef_times_kl
+                    + (self.kl_coef * loss_output["kl_loss"]).detach() / num_micro
+                )
                 last_loss_output = loss_output
 
         except torch.cuda.OutOfMemoryError:
@@ -496,12 +517,17 @@ class TinyGrpoSmokeTrainer:
                 nan_detected = True
 
         policy_loss_value = float(total_policy_loss.item()) if torch.isfinite(total_policy_loss) else float("nan")
+        kl_loss_value = float(total_kl_loss.item()) if torch.isfinite(total_kl_loss) else float("nan")
+        total_loss_value = float(total_loss_accum.item()) if torch.isfinite(total_loss_accum) else float("nan")
+        kl_coef_times_kl_loss_value = (
+            float(total_kl_coef_times_kl.item()) if torch.isfinite(total_kl_coef_times_kl) else float("nan")
+        )
 
         pre_hard_stop, pre_reason = self._hard_stop(
             nan_detected=nan_detected,
             approx_kl_nonnegative=0.0,
             grad_norm=grad_norm,
-            policy_loss_value=policy_loss_value,
+            policy_loss_value=total_loss_value,
             check_kl=False,
         )
 
@@ -518,7 +544,7 @@ class TinyGrpoSmokeTrainer:
             nan_detected=nan_detected,
             approx_kl_nonnegative=approx_kl,
             grad_norm=grad_norm,
-            policy_loss_value=policy_loss_value,
+            policy_loss_value=total_loss_value,
             check_kl=True,
         )
         if pre_hard_stop:
@@ -530,22 +556,28 @@ class TinyGrpoSmokeTrainer:
             "optimizer_step_called": optimizer_step_called,
             "nan_detected": nan_detected,
             "oom_detected": oom_detected,
+            "effective_kl_coef": self.kl_coef,
             "policy_loss": policy_loss_value,
+            "kl_loss_used_in_backward": kl_loss_value,
+            "kl_coef_times_kl_loss": kl_coef_times_kl_loss_value,
+            "total_loss": total_loss_value,
             "mean_kl": mean_kl,
             "signed_logprob_gap_mean": mean_kl,
             "signed_logprob_gap_abs_mean": float(
                 kl_diag.get("signed_logprob_gap_abs_mean", abs(mean_kl))
             ),
             "approx_kl_nonnegative": approx_kl,
+            "approx_kl_nonnegative_for_stop": approx_kl,
             "actor_logprob_mean": float(kl_diag.get("actor_logprob_mean", 0.0)),
             "ref_logprob_mean": float(kl_diag.get("ref_logprob_mean", 0.0)),
-            "kl_loss": approx_kl * self.kl_coef,
+            "kl_loss": kl_loss_value,
             "clipfrac": float(last_loss_output.get("clipfrac", 0.0) or 0.0),
             "entropy": None,
             "grad_norm": grad_norm,
             "learning_rate": self.learning_rate,
-            "loss_finite": torch.isfinite(torch.tensor(policy_loss_value)).item(),
+            "loss_finite": torch.isfinite(torch.tensor(total_loss_value)).item(),
             "grad_norm_finite": torch.isfinite(torch.tensor(grad_norm)).item(),
+            "kl_loss_enters_backward": True,
             "json_format_ok": True,
             "checkpoint_saved": False,
             "checkpoint_promoted": False,
@@ -720,6 +752,10 @@ class TinyGrpoSmokeTrainer:
                 "diagnostic_oracle_reward_used": False,
                 "learning_rate": self.learning_rate,
                 "kl_coef": self.kl_coef,
+                "effective_kl_coef": self.kl_coef,
+                "kl_loss_estimator": "exp(logp_actor-logp_ref)-1-(logp_actor-logp_ref)",
+                "hard_stop_kl_metric": "approx_kl_nonnegative",
+                "kl_loss_enters_backward": True,
                 "cliprange": self.cliprange,
                 "nan_detected": failure_flags["nan_detected"],
                 "oom_detected": failure_flags["oom_detected"],

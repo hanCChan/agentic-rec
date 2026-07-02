@@ -118,7 +118,8 @@ agentic-rec/
 37. ~~**下一步**：Phase 2.5c — 200-step GRPO pilot（lr=5e-7, kl_coef=0.01）~~ ⚠️ 117/200 step KL stop（`approx_kl=0.202`）；见 `experiments/phase25_200step_grpo_pilot/lr_5e-7/kl_stop_report.md`
 38. ~~**下一步**：Phase 2.5d-A — eval hook fix + KL-controlled rerun（kl_coef=0.02）~~ ⚠️ 同样 117/200 KL stop（`approx_kl=0.204`）；kl_coef 加倍未改变 stop horizon
 39. ~~**下一步**：Phase 2.5e — KL/loss wiring audit~~ ⚠️ **audit_passed=false**；`kl_coef` 未进入 backward loss；见 `experiments/phase25e_kl_loss_audit/`
-40. **下一步**：修复 `TinyGrpoSmokeTrainer` KL loss wiring → 重跑 audit → 再考虑 config B 或 periodic re-rollout
+40. ~~**下一步**：Phase 2.5f — KL loss wiring fix + audit + 20-step sanity~~ ✅ audit_passed=true；见 `experiments/phase25f_kl_loss_wiring_fix/`
+41. **下一步**：Phase 2.5g — 200-step pilot（lr=5e-7, kl_coef=0.02）— 修复后首次真正 KL-controlled run
 
 ## Claim Boundary（当前口径）
 
@@ -128,6 +129,7 @@ Rec-R1 范式延伸 + Agentic Search 工程化 + pilot 级 GRPO 验证
 
 Phase 2.4: pilot 工程稳定 + curated 20 groups fresh eval early signal
 Phase 2.5c: 200-step pilot KL drift at step 117 — not reward/JSON collapse; fix KL control before scaling
-Phase 2.5d-A: kl_coef=0.02 reproduced same 117-step KL stop — suggests KL loss wiring audit needed
-Phase 2.5e+: audit kl_coef → total_loss → gradient; then config B or periodic re-rollout
+Phase 2.5e: audit confirmed kl_coef not in backward graph (policy_loss.backward only)
+Phase 2.5f: fixed total_loss = policy_loss + kl_coef * kl_loss; audit_passed=true
+Phase 2.5g: 200-step rerun lr=5e-7 kl_coef=0.02 (first valid KL-controlled pilot)
 ```

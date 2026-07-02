@@ -1,0 +1,34 @@
+{
+  "curve": [
+    {
+      "step": 0,
+      "train_reward": 0.5471116929458408,
+      "heldout_reward": 0.5452531144608548,
+      "train_parse": 0.9975,
+      "heldout_parse": 1.0,
+      "train_invalid": 0.0016666666666666666,
+      "heldout_invalid": 0.0,
+      "overfit_risk": false
+    },
+    {
+      "step": 10,
+      "train_reward": 0.5684710731660031,
+      "heldout_reward": 0.5401153425187367,
+      "train_parse": 1.0,
+      "heldout_parse": 1.0,
+      "train_invalid": 0.0,
+      "heldout_invalid": 0.0,
+      "overfit_risk": true
+    },
+    {
+      "step": 20,
+      "train_reward": 0.5524187746696894,
+      "heldout_reward": 0.5263728412742722,
+      "train_parse": 1.0,
+      "heldout_parse": 1.0,
+      "train_invalid": 0.0,
+      "heldout_invalid": 0.0,
+      "overfit_risk": true
+    }
+  ]
+}

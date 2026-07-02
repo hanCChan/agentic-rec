@@ -1,0 +1,26 @@
+{
+  "eval_step": 10,
+  "eval_split": "heldout",
+  "checkpoint_path": "experiments/phase25f_kl_loss_wiring_fix/sanity_20step_kl_0.02/checkpoints/pilot_step_eval_10",
+  "checkpoint_label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+  "num_groups": 20,
+  "num_rollout_records": 80,
+  "num_failures": 0,
+  "parse_success_rate": 1.0,
+  "finish_rate": 1.0,
+  "invalid_action_rate": 0.0,
+  "zero_std_group_rate": 0.0,
+  "retrieval_quality_spread_group_rate": 1.0,
+  "mean_reward_largek_mix_1000": 0.5401153425187367,
+  "mean_ndcg1000": 0.36067921960329397,
+  "mean_recall1000": 0.7765785256410257,
+  "mean_mrr1000": 0.24120417787237586,
+  "strategy_distribution": {
+    "exact_match": 0.25,
+    "attribute_expansion": 0.25,
+    "broad_recall": 0.25,
+    "constraint_preserving": 0.25
+  },
+  "json_format_ok": true,
+  "eval_passed": true
+}

@@ -1,0 +1,9 @@
+{
+  "effective_learning_rate": 5e-07,
+  "effective_kl_coef": 0.1,
+  "loss_formula": "total_loss = policy_loss + kl_coef * kl_loss",
+  "loss_formula_observed": "total_loss.backward() with differentiable kl_loss",
+  "kl_loss_enters_backward": true,
+  "kl_coef_source": "cli",
+  "steps_completed": 10
+}

@@ -1,0 +1,26 @@
+{
+  "eval_step": 0,
+  "eval_split": "train",
+  "checkpoint_path": "/data1/hcc/.hf_home/Qwen2.5-3B-Instruct",
+  "checkpoint_label": "SMOKE_ONLY_DO_NOT_PROMOTE",
+  "num_groups": 50,
+  "num_rollout_records": 200,
+  "num_failures": 0,
+  "parse_success_rate": 0.9975,
+  "finish_rate": 1.0,
+  "invalid_action_rate": 0.0016666666666666666,
+  "zero_std_group_rate": 0.0,
+  "retrieval_quality_spread_group_rate": 1.0,
+  "mean_reward_largek_mix_1000": 0.5471116929458408,
+  "mean_ndcg1000": 0.35498871571005647,
+  "mean_recall1000": 0.8358243284493284,
+  "mean_mrr1000": 0.24958111545918688,
+  "strategy_distribution": {
+    "exact_match": 0.25,
+    "attribute_expansion": 0.25,
+    "broad_recall": 0.25,
+    "constraint_preserving": 0.25
+  },
+  "json_format_ok": true,
+  "eval_passed": true
+}

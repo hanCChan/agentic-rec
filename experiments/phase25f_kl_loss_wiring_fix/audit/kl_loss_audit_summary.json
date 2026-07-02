@@ -1,0 +1,78 @@
+{
+  "audit_passed": true,
+  "loss_formula_expected": "total_loss = policy_loss + kl_coef * kl_loss_used_in_loss",
+  "loss_formula_observed": "total_loss = policy_loss + kl_coef * kl_loss (backward)",
+  "wiring_issue_detected": false,
+  "run_summaries": {
+    "kl_0": {
+      "effective_kl_coef": 0.0,
+      "num_steps": 10,
+      "step1_policy_loss": 0.08093596994876862,
+      "step1_total_loss": 0.08093596994876862,
+      "step1_grad_norm": 0.435546875,
+      "step10_approx_kl": 0.0035349251702427864,
+      "effective_kl_coef_matches_cli": true,
+      "kl_loss_used_in_backward_nonzero": true,
+      "kl_coef_times_kl_loss_nonzero": false
+    },
+    "kl_0.01": {
+      "effective_kl_coef": 0.01,
+      "num_steps": 10,
+      "step1_policy_loss": 0.08093596994876862,
+      "step1_total_loss": 0.08096034824848175,
+      "step1_grad_norm": 0.431640625,
+      "step10_approx_kl": 0.0037226902786642313,
+      "effective_kl_coef_matches_cli": true,
+      "kl_loss_used_in_backward_nonzero": true,
+      "kl_coef_times_kl_loss_nonzero": true
+    },
+    "kl_0.1": {
+      "effective_kl_coef": 0.1,
+      "num_steps": 10,
+      "step1_policy_loss": 0.08093596994876862,
+      "step1_total_loss": 0.08117996901273727,
+      "step1_grad_norm": 0.46484375,
+      "step10_approx_kl": 0.001973793376237154,
+      "effective_kl_coef_matches_cli": true,
+      "kl_loss_used_in_backward_nonzero": true,
+      "kl_coef_times_kl_loss_nonzero": true
+    }
+  },
+  "checks": [
+    {
+      "name": "effective_kl_coef_matches_cli",
+      "passed": true,
+      "detail": "Trainer self.kl_coef equals CLI value in audit records"
+    },
+    {
+      "name": "kl_loss_used_in_backward_nonzero",
+      "passed": true,
+      "detail": "Differentiable kl_loss tensor is nonzero in backward path"
+    },
+    {
+      "name": "total_loss_changes_with_kl_coef",
+      "passed": true,
+      "detail": "step-1 total_loss spread=2.44e-04 (invariant=False); policy_loss spread=0.00e+00"
+    },
+    {
+      "name": "grad_norm_changes_with_kl_coef",
+      "passed": true,
+      "detail": "step-1 grad_norm spread=3.32e-02 (invariant=False)"
+    },
+    {
+      "name": "approx_kl_changes_with_kl_coef",
+      "passed": true,
+      "detail": "step-10 approx_kl values={'kl_0': 0.0035349251702427864, 'kl_0.01': 0.0037226902786642313, 'kl_0.1': 0.001973793376237154} (invariant=False)"
+    },
+    {
+      "name": "kl_coef_times_kl_loss_nonzero",
+      "passed": true,
+      "detail": "kl_coef * kl_loss is nonzero when coef>0"
+    }
+  ],
+  "diagnosis": [
+    "policy_loss invariant but total_loss varies — expected when KL enters loss."
+  ],
+  "can_run_config_b": true,
+  "recommended_next": "Proceed with config B: lr=2e-7, kl_coef=0.01"
+}

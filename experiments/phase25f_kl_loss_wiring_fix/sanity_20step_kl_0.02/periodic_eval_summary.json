@@ -1,0 +1,85 @@
+{
+  "eval_history": [
+    {
+      "step": 0,
+      "train_mean_reward_largek_mix_1000": 0.5471116929458408,
+      "heldout_mean_reward_largek_mix_1000": 0.5452531144608548,
+      "train_parse_success_rate": 0.9975,
+      "heldout_parse_success_rate": 1.0,
+      "train_invalid_action_rate": 0.0016666666666666666,
+      "heldout_invalid_action_rate": 0.0,
+      "train_strategy_distribution": {
+        "exact_match": 0.25,
+        "attribute_expansion": 0.25,
+        "broad_recall": 0.25,
+        "constraint_preserving": 0.25
+      },
+      "heldout_strategy_distribution": {
+        "exact_match": 0.25,
+        "attribute_expansion": 0.25,
+        "broad_recall": 0.25,
+        "constraint_preserving": 0.25
+      },
+      "train_eval_passed": true,
+      "heldout_eval_passed": true,
+      "overfit_risk": false,
+      "overfit_reason": null,
+      "should_stop": false,
+      "stop_reason": null
+    },
+    {
+      "step": 10,
+      "train_mean_reward_largek_mix_1000": 0.5684710731660031,
+      "heldout_mean_reward_largek_mix_1000": 0.5401153425187367,
+      "train_parse_success_rate": 1.0,
+      "heldout_parse_success_rate": 1.0,
+      "train_invalid_action_rate": 0.0,
+      "heldout_invalid_action_rate": 0.0,
+      "train_strategy_distribution": {
+        "exact_match": 0.25,
+        "attribute_expansion": 0.25,
+        "broad_recall": 0.25,
+        "constraint_preserving": 0.25
+      },
+      "heldout_strategy_distribution": {
+        "exact_match": 0.25,
+        "attribute_expansion": 0.25,
+        "broad_recall": 0.25,
+        "constraint_preserving": 0.25
+      },
+      "train_eval_passed": true,
+      "heldout_eval_passed": true,
+      "overfit_risk": true,
+      "overfit_reason": "train reward up (+0.0214) but heldout reward down (-0.0051, drop=0.9%) at step 10",
+      "should_stop": false,
+      "stop_reason": null
+    },
+    {
+      "step": 20,
+      "train_mean_reward_largek_mix_1000": 0.5524187746696894,
+      "heldout_mean_reward_largek_mix_1000": 0.5263728412742722,
+      "train_parse_success_rate": 1.0,
+      "heldout_parse_success_rate": 1.0,
+      "train_invalid_action_rate": 0.0,
+      "heldout_invalid_action_rate": 0.0,
+      "train_strategy_distribution": {
+        "exact_match": 0.25,
+        "attribute_expansion": 0.25,
+        "broad_recall": 0.25,
+        "constraint_preserving": 0.25
+      },
+      "heldout_strategy_distribution": {
+        "exact_match": 0.25,
+        "attribute_expansion": 0.25,
+        "broad_recall": 0.25,
+        "constraint_preserving": 0.25
+      },
+      "train_eval_passed": true,
+      "heldout_eval_passed": true,
+      "overfit_risk": true,
+      "overfit_reason": "train reward up (+0.0053) but heldout reward down (-0.0189, drop=3.5%) at step 20",
+      "should_stop": false,
+      "stop_reason": null
+    }
+  ]
+}

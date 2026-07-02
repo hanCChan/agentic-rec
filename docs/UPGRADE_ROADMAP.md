@@ -115,8 +115,9 @@ agentic-rec/
 34. ~~**下一步**：Phase 2.4a — 50-Step Pilot GRPO Training Plan~~ ✅ 见 `docs/PHASE2_4_50STEP_PILOT_PLAN.md`（commit `6d9953c`）
 35. ~~**下一步**：Phase 2.4 — 50-step controlled pilot~~ ✅ 见 `experiments/phase24_50step_grpo_pilot/`（commit `286b12c`；lr=5e-7，`pilot_passed=true`，fresh eval 0.373→0.395）
 36. ~~**下一步**：Phase 2.5 — 扩 clean set + held-out + 200-step pilot 计划~~ ✅ Phase 2.5a-b clean set ready（commit `c7c0d7c`）
-37. ~~**下一步**：Phase 2.5c — 200-step GRPO pilot（lr=5e-7, kl_coef=0.01）~~ ⚠️ 117/200 step KL stop（`approx_kl=0.202`）；heldout 未崩，JSON 稳；见 `experiments/phase25_200step_grpo_pilot/lr_5e-7/kl_stop_report.md`
-38. **下一步**：Phase 2.5d — 修复 eval hook + KL-controlled rerun（kl_coef=0.02, lr=5e-7）
+37. ~~**下一步**：Phase 2.5c — 200-step GRPO pilot（lr=5e-7, kl_coef=0.01）~~ ⚠️ 117/200 step KL stop（`approx_kl=0.202`）；见 `experiments/phase25_200step_grpo_pilot/lr_5e-7/kl_stop_report.md`
+38. ~~**下一步**：Phase 2.5d-A — eval hook fix + KL-controlled rerun（kl_coef=0.02）~~ ⚠️ 同样 117/200 KL stop（`approx_kl=0.204`）；kl_coef 加倍未改变 stop horizon
+39. **下一步**：Phase 2.5e — KL/loss wiring audit（验证 kl_coef 是否进入 actor loss）；audit 通过后再跑 config B
 
 ## Claim Boundary（当前口径）
 
@@ -126,5 +127,6 @@ Rec-R1 范式延伸 + Agentic Search 工程化 + pilot 级 GRPO 验证
 
 Phase 2.4: pilot 工程稳定 + curated 20 groups fresh eval early signal
 Phase 2.5c: 200-step pilot KL drift at step 117 — not reward/JSON collapse; fix KL control before scaling
-Phase 2.5d+: 跑满 200 step 后进入 Phase 2.6 baseline/ablation
+Phase 2.5d-A: kl_coef=0.02 reproduced same 117-step KL stop — suggests KL loss wiring audit needed
+Phase 2.5e+: audit kl_coef → total_loss → gradient; then config B or periodic re-rollout
 ```

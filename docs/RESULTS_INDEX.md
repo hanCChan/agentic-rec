@@ -64,7 +64,8 @@ checkpoint_promoted = false
 | Phase | Commit | Dir | Key Metrics | Trained? | Result |
 |-------|--------|-----|-------------|----------|--------|
 | **2.5a-b** | `c7c0d7c` | `experiments/phase25_expanded_clean_set/` | 50 train + 20 heldout, expanded clean set ready | No | Gate passed |
-| **2.5c** | (pending) | `experiments/phase25_200step_grpo_pilot/lr_5e-7/` | 117/200 steps, KL stop at 0.202, heldout stable | 117 steps | **pilot_passed=false**, kl_guard_stop |
+| **2.5c** | `5e7122b` | `experiments/phase25_200step_grpo_pilot/lr_5e-7/` | 117/200 steps, KL stop at 0.202, heldout stable | 117 steps | **pilot_passed=false**, kl_guard_stop |
+| **2.5d-A** | (pending) | `experiments/phase25d_kl_controlled_200step/lr_5e-7_kl_0.02/` | 117/200 steps, kl_coef=0.02, KL stop at 0.204 | 117 steps | **pilot_passed=false**, same stop horizon as 2.5c |
 
 ### Phase 2.5c Fresh Eval Curve
 
@@ -89,9 +90,25 @@ diagnosis = long-horizon KL drift on fixed preflight batch
 next = Phase 2.5d KL-controlled rerun (kl_coef=0.02)
 ```
 
+### Phase 2.5d-A Diagnosis
+
+```text
+pilot_passed = false
+failure_type = kl_guard_stop
+actual_update_steps = 117/200
+kl_coef = 0.02 (vs 2.5c kl_coef=0.01)
+max_approx_kl_nonnegative = 0.2042 (> 0.2 threshold)
+heldout reward did not collapse
+JSON/parse stable
+comparison: kl_coef 0.01 and 0.02 both stopped at step 117 — config KL control did not change trajectory
+next = Phase 2.5e KL/loss wiring audit (do not run config B until audit passes)
+```
+
+See `experiments/phase25d_kl_controlled_200step/lr_5e-7_kl_0.02/kl_stop_report.md`.
+
 ## Next Step
 
-**Phase 2.5d**: Fix eval hook (eval_steps independent of save_steps), rerun 200-step pilot with `kl_coef=0.02`. See `experiments/phase25_200step_grpo_pilot/lr_5e-7/kl_stop_report.md`.
+**Phase 2.5e**: KL/loss wiring audit — verify `kl_coef` affects `total_loss` and gradients. See `experiments/phase25e_kl_loss_audit/`.
 
 ## Claim Boundary
 

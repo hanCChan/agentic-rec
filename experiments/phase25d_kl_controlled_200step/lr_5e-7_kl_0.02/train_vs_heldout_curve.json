@@ -1,0 +1,54 @@
+{
+  "curve": [
+    {
+      "step": 0,
+      "train_reward": 0.5471116929458408,
+      "heldout_reward": 0.5452531144608548,
+      "train_parse": 0.9975,
+      "heldout_parse": 1.0,
+      "train_invalid": 0.0016666666666666666,
+      "heldout_invalid": 0.0,
+      "overfit_risk": false
+    },
+    {
+      "step": 25,
+      "train_reward": 0.5630910926537857,
+      "heldout_reward": 0.54816397007684,
+      "train_parse": 1.0,
+      "heldout_parse": 1.0,
+      "train_invalid": 0.0,
+      "heldout_invalid": 0.0,
+      "overfit_risk": false
+    },
+    {
+      "step": 50,
+      "train_reward": 0.5546987303789628,
+      "heldout_reward": 0.5465193542711314,
+      "train_parse": 0.9975,
+      "heldout_parse": 1.0,
+      "train_invalid": 0.0016666666666666666,
+      "heldout_invalid": 0.0,
+      "overfit_risk": false
+    },
+    {
+      "step": 100,
+      "train_reward": 0.5539097894405267,
+      "heldout_reward": 0.5618254815795776,
+      "train_parse": 1.0,
+      "heldout_parse": 1.0,
+      "train_invalid": 0.0,
+      "heldout_invalid": 0.0,
+      "overfit_risk": false
+    },
+    {
+      "step": 117,
+      "train_reward": 0.5500351171928565,
+      "heldout_reward": 0.5427175098077773,
+      "train_parse": 1.0,
+      "heldout_parse": 1.0,
+      "train_invalid": 0.0,
+      "heldout_invalid": 0.0,
+      "overfit_risk": true
+    }
+  ]
+}

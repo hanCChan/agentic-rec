@@ -109,7 +109,7 @@ See `experiments/phase25d_kl_controlled_200step/lr_5e-7_kl_0.02/kl_stop_report.m
 | Phase | Commit | Dir | Key Metrics | Result |
 |-------|--------|-----|-------------|--------|
 | **2.5e** | `abb8470` | `experiments/phase25e_kl_loss_audit/` | kl_coef sweep 0/0.01/0.10 × 10 steps | **audit_passed=false**, KL not in backward loss |
-| **2.5f** | (pending) | `experiments/phase25f_kl_loss_wiring_fix/` | KL wiring fix + audit + 20-step sanity | **audit_passed=true** after fix |
+| **2.5f** | `5aad9ef` | `experiments/phase25f_kl_loss_wiring_fix/` | KL wiring fix + audit + 20-step sanity | **audit_passed=true** after fix |
 
 ### Phase 2.5e KL Wiring Audit (pre-fix)
 

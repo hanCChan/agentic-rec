@@ -9,11 +9,26 @@ from __future__ import annotations
 
 import importlib.util
 import json
+import os
+import subprocess
+import sys
 from pathlib import Path
 from statistics import mean, pstdev
 from typing import Any, Callable, Dict, List, Optional
 
 from src.agents.grpo_pilot_monitor import PILOT_CHECKPOINT_LABEL
+
+
+def resolve_physical_cuda_visible_devices(
+    gpu_ids: List[int],
+    parent_visible: Optional[str] = None,
+) -> str:
+    """Map logical CUDA indices to physical GPU ids from parent CUDA_VISIBLE_DEVICES."""
+    visible = parent_visible if parent_visible is not None else os.environ.get("CUDA_VISIBLE_DEVICES", "")
+    if visible.strip():
+        physical = [int(x.strip()) for x in visible.split(",") if x.strip()]
+        return ",".join(str(physical[i]) for i in gpu_ids)
+    return ",".join(str(i) for i in gpu_ids)
 
 
 def extract_strategy_from_record(record: Dict[str, Any]) -> str:
@@ -91,6 +106,76 @@ def _load_jsonl_local(path: Path) -> List[Dict[str, Any]]:
     return rows
 
 
+def _run_fresh_eval_subprocess(
+    *,
+    clean_set_path: Path,
+    checkpoint_path: Optional[Path],
+    output_dir: Path,
+    eval_step: int,
+    data_path: Path,
+    preflight_rollout_dir: Path,
+    candidate_name: str,
+    model_path: str,
+    temperature: float,
+    top_p: float,
+    topk: int,
+    seed: int,
+    root: Path,
+    checkpoint_prefix: str,
+    checkpoint_label: str,
+    eval_split: str,
+    eval_root_name: Optional[str],
+    eval_gpu_ids: List[int],
+    eval_tensor_parallel_size: int,
+) -> Dict[str, Any]:
+    eval_root = eval_root_name if eval_root_name is not None else f"eval_step_{eval_step}"
+    eval_dir = output_dir / eval_root / eval_split
+    eval_dir.mkdir(parents=True, exist_ok=True)
+    summary_out = eval_dir / "_worker_summary.json"
+    tp_size = eval_tensor_parallel_size or len(eval_gpu_ids)
+    cmd = [
+        sys.executable,
+        str(root / "scripts/fresh_eval_worker.py"),
+        "--clean-set-path",
+        str(clean_set_path),
+        "--output-dir",
+        str(output_dir),
+        "--eval-step",
+        str(eval_step),
+        "--data-path",
+        str(data_path),
+        "--preflight-rollout-dir",
+        str(preflight_rollout_dir),
+        "--candidate-name",
+        candidate_name,
+        "--model-path",
+        model_path,
+        "--temperature",
+        str(temperature),
+        "--top-p",
+        str(top_p),
+        "--topk",
+        str(topk),
+        "--seed",
+        str(seed),
+        "--eval-split",
+        eval_split,
+        "--tensor-parallel-size",
+        str(tp_size),
+        "--summary-out",
+        str(summary_out),
+    ]
+    if checkpoint_path is not None:
+        cmd.extend(["--checkpoint-path", str(checkpoint_path)])
+    if eval_root_name is not None:
+        cmd.extend(["--eval-root-name", eval_root_name])
+
+    env = os.environ.copy()
+    env["CUDA_VISIBLE_DEVICES"] = resolve_physical_cuda_visible_devices(eval_gpu_ids)
+    subprocess.run(cmd, env=env, check=True)
+    return json.loads(summary_out.read_text(encoding="utf-8"))
+
+
 def run_fresh_eval(
     *,
     clean_set_path: Path,
@@ -111,8 +196,34 @@ def run_fresh_eval(
     eval_split: str = "train",
     eval_root_name: Optional[str] = None,
     eval_cuda_device: Optional[int] = None,
+    eval_gpu_ids: Optional[List[int]] = None,
+    eval_tensor_parallel_size: int = 1,
+    in_subprocess: bool = False,
 ) -> Dict[str, Any]:
     """Fresh rollout eval on clean set (step 0 uses base model_path)."""
+    if eval_gpu_ids and not in_subprocess:
+        return _run_fresh_eval_subprocess(
+            clean_set_path=clean_set_path,
+            checkpoint_path=checkpoint_path,
+            output_dir=output_dir,
+            eval_step=eval_step,
+            data_path=data_path,
+            preflight_rollout_dir=preflight_rollout_dir,
+            candidate_name=candidate_name,
+            model_path=model_path,
+            temperature=temperature,
+            top_p=top_p,
+            topk=topk,
+            seed=seed,
+            root=root,
+            checkpoint_prefix=checkpoint_prefix,
+            checkpoint_label=checkpoint_label,
+            eval_split=eval_split,
+            eval_root_name=eval_root_name,
+            eval_gpu_ids=eval_gpu_ids,
+            eval_tensor_parallel_size=eval_tensor_parallel_size,
+        )
+
     script_path = root / "scripts/smoke_strategy_prompt_v2.py"
     spec = importlib.util.spec_from_file_location("smoke_strategy_prompt_v2", script_path)
     if spec is None or spec.loader is None:
@@ -147,7 +258,8 @@ def run_fresh_eval(
         topk=topk,
         seed=seed + eval_step,
         strategies=["exact_match", "attribute_expansion", "broad_recall", "constraint_preserving"],
-        cuda_device=eval_cuda_device,
+        cuda_device=eval_cuda_device if eval_tensor_parallel_size <= 1 else None,
+        tensor_parallel_size=eval_tensor_parallel_size,
     )
 
     rollout_path = eval_dir / "post_train_rollout_records.jsonl"
@@ -241,47 +353,40 @@ def run_dual_fresh_eval(
     checkpoint_label: str = PILOT_CHECKPOINT_LABEL,
     eval_root_name: Optional[str] = None,
     eval_cuda_device: Optional[int] = None,
+    eval_gpu_ids: Optional[List[int]] = None,
+    eval_tensor_parallel_size: int = 1,
 ) -> Dict[str, Any]:
     """Run fresh eval on both train and heldout clean sets."""
-    train_eval = run_fresh_eval(
-        clean_set_path=train_clean_path,
+    common = dict(
         checkpoint_path=checkpoint_path,
         output_dir=output_dir,
         eval_step=eval_step,
         data_path=data_path,
-        preflight_rollout_dir=train_preflight_dir,
         candidate_name=candidate_name,
         model_path=model_path,
         temperature=temperature,
         top_p=top_p,
         topk=topk,
-        seed=seed,
         root=root,
         checkpoint_prefix=checkpoint_prefix,
         checkpoint_label=checkpoint_label,
-        eval_split="train",
         eval_root_name=eval_root_name,
-        eval_cuda_device=eval_cuda_device,
+        eval_gpu_ids=eval_gpu_ids,
+        eval_tensor_parallel_size=eval_tensor_parallel_size,
+    )
+    train_eval = run_fresh_eval(
+        clean_set_path=train_clean_path,
+        preflight_rollout_dir=train_preflight_dir,
+        seed=seed,
+        eval_split="train",
+        **common,
     )
     heldout_eval = run_fresh_eval(
         clean_set_path=heldout_clean_path,
-        checkpoint_path=checkpoint_path,
-        output_dir=output_dir,
-        eval_step=eval_step,
-        data_path=data_path,
         preflight_rollout_dir=heldout_preflight_dir or train_preflight_dir,
-        candidate_name=candidate_name,
-        model_path=model_path,
-        temperature=temperature,
-        top_p=top_p,
-        topk=topk,
         seed=seed + 1000,
-        root=root,
-        checkpoint_prefix=checkpoint_prefix,
-        checkpoint_label=checkpoint_label,
         eval_split="heldout",
-        eval_root_name=eval_root_name,
-        eval_cuda_device=eval_cuda_device,
+        **common,
     )
     return {"train": train_eval, "heldout": heldout_eval}
 
@@ -306,6 +411,8 @@ def run_final_stop_dual_eval(
     checkpoint_prefix: str = "pilot_step",
     checkpoint_label: str = PILOT_CHECKPOINT_LABEL,
     eval_cuda_device: Optional[int] = None,
+    eval_gpu_ids: Optional[List[int]] = None,
+    eval_tensor_parallel_size: int = 1,
 ) -> Dict[str, Any]:
     """Run fresh eval at early stop step into final_stop_eval_step_<n>/."""
     return run_dual_fresh_eval(
@@ -328,6 +435,8 @@ def run_final_stop_dual_eval(
         checkpoint_label=checkpoint_label,
         eval_root_name=f"final_stop_eval_step_{stop_step}",
         eval_cuda_device=eval_cuda_device,
+        eval_gpu_ids=eval_gpu_ids,
+        eval_tensor_parallel_size=eval_tensor_parallel_size,
     )
 
 

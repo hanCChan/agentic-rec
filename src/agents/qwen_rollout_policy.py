@@ -35,7 +35,7 @@ class QwenRolloutPolicy:
         except ImportError as exc:
             raise RuntimeError("vLLM is required for QwenRolloutPolicy") from exc
 
-        if cuda_device is not None and torch.cuda.is_available():
+        if cuda_device is not None and tensor_parallel_size <= 1 and torch.cuda.is_available():
             torch.cuda.set_device(cuda_device)
 
         self.model_path = str(model_path)

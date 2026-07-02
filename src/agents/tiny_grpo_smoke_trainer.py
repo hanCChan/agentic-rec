@@ -60,6 +60,7 @@ class TinyGrpoSmokeTrainer:
         dtype: str = "bfloat16",
         device: str = "cuda",
         cuda_device_index: Optional[int] = None,
+        train_gpu_ids: Optional[List[int]] = None,
         logprob_micro_batch_size: int = 2,
         seed: int = 42,
         eps: float = EPS,
@@ -81,6 +82,7 @@ class TinyGrpoSmokeTrainer:
         self.dtype = dtype
         self.device = device
         self.cuda_device_index = cuda_device_index
+        self.train_gpu_ids = train_gpu_ids
         self.logprob_micro_batch_size = logprob_micro_batch_size
         self.seed = seed
         self.eps = eps
@@ -122,8 +124,14 @@ class TinyGrpoSmokeTrainer:
             self.tokenizer.pad_token_id = self.tokenizer.eos_token_id
 
         device_map: Any
+        max_memory: Optional[Dict[Any, str]] = None
         if self.device == "cuda":
-            if self.cuda_device_index is not None:
+            if self.train_gpu_ids:
+                n = torch.cuda.device_count()
+                train_set = set(self.train_gpu_ids)
+                max_memory = {i: ("75GiB" if i in train_set else "0GiB") for i in range(n)}
+                device_map = "auto"
+            elif self.cuda_device_index is not None:
                 device_map = {"": f"cuda:{self.cuda_device_index}"}
             else:
                 device_map = "auto"
@@ -134,6 +142,7 @@ class TinyGrpoSmokeTrainer:
             self.model_path,
             torch_dtype=_DTYPE_MAP[self.dtype],
             device_map=device_map,
+            max_memory=max_memory,
             trust_remote_code=True,
         )
         self.model.train()

@@ -286,6 +286,11 @@ def run_pilot(args: argparse.Namespace) -> None:
     validate_expanded_clean_set(
         args.train_clean_path, args.heldout_clean_path, args.clean_set_summary_path
     )
+    print(
+        f"[phase25] GPU layout: train_gpus={args.train_gpus}, "
+        f"eval_gpus={args.eval_gpus} (within CUDA_VISIBLE_DEVICES="
+        f"{__import__('os').environ.get('CUDA_VISIBLE_DEVICES', 'all')})"
+    )
 
     if not args.skip_preflight_build:
         ensure_preflight_rollout(
@@ -335,7 +340,9 @@ def run_pilot(args: argparse.Namespace) -> None:
             root=ROOT,
             checkpoint_prefix=PILOT_CHECKPOINT_PREFIX,
             checkpoint_label=PILOT_CHECKPOINT_LABEL,
-            eval_cuda_device=args.eval_gpu,
+            eval_cuda_device=args.eval_gpu if not args.eval_gpus else None,
+            eval_gpu_ids=args.eval_gpus,
+            eval_tensor_parallel_size=len(args.eval_gpus) if args.eval_gpus else 1,
         )
 
     if 0 in args.eval_steps and not args.skip_eval:
@@ -386,7 +393,8 @@ def run_pilot(args: argparse.Namespace) -> None:
         kl_coef=args.kl_coef,
         cliprange=args.cliprange,
         seed=args.seed,
-        cuda_device_index=args.train_gpu,
+        train_gpu_ids=args.train_gpus,
+        cuda_device_index=args.train_gpu if not args.train_gpus else None,
     )
 
     try:
@@ -454,7 +462,9 @@ def run_pilot(args: argparse.Namespace) -> None:
                 root=ROOT,
                 checkpoint_prefix=PILOT_CHECKPOINT_PREFIX,
                 checkpoint_label=PILOT_CHECKPOINT_LABEL,
-                eval_cuda_device=args.eval_gpu,
+                eval_cuda_device=args.eval_gpu if len(args.eval_gpus) == 1 else None,
+                eval_gpu_ids=args.eval_gpus,
+                eval_tensor_parallel_size=len(args.eval_gpus),
             )
             rec = monitor.check_eval_pair(dual["train"], dual["heldout"], step=actual_step)
             rec["final_stop_eval"] = True
@@ -658,14 +668,38 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--top-p", type=float, default=0.95)
     parser.add_argument("--topk", type=int, default=20)
     parser.add_argument("--seed", type=int, default=42)
-    parser.add_argument("--train-gpu", type=int, default=0)
-    parser.add_argument("--eval-gpu", type=int, default=1)
+    parser.add_argument("--train-gpu", type=int, default=0, help="Single train GPU (legacy)")
+    parser.add_argument("--eval-gpu", type=int, default=1, help="Single eval GPU (legacy)")
+    parser.add_argument(
+        "--train-gpus",
+        type=int,
+        nargs="+",
+        default=None,
+        help="Training GPU indices within CUDA_VISIBLE_DEVICES (default: 0 1)",
+    )
+    parser.add_argument(
+        "--eval-gpus",
+        type=int,
+        nargs="+",
+        default=None,
+        help="Eval GPU indices within CUDA_VISIBLE_DEVICES (default: 2 3)",
+    )
     parser.add_argument("--min-disk-gb", type=float, default=80.0)
     return parser.parse_args()
 
 
 def main() -> None:
     args = parse_args()
+    try:
+        import torch
+
+        visible = torch.cuda.device_count() if torch.cuda.is_available() else 0
+    except ImportError:
+        visible = 0
+    if args.train_gpus is None:
+        args.train_gpus = [0, 1] if visible >= 4 else [args.train_gpu]
+    if args.eval_gpus is None:
+        args.eval_gpus = [2, 3] if visible >= 4 else [args.eval_gpu]
     if args.dry_config_check:
         args.output_dir = args.pilot_root
         result = dry_config_check(args)
